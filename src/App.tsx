@@ -1,9 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import {
-  Navbar,
-  NavbarContent,
   Input,
-  NavbarItem,
   Button,
   ButtonGroup,
   Card,
@@ -89,50 +86,47 @@ function App() {
 
   return (
     <>
-      <Navbar shouldHideOnScroll>
-        <NavbarContent className="flex gap-4" justify="center">
-          <NavbarItem>
-            <Input
-              placeholder="Type to search..."
-              size="sm"
-              startContent={
-                <span className="material-symbols-rounded">search</span>
-              }
-              type="search"
-              ref={inputRef}
-              defaultValue={tags}
-              className="w-80"
-            />
-          </NavbarItem>
-          <NavbarItem>
-            <Button size="lg" variant="flat" onClick={submit}>
-              Submit
-            </Button>
-          </NavbarItem>
-          <NavbarItem>
-            <ButtonGroup>
-              <Button
-                size="lg"
-                variant="flat"
-                onClick={pageUp}
-                isDisabled={page === 1}
-              >
-                <span className="material-symbols-rounded">chevron_left</span>
-                Prev
-              </Button>
-              <Button size="lg" variant="flat">
-                {page}
-              </Button>
-              <Button size="lg" variant="flat" onClick={pageDown}>
-                Next
-                <span className="material-symbols-rounded">chevron_right</span>
-              </Button>
-            </ButtonGroup>
-          </NavbarItem>
-        </NavbarContent>
-      </Navbar>
+      <nav
+        className="flex z-40 items-center justify-center gap-4 
+        fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl 
+        backdrop-saturate-150 backdrop-blur-md bg-background/70"
+      >
+        <Input
+          placeholder="Type to search..."
+          size="sm"
+          variant="bordered"
+          type="search"
+          startContent={
+            <span className="material-symbols-rounded">search</span>
+          }
+          ref={inputRef}
+          defaultValue={tags}
+          className="w-80"
+        />
+        <ButtonGroup>
+          <Button size="lg" variant="flat" onClick={submit}>
+            Submit
+          </Button>
+          <Button
+            size="lg"
+            variant="flat"
+            onClick={pageUp}
+            isDisabled={page === 1}
+          >
+            <span className="material-symbols-rounded">chevron_left</span>
+            Prev
+          </Button>
+          <Button size="lg" variant="flat">
+            {page}
+          </Button>
+          <Button size="lg" variant="flat" onClick={pageDown}>
+            Next
+            <span className="material-symbols-rounded">chevron_right</span>
+          </Button>
+        </ButtonGroup>
+      </nav>
 
-      <div className="px-20 py-5 gap-4 grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      <div className="px-20 py-5 pb-28 gap-4 grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {imageList.map(item => (
           <Card
             shadow="sm"
