@@ -19,7 +19,6 @@ import {
   PopoverContent,
   Chip,
 } from '@nextui-org/react'
-import { SearchIcon } from './components/SearchIcon.tsx'
 import './App.css'
 
 interface YandeImage {
@@ -91,31 +90,42 @@ function App() {
   return (
     <>
       <Navbar shouldHideOnScroll>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="flex gap-4" justify="center">
           <NavbarItem>
             <Input
               placeholder="Type to search..."
               size="sm"
-              startContent={<SearchIcon size={18} />}
+              startContent={
+                <span className="material-symbols-rounded">search</span>
+              }
               type="search"
               ref={inputRef}
               defaultValue={tags}
-              style={{ width: '250px' }}
+              className="w-80"
             />
           </NavbarItem>
           <NavbarItem>
-            <Button size="lg" onClick={submit}>
+            <Button size="lg" variant="flat" onClick={submit}>
               Submit
             </Button>
           </NavbarItem>
           <NavbarItem>
             <ButtonGroup>
-              <Button size="lg" onClick={pageUp} isDisabled={page === 1}>
-                ← Previous
+              <Button
+                size="lg"
+                variant="flat"
+                onClick={pageUp}
+                isDisabled={page === 1}
+              >
+                <span className="material-symbols-rounded">chevron_left</span>
+                Prev
               </Button>
-              <Button size="lg">{page}</Button>
-              <Button size="lg" onClick={pageDown}>
-                Next →
+              <Button size="lg" variant="flat">
+                {page}
+              </Button>
+              <Button size="lg" variant="flat" onClick={pageDown}>
+                Next
+                <span className="material-symbols-rounded">chevron_right</span>
               </Button>
             </ButtonGroup>
           </NavbarItem>
@@ -144,11 +154,12 @@ function App() {
             <CardFooter className="text-small justify-between">
               <Link
                 href={`https://yande.re/post/show/${item.id}`}
-                target="_blank"
+                isExternal
                 color="foreground"
                 isBlock
+                showAnchorIcon
               >
-                <b>#{item.id}</b>
+                <b>{item.id}</b>
               </Link>
               <Popover placement="top" radius="sm">
                 <PopoverTrigger>
@@ -158,7 +169,7 @@ function App() {
                     </span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="flex flex-row flex-wrap gap-1 max-w-[300px] bg-transparent shadow-none">
+                <PopoverContent className="flex-row flex-wrap gap-1 max-w-[300px] bg-transparent shadow-none">
                   {item.tags.split(' ').map(tag => {
                     return <Chip key={tag}>{tag}</Chip>
                   })}
