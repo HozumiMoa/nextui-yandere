@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import {
   Input,
   Button,
@@ -15,7 +15,10 @@ import {
   PopoverTrigger,
   PopoverContent,
   Chip,
+  Listbox,
+  ListboxItem,
 } from '@nextui-org/react'
+import useDebounce from './hooks/useDebounce'
 import './App.css'
 
 interface YandeImage {
@@ -26,30 +29,40 @@ interface YandeImage {
   sample_height: number
 }
 
+interface Tag {
+  id: number
+  name: string
+  count: number
+  type: number
+}
+
 function App() {
-  const [tags, setTags] = useState<string>('minato_aqua gaou_(matsulatte)')
-  const [page, setPage] = useState<number>(1)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [imageList, setImageList] = useState<YandeImage[]>([])
+  const [inputValue, setInputValue] = useState<string>('ksk_(semicha_keisuke)') // 搜索框的值
+  const [page, setPage] = useState<number>(1) // 当前页数
+  const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
+  const listboxRef = useRef<HTMLDivElement>(null) // 自动补全的引用
+  const [isListboxOpen, setIsListboxOpen] = useState<boolean>(false) // 自动补全的开关
+  const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
+  const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [modalImage, setModalImage] = useState<string>('')
   const [modalSize, setModalSize] = useState({ height: 0, width: 0 })
 
-  const fetchImageList = useCallback(async () => {
+  const fetchImageList = async () => {
     const res = await fetch(
-      `https://yande.re/post.json?limit=12&page=${page}&tags=${tags}`
+      `https://yande.re/post.json?limit=12&page=${page}&tags=${inputValue}`
     )
     const data = await res.json()
     setImageList(data)
-  }, [tags, page])
+  }
 
   useEffect(() => {
     fetchImageList()
-  }, [fetchImageList])
+  }, [page])
 
-  const submit = () => {
-    setTags(inputRef.current?.value || '')
+  const handleSubmit = () => {
     setPage(1)
+    fetchImageList()
   }
 
   const pageUp = () => {
@@ -61,7 +74,39 @@ function App() {
     setPage(page => page + 1)
   }
 
-  const handleOpen = (item: YandeImage) => {
+  const fetchTagList = async (tag: string) => {
+    const res = await fetch(`https://yande.re/tag.json?limit=10&name=${tag}`)
+    const data = await res.json()
+    setTagList(data)
+  }
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const lastTag = e.target.value.split(' ').pop()
+    if (!lastTag) return setIsListboxOpen(false)
+    fetchTagList(lastTag).then(() => {
+      if (tagList.length === 0) return setIsListboxOpen(false)
+      if (tagList.length === 1 && tagList[0].name === lastTag)
+        return setIsListboxOpen(false)
+      setIsListboxOpen(true)
+    })
+  }
+
+  const debouncedHandleInput = useDebounce<React.ChangeEvent<HTMLInputElement>>(
+    handleInput,
+    500
+  )
+
+  const handleSelect = (key: React.Key) => {
+    const tags = inputValue.split(' ')
+    tags.pop()
+    const value = [...tags, key].join(' ')
+    setInputValue(value)
+    setIsListboxOpen(false)
+    inputRef.current?.focus()
+  }
+
+  // 点击图片时打开模态框
+  const handleModalOpen = (item: YandeImage) => {
     onOpen()
     setModalImage(item.sample_url)
 
@@ -87,24 +132,48 @@ function App() {
   return (
     <>
       <nav
-        className="flex z-40 items-center justify-center gap-4 
+        className="flex z-40 items-center justify-center gap-4
         fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl 
         backdrop-saturate-150 backdrop-blur-md bg-background/70"
       >
-        <Input
-          placeholder="Type to search..."
-          size="sm"
-          variant="bordered"
-          type="search"
-          startContent={
-            <span className="material-symbols-rounded">search</span>
-          }
-          ref={inputRef}
-          defaultValue={tags}
-          className="w-80"
-        />
+        <div>
+          <Input
+            className="min-w-80"
+            placeholder="Type to search..."
+            size="sm"
+            variant="bordered"
+            isClearable
+            startContent={
+              <span className="material-symbols-rounded">search</span>
+            }
+            ref={inputRef}
+            value={inputValue}
+            onValueChange={setInputValue}
+            onInput={debouncedHandleInput}
+          />
+          <div
+            className="absolute px-1 py-2 min-w-80
+            border-small rounded-small border-default-200  
+            backdrop-saturate-150 backdrop-blur-md bg-background/90"
+            ref={listboxRef}
+            style={{
+              transform: `translateY(calc(-100% - ${listboxRef.current?.previousElementSibling?.clientHeight}px))`,
+              display: isListboxOpen ? 'block' : 'none',
+            }}
+          >
+            <Listbox
+              items={tagList}
+              variant="flat"
+              color="primary"
+              aria-label="Tags"
+              onAction={handleSelect}
+            >
+              {tag => <ListboxItem key={tag.name}>{tag.name}</ListboxItem>}
+            </Listbox>
+          </div>
+        </div>
         <ButtonGroup>
-          <Button size="lg" variant="flat" onClick={submit}>
+          <Button size="lg" variant="flat" onClick={handleSubmit}>
             Submit
           </Button>
           <Button
@@ -132,7 +201,7 @@ function App() {
             shadow="sm"
             key={item.id}
             isPressable
-            onPress={() => handleOpen(item)}
+            onPress={() => handleModalOpen(item)}
           >
             <CardBody className="overflow-visible p-0">
               <Image
