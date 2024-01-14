@@ -1,50 +1,16 @@
-import { useRef, useState, useEffect } from 'react'
-import {
-  Input,
-  Button,
-  ButtonGroup,
-  Card,
-  Image,
-  CardBody,
-  Modal,
-  ModalContent,
-  useDisclosure,
-  CardFooter,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Chip,
-  Listbox,
-  ListboxItem,
-} from '@nextui-org/react'
-import useDebounce from './hooks/useDebounce'
+import { useState, useEffect } from 'react'
+import { Button, ButtonGroup, useDisclosure } from '@nextui-org/react'
+import type { YandeImage } from './interfaces/image'
+import ImageCardList from './components/ImageCardList'
+import ModalImage from './components/ModalImage'
+import AutoCompleteC from './components/AutoCompleteC'
 import './App.css'
-
-interface YandeImage {
-  id: number
-  tags: string
-  sample_url: string
-  sample_width: number
-  sample_height: number
-}
-
-interface Tag {
-  id: number
-  name: string
-  count: number
-  type: number
-}
 
 function App() {
   const [inputValue, setInputValue] = useState<string>('ksk_(semicha_keisuke)') // 搜索框的值
   const [page, setPage] = useState<number>(1) // 当前页数
-  const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
-  const listboxRef = useRef<HTMLDivElement>(null) // 自动补全的引用
-  const [isListboxOpen, setIsListboxOpen] = useState<boolean>(false) // 自动补全的开关
   const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
-  const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
   const [modalImage, setModalImage] = useState<string>('')
   const [modalSize, setModalSize] = useState({ height: 0, width: 0 })
 
@@ -72,37 +38,6 @@ function App() {
 
   const pageDown = () => {
     setPage(page => page + 1)
-  }
-
-  const fetchTagList = async (tag: string) => {
-    const res = await fetch(`https://yande.re/tag.json?limit=10&name=${tag}`)
-    const data = await res.json()
-    setTagList(data)
-  }
-
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const lastTag = e.target.value.split(' ').pop()
-    if (!lastTag) return setIsListboxOpen(false)
-    fetchTagList(lastTag).then(() => {
-      if (tagList.length === 0) return setIsListboxOpen(false)
-      if (tagList.length === 1 && tagList[0].name === lastTag)
-        return setIsListboxOpen(false)
-      setIsListboxOpen(true)
-    })
-  }
-
-  const debouncedHandleInput = useDebounce<React.ChangeEvent<HTMLInputElement>>(
-    handleInput,
-    500
-  )
-
-  const handleSelect = (key: React.Key) => {
-    const tags = inputValue.split(' ')
-    tags.pop()
-    const value = [...tags, key].join(' ')
-    setInputValue(value)
-    setIsListboxOpen(false)
-    inputRef.current?.focus()
   }
 
   // 点击图片时打开模态框
@@ -136,42 +71,7 @@ function App() {
         fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl 
         backdrop-saturate-150 backdrop-blur-md bg-background/70"
       >
-        <div>
-          <Input
-            className="min-w-80"
-            placeholder="Type to search..."
-            size="sm"
-            variant="bordered"
-            isClearable
-            startContent={
-              <span className="material-symbols-rounded">search</span>
-            }
-            ref={inputRef}
-            value={inputValue}
-            onValueChange={setInputValue}
-            onInput={debouncedHandleInput}
-          />
-          <div
-            className="absolute px-1 py-2 min-w-80
-            border-small rounded-small border-default-200  
-            backdrop-saturate-150 backdrop-blur-md bg-background/90"
-            ref={listboxRef}
-            style={{
-              transform: `translateY(calc(-100% - ${listboxRef.current?.previousElementSibling?.clientHeight}px))`,
-              display: isListboxOpen ? 'block' : 'none',
-            }}
-          >
-            <Listbox
-              items={tagList}
-              variant="flat"
-              color="primary"
-              aria-label="Tags"
-              onAction={handleSelect}
-            >
-              {tag => <ListboxItem key={tag.name}>{tag.name}</ListboxItem>}
-            </Listbox>
-          </div>
-        </div>
+        <AutoCompleteC value={inputValue} onValueChange={setInputValue} />
         <ButtonGroup>
           <Button size="lg" variant="flat" onClick={handleSubmit}>
             Submit
@@ -195,65 +95,14 @@ function App() {
         </ButtonGroup>
       </nav>
 
-      <div className="px-20 py-5 pb-28 gap-4 grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {imageList.map(item => (
-          <Card
-            shadow="sm"
-            key={item.id}
-            isPressable
-            onPress={() => handleModalOpen(item)}
-          >
-            <CardBody className="overflow-visible p-0">
-              <Image
-                isZoomed
-                shadow="sm"
-                radius="lg"
-                width="100%"
-                loading="lazy"
-                className="w-full object-cover h-[400px]"
-                src={item.sample_url}
-              />
-            </CardBody>
-            <CardFooter className="text-small justify-between">
-              <Link
-                href={`https://yande.re/post/show/${item.id}`}
-                isExternal
-                color="foreground"
-                isBlock
-                showAnchorIcon
-              >
-                <b>{item.id}</b>
-              </Link>
-              <Popover placement="top" radius="sm">
-                <PopoverTrigger>
-                  <Button isIconOnly variant="light">
-                    <span className="material-symbols-rounded">
-                      manage_search
-                    </span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="flex-row flex-wrap gap-1 max-w-[300px] bg-transparent shadow-none">
-                  {item.tags.split(' ').map(tag => {
-                    return <Chip key={tag}>{tag}</Chip>
-                  })}
-                </PopoverContent>
-              </Popover>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+      <ImageCardList imageList={imageList} handleModalOpen={handleModalOpen} />
 
-      <Modal
-        backdrop="blur"
-        hideCloseButton={true}
+      <ModalImage
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        src={modalImage}
         style={{ maxWidth: modalSize.width, height: modalSize.height }}
-      >
-        <ModalContent>
-          <Image src={modalImage} />
-        </ModalContent>
-      </Modal>
+      />
     </>
   )
 }
