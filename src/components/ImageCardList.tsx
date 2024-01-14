@@ -57,7 +57,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
                   </span>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="flex-row flex-wrap gap-1 max-w-[300px] bg-transparent shadow-none">
+              <PopoverContent className="flex-row flex-wrap gap-1 max-w-80 bg-transparent shadow-none">
                 {item.tags.split(' ').map(tag => {
                   return <Chip key={tag}>{tag}</Chip>
                 })}

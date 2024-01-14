@@ -19,24 +19,26 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
     const res = await fetch(`https://yande.re/tag.json?limit=10&name=${tag}`)
     const data = await res.json()
     setTagList(data)
+    return data
   }
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 搜索框输入时，自动补全的逻辑
+  const handleInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const lastTag = e.target.value.split(' ').pop()
     if (!lastTag) return setIsListboxOpen(false)
-    fetchTagList(lastTag).then(() => {
-      if (tagList.length === 0) return setIsListboxOpen(false)
-      if (tagList.length === 1 && tagList[0].name === lastTag)
-        return setIsListboxOpen(false)
-      setIsListboxOpen(true)
-    })
+    const newTagList = await fetchTagList(lastTag) // 此处不能用 tagList，因为 tagList 是异步更新的，会导致下面的判断失效
+    if (newTagList.length === 0) return setIsListboxOpen(false)
+    if (newTagList.length === 1 && newTagList[0].name === lastTag)
+      return setIsListboxOpen(false)
+    setIsListboxOpen(true)
   }
 
   const debouncedHandleInput = useDebounce<React.ChangeEvent<HTMLInputElement>>(
     handleInput,
-    500
+    200
   )
 
+  // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
     const tags = value.split(' ')
     tags.pop()
@@ -76,7 +78,22 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
           aria-label="Tags"
           onAction={handleSelect}
         >
-          {tag => <ListboxItem key={tag.name}>{tag.name}</ListboxItem>}
+          {tag => {
+            const lastInputValue = value.split(' ').pop()
+            return (
+              <ListboxItem key={tag.name} textValue={tag.name}>
+                {lastInputValue ? (
+                  <>
+                    {tag.name.split(lastInputValue)[0]}
+                    <span className="text-danger">{lastInputValue}</span>
+                    {tag.name.split(lastInputValue)[1]}
+                  </>
+                ) : (
+                  tag.name
+                )}
+              </ListboxItem>
+            )
+          }}
         </Listbox>
       </div>
     </div>
