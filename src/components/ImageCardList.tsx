@@ -20,7 +20,7 @@ interface Props {
 export default function ImageCardList(props: Props): React.ReactElement {
   const { imageList, handleModalOpen } = props
   return (
-    <div className="px-20 py-5 pb-28 gap-4 grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div className="px-20 py-5 pb-28 grid gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {imageList.map(item => (
         <Card
           shadow="sm"
@@ -32,7 +32,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
             <Image
               isZoomed
               shadow="sm"
-              radius="lg"
+              radius="none"
               width="100%"
               loading="lazy"
               className="w-full object-cover h-[400px]"

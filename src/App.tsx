@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, ButtonGroup, useDisclosure } from '@nextui-org/react'
+import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
 import type { YandeImage } from './interfaces/image'
 import ImageCardList from './components/ImageCardList'
 import ModalImage from './components/ModalImage'
@@ -14,30 +14,36 @@ function App() {
   const [modalImage, setModalImage] = useState<string>('')
   const [modalSize, setModalSize] = useState({ height: 0, width: 0 })
 
-  const fetchImageList = async () => {
+  // 获取图片列表
+  const fetchImageList = async (inputValue: string, page: number = 1) => {
     const res = await fetch(
-      `https://yande.re/post.json?limit=12&page=${page}&tags=${inputValue}`
+      `https://yande.re/post.json?limit=12&tags=${inputValue}&page=${page}`
     )
     const data = await res.json()
     setImageList(data)
   }
 
+  // 组件挂载时获取图片列表
   useEffect(() => {
-    fetchImageList()
-  }, [page])
+    fetchImageList(inputValue)
+  }, [])
 
   const handleSubmit = () => {
     setPage(1)
-    fetchImageList()
+    fetchImageList(inputValue)
   }
 
   const pageUp = () => {
     if (page === 1) return
-    setPage(page => page - 1)
+    const newPage = page - 1
+    setPage(newPage)
+    fetchImageList(inputValue, newPage)
   }
 
   const pageDown = () => {
-    setPage(page => page + 1)
+    const newPage = page + 1
+    setPage(newPage)
+    fetchImageList(inputValue, newPage)
   }
 
   // 点击图片时打开模态框
@@ -71,7 +77,11 @@ function App() {
         fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl 
         backdrop-saturate-150 backdrop-blur-md bg-background/70"
       >
-        <AutoCompleteC value={inputValue} onValueChange={setInputValue} />
+        <AutoCompleteC
+          value={inputValue}
+          onValueChange={setInputValue}
+          onKeyUpEnter={handleSubmit}
+        />
         <ButtonGroup>
           <Button size="lg" variant="flat" onClick={handleSubmit}>
             Submit
@@ -85,9 +95,30 @@ function App() {
             <span className="material-symbols-rounded">chevron_left</span>
             Prev
           </Button>
-          <Button size="lg" variant="flat">
+          {/* <Button size="lg" variant="flat">
             {page}
-          </Button>
+          </Button> */}
+          <Input
+            variant="bordered"
+            size="sm"
+            radius="none"
+            value={String(page)}
+            onValueChange={value => {
+              if (isNaN(Number(value))) return
+              setPage(Number(value))
+            }}
+            onKeyUp={e => {
+              if (e.key === 'Enter') {
+                fetchImageList(inputValue, page)
+              }
+            }}
+            classNames={{
+              base: 'max-w-16',
+              input: 'text-center text-medium',
+              inputWrapper:
+                'shadow-none border-none bg-default/40 hover:opacity-hover',
+            }}
+          ></Input>
           <Button size="lg" variant="flat" onClick={pageDown}>
             Next
             <span className="material-symbols-rounded">chevron_right</span>
