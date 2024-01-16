@@ -11,18 +11,16 @@ export default function ModalImage(props: Props): React.ReactElement {
   const { isOpen, onOpenChange, src, style } = props
 
   return (
-    <>
-      <Modal
-        backdrop="blur"
-        hideCloseButton={true}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        style={style}
-      >
-        <ModalContent>
-          <Image src={src} />
-        </ModalContent>
-      </Modal>
-    </>
+    <Modal
+      backdrop="blur"
+      hideCloseButton={true}
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      style={style}
+    >
+      <ModalContent>
+        <Image src={src} />
+      </ModalContent>
+    </Modal>
   )
 }

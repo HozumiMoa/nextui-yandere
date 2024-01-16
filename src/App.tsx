@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
 import type { YandeImage } from './interfaces/image'
-import ImageCardList from './components/ImageCardList'
+import ImageCardListWrapper from './components/ImageCardListWrapper'
+import ImageCard from './components/ImageCard'
 import ModalImage from './components/ModalImage'
 import AutoCompleteC from './components/AutoCompleteC'
 import './App.css'
@@ -50,13 +51,13 @@ function App() {
   }
 
   // 点击图片时打开模态框
-  const handleModalOpen = (item: YandeImage) => {
+  const handleModalOpen = (image: YandeImage) => {
     onOpen()
-    setModalImage(item.sample_url)
+    setModalImage(image.sample_url)
 
     // 让图片的大小不超过屏幕
     const { innerHeight, innerWidth } = window
-    const { sample_height, sample_width } = item
+    const { sample_height, sample_width } = image
     const ratio = sample_width / sample_height
     const height = Math.min(innerHeight * 0.9, sample_height)
     const width = Math.min(innerWidth * 0.9, sample_width)
@@ -126,7 +127,11 @@ function App() {
         </ButtonGroup>
       </nav>
 
-      <ImageCardList imageList={imageList} handleModalOpen={handleModalOpen} />
+      <ImageCardListWrapper>
+        {imageList.map(image => (
+          <ImageCard key={image.id} image={image} onPress={handleModalOpen} />
+        ))}
+      </ImageCardListWrapper>
 
       <ModalImage
         isOpen={isOpen}

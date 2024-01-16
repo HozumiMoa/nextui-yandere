@@ -55,8 +55,7 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
 
   // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
-    value.pop()
-    onValueChange([...value, key as string])
+    onValueChange([...value.slice(0, -1), key as string])
     setIsListboxOpen(false)
     inputRef.current?.focus()
   }

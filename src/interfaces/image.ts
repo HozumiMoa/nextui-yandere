@@ -10,5 +10,5 @@ export interface Tag {
   id: number
   name: string
   count: number
-  type: number
+  type: number // 0: General, 1: Artist, 3: Copyright, 4: Character, 5: Circle
 }
