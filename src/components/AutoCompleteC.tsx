@@ -7,13 +7,13 @@ interface Props {
   /**
    * @description 搜索框的值
    */
-  value: string
+  value: string[]
   /**
    * @description 搜索框的值改变时的回调
-   * @param {string} value - 搜索框的值
+   * @param {string[]} value - 搜索框的值
    * @returns {void}
    */
-  onValueChange: (value: string) => void
+  onValueChange: (value: string[]) => void
   /**
    * @description 按下回车键时的回调
    * @returns {void}
@@ -23,6 +23,7 @@ interface Props {
 
 export default function AutoCompleteC(props: Props): React.ReactElement {
   const { value, onValueChange, onKeyUpEnter } = props
+  const inputValue = value.join(' ') // 搜索框的显示值
   const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
   const listboxWrapperRef = useRef<HTMLDivElement>(null) // 自动补全的引用
   const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
@@ -54,12 +55,15 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
 
   // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
-    const tags = value.split(' ')
-    tags.pop()
-    const newValue = [...tags, key].join(' ')
-    onValueChange(newValue)
+    value.pop()
+    onValueChange([...value, key as string])
     setIsListboxOpen(false)
     inputRef.current?.focus()
+  }
+
+  // 搜索框的值改变时的逻辑
+  const handleValueChange = (value: string) => {
+    onValueChange(value.split(' '))
   }
 
   // 搜索框按下键盘时的逻辑
@@ -96,8 +100,8 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
         isClearable
         startContent={<span className="material-symbols-rounded">search</span>}
         ref={inputRef}
-        value={value}
-        onValueChange={onValueChange}
+        value={inputValue}
+        onValueChange={handleValueChange}
         onInput={debouncedHandleInput}
         onKeyUp={handleKeyUp}
       />
@@ -119,7 +123,7 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
           onAction={handleSelect}
         >
           {tag => {
-            const lastInputValue = value.split(' ').pop()
+            const lastInputValue = value[value.length - 1]
             return (
               <ListboxItem
                 key={tag.name}

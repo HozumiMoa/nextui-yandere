@@ -7,7 +7,10 @@ import AutoCompleteC from './components/AutoCompleteC'
 import './App.css'
 
 function App() {
-  const [inputValue, setInputValue] = useState<string>('ksk_(semicha_keisuke)') // 搜索框的值
+  const [inputTags, setInputTags] = useState<string[]>([
+    'ksk_(semicha_keisuke)',
+  ]) // 搜索框的值
+  const inputValue = inputTags.join(' ') // 搜索框的显示值
   const [page, setPage] = useState<number>(1) // 当前页数
   const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
   const { isOpen, onOpen, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
@@ -78,8 +81,8 @@ function App() {
         backdrop-saturate-150 backdrop-blur-md bg-background/70"
       >
         <AutoCompleteC
-          value={inputValue}
-          onValueChange={setInputValue}
+          value={inputTags}
+          onValueChange={setInputTags}
           onKeyUpEnter={handleSubmit}
         />
         <ButtonGroup>
