@@ -32,7 +32,6 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
   const fetchTagList = async (tag: string) => {
     const res = await fetch(`https://yande.re/tag.json?limit=10&name=${tag}`)
     const data = await res.json()
-    setTagList(data)
     return data
   }
 
@@ -41,6 +40,7 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
     const lastTag = e.target.value.split(' ').pop()
     if (!lastTag) return setIsListboxOpen(false)
     const newTagList = await fetchTagList(lastTag) // 此处不能用 tagList，因为 tagList 是异步更新的，会导致下面的判断失效
+    setTagList(newTagList)
     if (newTagList.length === 0) return setIsListboxOpen(false)
     if (newTagList.length === 1 && newTagList[0].name === lastTag)
       return setIsListboxOpen(false)
@@ -62,16 +62,33 @@ export default function AutoCompleteC(props: Props): React.ReactElement {
     inputRef.current?.focus()
   }
 
-  // 按下回车键时，关闭自动补全
+  // 搜索框按下键盘时的逻辑
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
     if (e.key === 'Enter') {
       onKeyUpEnter()
+      setIsListboxOpen(false)
+    }
+    if (e.key === 'ArrowDown') {
+      const option = listboxWrapperRef.current?.querySelector('ul')
+        ?.firstElementChild as HTMLElement
+      option.focus()
+    }
+    if (e.key === 'ArrowUp') {
+      const option = listboxWrapperRef.current?.querySelector('ul')
+        ?.lastElementChild as HTMLElement
+      option.focus()
+    }
+  }
+
+  const handleKeyUpEscape = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
       setIsListboxOpen(false)
     }
   }
 
   return (
-    <div className="min-w-80 relative">
+    <div className="min-w-80 relative" onKeyUp={handleKeyUpEscape}>
       <Input
         placeholder="Type to search..."
         size="sm"

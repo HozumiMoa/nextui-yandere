@@ -95,9 +95,6 @@ function App() {
             <span className="material-symbols-rounded">chevron_left</span>
             Prev
           </Button>
-          {/* <Button size="lg" variant="flat">
-            {page}
-          </Button> */}
           <Input
             variant="bordered"
             size="sm"

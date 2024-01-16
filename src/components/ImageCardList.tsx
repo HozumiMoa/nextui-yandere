@@ -20,7 +20,7 @@ interface Props {
 export default function ImageCardList(props: Props): React.ReactElement {
   const { imageList, handleModalOpen } = props
   return (
-    <div className="px-20 py-5 pb-28 grid gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div className="py-5 pb-28 grid gap-4 md:grid-cols-2 lg:px-20 xl:grid-cols-3 2xl:grid-cols-4">
       {imageList.map(item => (
         <Card
           shadow="sm"
