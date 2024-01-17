@@ -1,14 +1,15 @@
-import { Modal, ModalContent, Image } from '@nextui-org/react'
+import { Modal, ModalContent, Image, Button } from '@nextui-org/react'
 import { YandeImage } from '../interfaces/image'
 
 interface Props {
   isOpen: boolean
   onOpenChange: () => void
   image: YandeImage | undefined
+  onPageUpOrDown: (isUp: boolean) => void
 }
 
 export default function ModalImage(props: Props): React.ReactElement {
-  const { isOpen, onOpenChange, image } = props
+  const { isOpen, onOpenChange, image, onPageUpOrDown } = props
   const modalSize = {
     width: 0,
     height: 0,
@@ -31,6 +32,15 @@ export default function ModalImage(props: Props): React.ReactElement {
 
   resizeModal(image?.sample_width, image?.sample_height)
 
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    e.stopPropagation()
+    if (e.key === 'ArrowLeft') {
+      onPageUpOrDown(true)
+    } else if (e.key === 'ArrowRight') {
+      onPageUpOrDown(false)
+    }
+  }
+
   return (
     <>
       {image && (
@@ -39,24 +49,33 @@ export default function ModalImage(props: Props): React.ReactElement {
           hideCloseButton={true}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
+          onKeyUp={handleKeyUp}
           style={{ maxWidth: modalSize.width, height: modalSize.height }}
         >
           <ModalContent>
             <Image src={image.sample_url} />
-            {/* <div className="absolute w-10 h-10 z-10 top-1/2 -translate-y-1/2">
-              <Button isIconOnly variant="light">
+            <div className="absolute w-10 h-10 z-10 top-1/2 -translate-y-1/2">
+              <Button
+                isIconOnly
+                variant="light"
+                onPress={() => onPageUpOrDown(true)}
+              >
                 <span className="material-symbols-rounded">
                   arrow_back_ios_new
                 </span>
               </Button>
             </div>
             <div className="absolute w-10 h-10 z-10 top-1/2 right-0 -translate-y-1/2">
-              <Button isIconOnly variant="light">
+              <Button
+                isIconOnly
+                variant="light"
+                onPress={() => onPageUpOrDown(false)}
+              >
                 <span className="material-symbols-rounded">
                   arrow_forward_ios
                 </span>
               </Button>
-            </div> */}
+            </div>
           </ModalContent>
         </Modal>
       )}

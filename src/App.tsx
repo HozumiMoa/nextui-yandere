@@ -25,6 +25,7 @@ function App() {
     )
     const data = await res.json()
     setImageList(data)
+    return data
   }
 
   // 组件挂载时获取图片列表
@@ -56,6 +57,45 @@ function App() {
     onOpen()
   }
 
+  // 模态框内点击上一张或下一张图片
+  const handleModalPageUpOrDown = (isUp: boolean) => {
+    // 上一张图片
+    if (isUp) {
+      // 首先获取当前图片的索引
+      const index = imageList.findIndex(image => image.id === activeImageId)
+      // 如果当前图片已经是第一张图片，检查是否还有上一页
+      if (index === 0) {
+        if (page === 1) return
+        const newPage = page - 1
+        setPage(newPage)
+        fetchImageList(inputValue, newPage).then(data => {
+          const newActiveImageId = data[data.length - 1].id
+          setActiveImageId(newActiveImageId)
+        })
+      }
+      // 如果当前图片不是第一张图片，直接切换到上一张图片
+      else {
+        const newActiveImageId = imageList[index - 1].id
+        setActiveImageId(newActiveImageId)
+      }
+    }
+    // 下一张图片
+    else {
+      const index = imageList.findIndex(image => image.id === activeImageId)
+      if (index === imageList.length - 1) {
+        const newPage = page + 1
+        setPage(newPage)
+        fetchImageList(inputValue, newPage).then(data => {
+          const newActiveImageId = data[0].id
+          setActiveImageId(newActiveImageId)
+        })
+      } else {
+        const newActiveImageId = imageList[index + 1].id
+        setActiveImageId(newActiveImageId)
+      }
+    }
+  }
+
   return (
     <>
       <nav
@@ -69,13 +109,13 @@ function App() {
           onKeyUpEnter={handleSubmit}
         />
         <ButtonGroup>
-          <Button size="lg" variant="flat" onClick={handleSubmit}>
+          <Button size="lg" variant="flat" onPress={handleSubmit}>
             Submit
           </Button>
           <Button
             size="lg"
             variant="flat"
-            onClick={pageUp}
+            onPress={pageUp}
             isDisabled={page === 1}
           >
             <span className="material-symbols-rounded">chevron_left</span>
@@ -102,7 +142,7 @@ function App() {
                 'shadow-none border-none bg-default/40 hover:opacity-hover',
             }}
           ></Input>
-          <Button size="lg" variant="flat" onClick={pageDown}>
+          <Button size="lg" variant="flat" onPress={pageDown}>
             Next
             <span className="material-symbols-rounded">chevron_right</span>
           </Button>
@@ -117,9 +157,9 @@ function App() {
 
       <ModalImage
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
         image={activeImage}
-        key={activeImageId}
+        onOpenChange={onOpenChange}
+        onPageUpOrDown={handleModalPageUpOrDown}
       />
     </>
   )
