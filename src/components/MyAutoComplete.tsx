@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Input, Listbox, ListboxItem } from '@nextui-org/react'
 import type { Tag } from '../interfaces/image'
-import useDebounce from '.././hooks/useDebounce'
+import useDebounce from '../hooks/useDebounce'
 
 interface Props {
   /**
@@ -21,7 +21,7 @@ interface Props {
   onKeyUpEnter: () => void
 }
 
-export default function AutoCompleteC(props: Props): React.ReactElement {
+export default function MyAutoComplete(props: Props): React.ReactElement {
   const { value, onValueChange, onKeyUpEnter } = props
   const inputValue = value.join(' ') // 搜索框的显示值
   const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用

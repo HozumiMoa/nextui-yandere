@@ -14,13 +14,18 @@ import type { YandeImage } from '../interfaces/image'
 
 interface Props {
   image: YandeImage
-  onPress: (image: YandeImage) => void
+  onPress: (id: number) => void
 }
 
 export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress } = props
   return (
-    <Card shadow="sm" key={image.id} isPressable onPress={() => onPress(image)}>
+    <Card
+      shadow="sm"
+      key={image.id}
+      isPressable
+      onPress={() => onPress(image.id)}
+    >
       <CardBody className="overflow-visible p-0">
         <Image
           isZoomed

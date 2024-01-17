@@ -4,19 +4,19 @@ import type { YandeImage } from './interfaces/image'
 import ImageCardListWrapper from './components/ImageCardListWrapper'
 import ImageCard from './components/ImageCard'
 import ModalImage from './components/ModalImage'
-import AutoCompleteC from './components/AutoCompleteC'
+import MyAutoComplete from './components/MyAutoComplete'
 import './App.css'
 
+const initialTags = ['ksk_(semicha_keisuke)']
+
 function App() {
-  const [inputTags, setInputTags] = useState<string[]>([
-    'ksk_(semicha_keisuke)',
-  ]) // 搜索框的值
+  const [inputTags, setInputTags] = useState<string[]>(initialTags) // 搜索框的值
   const inputValue = inputTags.join(' ') // 搜索框的显示值
   const [page, setPage] = useState<number>(1) // 当前页数
   const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
   const { isOpen, onOpen, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
-  const [modalImage, setModalImage] = useState<string>('')
-  const [modalSize, setModalSize] = useState({ height: 0, width: 0 })
+  const [activeImageId, setActiveImageId] = useState<number>(0) // 当前选中的图片id
+  const activeImage = imageList.find(image => image.id === activeImageId) // 当前选中的图片
 
   // 获取图片列表
   const fetchImageList = async (inputValue: string, page: number = 1) => {
@@ -29,7 +29,7 @@ function App() {
 
   // 组件挂载时获取图片列表
   useEffect(() => {
-    fetchImageList(inputValue)
+    fetchImageList(initialTags.join(' '))
   }, [])
 
   const handleSubmit = () => {
@@ -51,27 +51,9 @@ function App() {
   }
 
   // 点击图片时打开模态框
-  const handleModalOpen = (image: YandeImage) => {
+  const handleModalOpen = (id: number) => {
+    setActiveImageId(id)
     onOpen()
-    setModalImage(image.sample_url)
-
-    // 让图片的大小不超过屏幕
-    const { innerHeight, innerWidth } = window
-    const { sample_height, sample_width } = image
-    const ratio = sample_width / sample_height
-    const height = Math.min(innerHeight * 0.9, sample_height)
-    const width = Math.min(innerWidth * 0.9, sample_width)
-    if (height * ratio > width) {
-      setModalSize({
-        height: width / ratio,
-        width,
-      })
-    } else {
-      setModalSize({
-        height,
-        width: height * ratio,
-      })
-    }
   }
 
   return (
@@ -81,7 +63,7 @@ function App() {
         fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl 
         backdrop-saturate-150 backdrop-blur-md bg-background/70"
       >
-        <AutoCompleteC
+        <MyAutoComplete
           value={inputTags}
           onValueChange={setInputTags}
           onKeyUpEnter={handleSubmit}
@@ -136,8 +118,8 @@ function App() {
       <ModalImage
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        src={modalImage}
-        style={{ maxWidth: modalSize.width, height: modalSize.height }}
+        image={activeImage}
+        key={activeImageId}
       />
     </>
   )
