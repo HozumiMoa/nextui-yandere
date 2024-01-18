@@ -60,7 +60,7 @@ export default function ModalImage(props: Props): React.ReactElement {
                 variant="light"
                 onPress={() => onPageUpOrDown(true)}
               >
-                <span className="material-symbols-rounded">
+                <span className="material-symbols-rounded text-white">
                   arrow_back_ios_new
                 </span>
               </Button>
@@ -71,7 +71,7 @@ export default function ModalImage(props: Props): React.ReactElement {
                 variant="light"
                 onPress={() => onPageUpOrDown(false)}
               >
-                <span className="material-symbols-rounded">
+                <span className="material-symbols-rounded text-white">
                   arrow_forward_ios
                 </span>
               </Button>

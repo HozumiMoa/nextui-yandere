@@ -8,20 +8,21 @@ import MyAutoComplete from './components/MyAutoComplete'
 import './App.css'
 
 const initialTags = ['ksk_(semicha_keisuke)']
+const limit = 12
 
 function App() {
   const [inputTags, setInputTags] = useState<string[]>(initialTags) // 搜索框的值
   const inputValue = inputTags.join(' ') // 搜索框的显示值
   const [page, setPage] = useState<number>(1) // 当前页数
   const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
-  const { isOpen, onOpen, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
   const [activeImageId, setActiveImageId] = useState<number>(0) // 当前选中的图片id
   const activeImage = imageList.find(image => image.id === activeImageId) // 当前选中的图片
 
   // 获取图片列表
   const fetchImageList = async (inputValue: string, page: number = 1) => {
     const res = await fetch(
-      `https://yande.re/post.json?limit=12&tags=${inputValue}&page=${page}`
+      `https://yande.re/post.json?limit=${limit}&tags=${inputValue}&page=${page}`
     )
     const data = await res.json()
     setImageList(data)
@@ -86,6 +87,7 @@ function App() {
         const newPage = page + 1
         setPage(newPage)
         fetchImageList(inputValue, newPage).then(data => {
+          if (data.length === 0) return onClose()
           const newActiveImageId = data[0].id
           setActiveImageId(newActiveImageId)
         })
@@ -142,7 +144,12 @@ function App() {
                 'shadow-none border-none bg-default/40 hover:opacity-hover',
             }}
           ></Input>
-          <Button size="lg" variant="flat" onPress={pageDown}>
+          <Button
+            size="lg"
+            variant="flat"
+            onPress={pageDown}
+            isDisabled={imageList.length < limit}
+          >
             Next
             <span className="material-symbols-rounded">chevron_right</span>
           </Button>

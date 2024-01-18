@@ -3,12 +3,12 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Image,
   Link,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
 } from '@nextui-org/react'
 import type { YandeImage } from '../interfaces/image'
 
@@ -19,13 +19,37 @@ interface Props {
 
 export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress } = props
+  const {
+    id,
+    sample_url,
+    jpeg_url,
+    jpeg_file_size,
+    jpeg_width,
+    jpeg_height,
+    file_url,
+    file_size,
+  } = image
+
+  // 计算文件大小，单位为 MB
+  const fileSize = (size: number): string => {
+    return (size / 1024 / 1024).toFixed(2) + ' MB'
+  }
+
+  const handleAction = (key: React.Key) => {
+    switch (key) {
+      case 'jpeg': {
+        window.open(jpeg_url, 'jpeg')
+        break
+      }
+      case 'png': {
+        window.open(file_url, 'png')
+        break
+      }
+    }
+  }
+
   return (
-    <Card
-      shadow="sm"
-      key={image.id}
-      isPressable
-      onPress={() => onPress(image.id)}
-    >
+    <Card shadow="sm" key={id} isPressable onPress={() => onPress(id)}>
       <CardBody className="overflow-visible p-0">
         <Image
           isZoomed
@@ -34,42 +58,59 @@ export default function ImageCard(props: Props): React.ReactElement {
           width="100%"
           loading="lazy"
           className="w-full object-cover h-[400px]"
-          src={image.sample_url}
+          src={sample_url}
         />
       </CardBody>
       <CardFooter className="text-small justify-between">
         <Link
-          href={`https://yande.re/post/show/${image.id}`}
+          href={`https://yande.re/post/show/${id}`}
           isExternal
           color="foreground"
           isBlock
           showAnchorIcon
         >
-          <b>{image.id}</b>
+          <strong>{id}</strong>
         </Link>
-        <Popover placement="top" radius="sm">
-          <PopoverTrigger>
+        <Dropdown placement="top-start">
+          <DropdownTrigger>
             <Button isIconOnly variant="light">
               <span className="material-symbols-rounded">manage_search</span>
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="flex-row flex-wrap gap-1 max-w-80 bg-transparent shadow-none">
-            {image.tags.split(' ').map(tag => {
-              return (
-                <Chip
-                  className="select-none cursor-pointer"
-                  key={tag}
-                  onClick={() => {
-                    // 复制到剪切板
-                    navigator.clipboard.writeText(tag)
-                  }}
-                >
-                  {tag}
-                </Chip>
-              )
-            })}
-          </PopoverContent>
-        </Popover>
+          </DropdownTrigger>
+          <DropdownMenu
+            variant="flat"
+            aria-label="Dropdown menu with icons"
+            onAction={handleAction}
+          >
+            <DropdownItem
+              key="jpeg"
+              description={`${jpeg_width}x${jpeg_height}`}
+              startContent={
+                <span className="material-symbols-rounded">download</span>
+              }
+              endContent={
+                <span className="text-small whitespace-nowrap">
+                  {fileSize(jpeg_file_size)}
+                </span>
+              }
+            >
+              JPEG
+            </DropdownItem>
+            <DropdownItem
+              key="png"
+              startContent={
+                <span className="material-symbols-rounded">download</span>
+              }
+              endContent={
+                <span className="text-small whitespace-nowrap">
+                  {fileSize(file_size)}
+                </span>
+              }
+            >
+              PNG
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </CardFooter>
     </Card>
   )

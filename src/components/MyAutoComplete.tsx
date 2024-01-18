@@ -90,6 +90,37 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     }
   }
 
+  const listBoxItem = (tag: Tag) => {
+    // 根据 tag.type 显示不同的颜色
+    const map = new Map([
+      [1, 'text-warning'], // Artist
+      [3, 'text-secondary'], // Copyright
+      [4, 'text-success'], // Character
+      [5, 'text-primary'], // Circle
+    ])
+    const color = map.get(tag.type) || ''
+    const lastInputValue = value[value.length - 1]
+    return (
+      <ListboxItem
+        key={tag.name}
+        textValue={tag.name}
+        endContent={
+          <span className="text-primary text-small">{tag.count}</span>
+        }
+      >
+        {lastInputValue ? (
+          <span className={color}>
+            {tag.name.split(lastInputValue)[0]}
+            <strong>{lastInputValue}</strong>
+            {tag.name.split(lastInputValue)[1]}
+          </span>
+        ) : (
+          tag.name
+        )}
+      </ListboxItem>
+    )
+  }
+
   return (
     <div className="min-w-80 relative" onKeyUp={handleKeyUpEscape}>
       <Input
@@ -121,28 +152,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
           aria-label="Tags"
           onAction={handleSelect}
         >
-          {tag => {
-            const lastInputValue = value[value.length - 1]
-            return (
-              <ListboxItem
-                key={tag.name}
-                textValue={tag.name}
-                endContent={
-                  <span className="text-primary text-small">{tag.count}</span>
-                }
-              >
-                {lastInputValue ? (
-                  <>
-                    {tag.name.split(lastInputValue)[0]}
-                    <span className="text-danger">{lastInputValue}</span>
-                    {tag.name.split(lastInputValue)[1]}
-                  </>
-                ) : (
-                  tag.name
-                )}
-              </ListboxItem>
-            )
-          }}
+          {listBoxItem}
         </Listbox>
       </div>
     </div>
