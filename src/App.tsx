@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
 import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
-import type { YandeImage } from './interfaces/image'
-import ImageCardListWrapper from './components/ImageCardListWrapper'
+import { useEffect, useState } from 'react'
+import './App.css'
 import ImageCard from './components/ImageCard'
+import ImageCardListWrapper from './components/ImageCardListWrapper'
 import ModalImage from './components/ModalImage'
 import MyAutoComplete from './components/MyAutoComplete'
-import './App.css'
+import type { YandeImage } from './interfaces/image'
 
 const initialTags = ['ksk_(semicha_keisuke)']
 const limit = 12
@@ -59,7 +59,7 @@ function App() {
   }
 
   // 模态框内点击上一张或下一张图片
-  const handleModalPageUpOrDown = (isUp: boolean) => {
+  const handleModalPageChange = (isUp: boolean) => {
     // 上一张图片
     if (isUp) {
       // 首先获取当前图片的索引
@@ -111,9 +111,9 @@ function App() {
           onKeyUpEnter={handleSubmit}
         />
         <ButtonGroup>
-          <Button size="lg" variant="flat" onPress={handleSubmit}>
+          {/* <Button size="lg" variant="flat" onPress={handleSubmit}>
             Submit
-          </Button>
+          </Button> */}
           <Button
             size="lg"
             variant="flat"
@@ -166,7 +166,7 @@ function App() {
         isOpen={isOpen}
         image={activeImage}
         onOpenChange={onOpenChange}
-        onPageUpOrDown={handleModalPageUpOrDown}
+        onModalPageChange={handleModalPageChange}
       />
     </>
   )

@@ -1,19 +1,18 @@
-import { useState } from 'react'
+import { useRef } from 'react'
 
 // 防抖函数
 export default function useDebounce<T>(
   func: (...args: T[]) => void,
   delay: number
 ) {
-  const [timer, setTimer] = useState<number>()
+  const timerRef = useRef<number>()
+
   return function (this: unknown, ...args: T[]) {
-    if (timer) {
-      clearTimeout(timer)
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
     }
-    setTimer(
-      setTimeout(() => {
-        func.apply(this, args)
-      }, delay)
-    )
+    timerRef.current = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
   }
 }

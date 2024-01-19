@@ -1,15 +1,21 @@
-import { Modal, ModalContent, Image, Button } from '@nextui-org/react'
+import { Image, Modal, ModalContent } from '@nextui-org/react'
+import ArrowBack from '../assets/arrow_back_ios.svg'
+import ArrowForward from '../assets/arrow_forward_ios.svg'
 import { YandeImage } from '../interfaces/image'
 
 interface Props {
   isOpen: boolean
   onOpenChange: () => void
   image: YandeImage | undefined
-  onPageUpOrDown: (isUp: boolean) => void
+  /**
+   * @description 模态框翻页
+   * @param isUp 是否向上翻页
+   */
+  onModalPageChange: (isUp: boolean) => void
 }
 
 export default function ModalImage(props: Props): React.ReactElement {
-  const { isOpen, onOpenChange, image, onPageUpOrDown } = props
+  const { isOpen, onOpenChange, image, onModalPageChange } = props
   const modalSize = {
     width: 0,
     height: 0,
@@ -35,9 +41,9 @@ export default function ModalImage(props: Props): React.ReactElement {
   const handleKeyUp = (e: React.KeyboardEvent) => {
     e.stopPropagation()
     if (e.key === 'ArrowLeft') {
-      onPageUpOrDown(true)
+      onModalPageChange(true)
     } else if (e.key === 'ArrowRight') {
-      onPageUpOrDown(false)
+      onModalPageChange(false)
     }
   }
 
@@ -54,28 +60,16 @@ export default function ModalImage(props: Props): React.ReactElement {
         >
           <ModalContent>
             <Image src={image.sample_url} />
-            <div className="absolute w-10 h-10 z-10 top-1/2 -translate-y-1/2">
-              <Button
-                isIconOnly
-                variant="light"
-                onPress={() => onPageUpOrDown(true)}
-              >
-                <span className="material-symbols-rounded text-white">
-                  arrow_back_ios_new
-                </span>
-              </Button>
-            </div>
-            <div className="absolute w-10 h-10 z-10 top-1/2 right-0 -translate-y-1/2">
-              <Button
-                isIconOnly
-                variant="light"
-                onPress={() => onPageUpOrDown(false)}
-              >
-                <span className="material-symbols-rounded text-white">
-                  arrow_forward_ios
-                </span>
-              </Button>
-            </div>
+            <div
+              className="absolute w-1/3 h-full z-10 left-0"
+              onClick={() => onModalPageChange(true)}
+              style={{ cursor: `url(${ArrowBack}), pointer` }}
+            ></div>
+            <div
+              className="absolute w-1/3 h-full z-10 right-0"
+              onClick={() => onModalPageChange(false)}
+              style={{ cursor: `url(${ArrowForward}), pointer` }}
+            ></div>
           </ModalContent>
         </Modal>
       )}
