@@ -1,5 +1,5 @@
 {
-  "post": {
+  "yandere-post": {
     "id": 1112695,
     "tags": "ass breast_hold feet hisagi_(puchimaple) naked nipples onsen photoshop pussy uncensored wet",
     "created_at": 1691940709,
@@ -45,11 +45,110 @@
     "last_noted_at": 0,
     "last_commented_at": 0
   },
-  "tag": {
+  "yandere-tag": {
     "id": 126698,
     "name": "ksk_(semicha_keisuke)",
     "count": 72,
     "type": 1,
     "ambiguous": false
+  },
+  "danbooru-post": {
+    "id": 6906562,
+    "created_at": "2023-11-22T11:23:39.136-05:00",
+    "uploader_id": 430030,
+    "score": 24,
+    "source": "https://twitter.com/amsrntk3/status/1727361637970243870",
+    "md5": "c0b7c8746dc89ca0dd5240fc4f554238",
+    "last_comment_bumped_at": null,
+    "rating": "g",
+    "image_width": 1000,
+    "image_height": 812,
+    "tag_string": "1girl :d amashiro_natsuki animal_ear_fluff animal_ears blue_eyes blue_jacket blush cat_ears cat_girl cat_tail character_name commentary_request fang grey_hair hair_between_eyes hair_ornament hands_up heart indie_virtual_youtuber jacket long_hair long_sleeves looking_at_viewer low_twintails nachoneko puffy_long_sleeves puffy_sleeves simple_background smile solo tail twintails upper_body very_long_hair virtual_youtuber white_background",
+    "fav_count": 22,
+    "file_ext": "jpg",
+    "last_noted_at": null,
+    "parent_id": null,
+    "has_children": false,
+    "approver_id": null,
+    "tag_count_general": 33,
+    "tag_count_artist": 1,
+    "tag_count_character": 1,
+    "tag_count_copyright": 1,
+    "file_size": 83344,
+    "up_score": 24,
+    "down_score": 0,
+    "is_pending": false,
+    "is_flagged": false,
+    "is_deleted": false,
+    "tag_count": 37,
+    "updated_at": "2023-11-22T11:23:44.505-05:00",
+    "is_banned": false,
+    "pixiv_id": null,
+    "last_commented_at": null,
+    "has_active_children": false,
+    "bit_flags": 0,
+    "tag_count_meta": 1,
+    "has_large": true,
+    "has_visible_children": false,
+    "media_asset": {
+      "id": 16664990,
+      "created_at": "2023-11-22T11:21:57.023-05:00",
+      "updated_at": "2023-11-22T11:21:59.690-05:00",
+      "md5": "c0b7c8746dc89ca0dd5240fc4f554238",
+      "file_ext": "jpg",
+      "file_size": 83344,
+      "image_width": 1000,
+      "image_height": 812,
+      "duration": null,
+      "status": "active",
+      "file_key": "ksZYOpazN",
+      "is_public": true,
+      "pixel_hash": "e593762466bc005b8ba3c791ed97f9ca",
+      "variants": [
+        {
+          "type": "180x180",
+          "url": "https://cdn.donmai.us/180x180/c0/b7/c0b7c8746dc89ca0dd5240fc4f554238.jpg",
+          "width": 180,
+          "height": 146,
+          "file_ext": "jpg"
+        },
+        {
+          "type": "360x360",
+          "url": "https://cdn.donmai.us/360x360/c0/b7/c0b7c8746dc89ca0dd5240fc4f554238.jpg",
+          "width": 360,
+          "height": 292,
+          "file_ext": "jpg"
+        },
+        {
+          "type": "720x720",
+          "url": "https://cdn.donmai.us/720x720/c0/b7/c0b7c8746dc89ca0dd5240fc4f554238.webp",
+          "width": 720,
+          "height": 585,
+          "file_ext": "webp"
+        },
+        {
+          "type": "sample",
+          "url": "https://cdn.donmai.us/sample/c0/b7/sample-c0b7c8746dc89ca0dd5240fc4f554238.jpg",
+          "width": 850,
+          "height": 690,
+          "file_ext": "jpg"
+        },
+        {
+          "type": "original",
+          "url": "https://cdn.donmai.us/original/c0/b7/c0b7c8746dc89ca0dd5240fc4f554238.jpg",
+          "width": 1000,
+          "height": 812,
+          "file_ext": "jpg"
+        }
+      ]
+    },
+    "tag_string_general": "1girl :d animal_ear_fluff animal_ears blue_eyes blue_jacket blush cat_ears cat_girl cat_tail character_name fang grey_hair hair_between_eyes hair_ornament hands_up heart jacket long_hair long_sleeves looking_at_viewer low_twintails puffy_long_sleeves puffy_sleeves simple_background smile solo tail twintails upper_body very_long_hair virtual_youtuber white_background",
+    "tag_string_character": "nachoneko",
+    "tag_string_copyright": "indie_virtual_youtuber",
+    "tag_string_artist": "amashiro_natsuki",
+    "tag_string_meta": "commentary_request",
+    "file_url": "https://cdn.donmai.us/original/c0/b7/c0b7c8746dc89ca0dd5240fc4f554238.jpg",
+    "large_file_url": "https://cdn.donmai.us/sample/c0/b7/sample-c0b7c8746dc89ca0dd5240fc4f554238.jpg",
+    "preview_file_url": "https://cdn.donmai.us/180x180/c0/b7/c0b7c8746dc89ca0dd5240fc4f554238.jpg"
   }
 }

@@ -132,10 +132,12 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         onValueChange={handleValueChange}
         onInput={debouncedHandleInput}
         onKeyUp={handleKeyUp}
-        startContent={<span className="material-symbols-rounded">search</span>}
+        startContent={
+          <span className="material-symbols-rounded select-none">search</span>
+        }
         endContent={
           <span
-            className="material-symbols-rounded cursor-pointer"
+            className="material-symbols-rounded cursor-pointer select-none"
             onClick={() => onKeyUpEnter()}
           >
             send
