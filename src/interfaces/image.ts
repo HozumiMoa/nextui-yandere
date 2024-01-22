@@ -20,3 +20,9 @@ export interface Tag {
   count: number
   type: number // 0: General, 1: Artist, 3: Copyright, 4: Character, 5: Circle
 }
+
+export interface SearchParams {
+  tags: string[]
+  page: number
+  limit: number
+}

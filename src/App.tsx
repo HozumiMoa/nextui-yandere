@@ -5,24 +5,27 @@ import ImageCard from './components/ImageCard'
 import ImageCardListWrapper from './components/ImageCardListWrapper'
 import ModalImage from './components/ModalImage'
 import MyAutoComplete from './components/MyAutoComplete'
-import type { YandeImage } from './interfaces/image'
+import type { SearchParams, YandeImage } from './interfaces/image'
 
-const initialTags = ['ksk_(semicha_keisuke)']
-const limit = 12
+const initialParams: SearchParams = {
+  tags: ['ksk_(semicha_keisuke)'],
+  limit: 12,
+  page: 1,
+}
 
 function App() {
-  const [inputTags, setInputTags] = useState<string[]>(initialTags) // 搜索框的值
-  const inputValue = inputTags.join(' ') // 搜索框的显示值
-  const [page, setPage] = useState<number>(1) // 当前页数
+  const [params, setParams] = useState(initialParams) // 搜索参数
   const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
-  const [activeImageId, setActiveImageId] = useState<number>(0) // 当前选中的图片id
+  const [activeImageId, setActiveImageId] = useState(0) // 当前选中的图片id
   const activeImage = imageList.find(image => image.id === activeImageId) // 当前选中的图片
 
   // 获取图片列表
-  const fetchImageList = async (inputValue: string, page: number = 1) => {
+  const fetchImageList = async (params: SearchParams = initialParams) => {
+    const obj = { ...params, tags: params.tags.join(' ') }
     const res = await fetch(
-      `https://yande.re/post.json?limit=${limit}&tags=${inputValue}&page=${page}`
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      `https://yande.re/post.json?` + new URLSearchParams(obj as any)
     )
     const data = await res.json()
     setImageList(data)
@@ -31,25 +34,26 @@ function App() {
 
   // 组件挂载时获取图片列表
   useEffect(() => {
-    fetchImageList(initialTags.join(' '))
+    fetchImageList()
   }, [])
 
   const handleSubmit = () => {
-    setPage(1)
-    fetchImageList(inputValue)
+    const newParams = { ...params, page: 1 }
+    setParams(newParams)
+    fetchImageList(newParams)
   }
 
   const pageUp = () => {
-    if (page === 1) return
-    const newPage = page - 1
-    setPage(newPage)
-    fetchImageList(inputValue, newPage)
+    if (params.page === 1) return
+    const newParams = { ...params, page: params.page - 1 }
+    setParams(newParams)
+    fetchImageList(newParams)
   }
 
   const pageDown = () => {
-    const newPage = page + 1
-    setPage(newPage)
-    fetchImageList(inputValue, newPage)
+    const newParams = { ...params, page: params.page + 1 }
+    setParams(newParams)
+    fetchImageList(newParams)
   }
 
   // 点击图片时打开模态框
@@ -66,10 +70,10 @@ function App() {
       const index = imageList.findIndex(image => image.id === activeImageId)
       // 如果当前图片已经是第一张图片，检查是否还有上一页
       if (index === 0) {
-        if (page === 1) return
-        const newPage = page - 1
-        setPage(newPage)
-        fetchImageList(inputValue, newPage).then(data => {
+        if (params.page === 1) return
+        const newParams = { ...params, page: params.page - 1 }
+        setParams(newParams)
+        fetchImageList(newParams).then(data => {
           const newActiveImageId = data[data.length - 1].id
           setActiveImageId(newActiveImageId)
         })
@@ -84,9 +88,9 @@ function App() {
     else {
       const index = imageList.findIndex(image => image.id === activeImageId)
       if (index === imageList.length - 1) {
-        const newPage = page + 1
-        setPage(newPage)
-        fetchImageList(inputValue, newPage).then(data => {
+        const newParams = { ...params, page: params.page + 1 }
+        setParams(newParams)
+        fetchImageList(newParams).then(data => {
           if (data.length === 0) return onClose()
           const newActiveImageId = data[0].id
           setActiveImageId(newActiveImageId)
@@ -98,27 +102,29 @@ function App() {
     }
   }
 
+  const setTags = (tags: string[]) => {
+    const newParams = { ...params, tags }
+    setParams(newParams)
+  }
+
   return (
     <>
       <nav
         className="flex z-40 items-center justify-center gap-4
-        fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl 
+        fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl
         backdrop-saturate-150 backdrop-blur-md bg-background/70"
       >
         <MyAutoComplete
-          value={inputTags}
-          onValueChange={setInputTags}
+          value={params.tags}
+          onValueChange={setTags}
           onKeyUpEnter={handleSubmit}
         />
         <ButtonGroup>
-          {/* <Button size="lg" variant="flat" onPress={handleSubmit}>
-            Submit
-          </Button> */}
           <Button
             size="lg"
             variant="flat"
             onPress={pageUp}
-            isDisabled={page === 1}
+            isDisabled={params.page === 1}
           >
             <span className="material-symbols-rounded">chevron_left</span>
             Prev
@@ -127,14 +133,14 @@ function App() {
             variant="bordered"
             size="sm"
             radius="none"
-            value={String(page)}
+            value={String(params.page)}
             onValueChange={value => {
               if (isNaN(Number(value))) return
-              setPage(Number(value))
+              setParams({ ...params, page: Number(value) })
             }}
             onKeyUp={e => {
               if (e.key === 'Enter') {
-                fetchImageList(inputValue, page)
+                handleSubmit()
               }
             }}
             classNames={{
@@ -148,7 +154,7 @@ function App() {
             size="lg"
             variant="flat"
             onPress={pageDown}
-            isDisabled={imageList.length < limit}
+            isDisabled={imageList.length < params.limit}
           >
             Next
             <span className="material-symbols-rounded">chevron_right</span>
