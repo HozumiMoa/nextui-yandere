@@ -2,6 +2,7 @@ import { Input, Listbox, ListboxItem } from '@nextui-org/react'
 import { useRef, useState } from 'react'
 import useDebounce from '../hooks/useDebounce'
 import type { Tag } from '../interfaces/image'
+import Icon from './Icon'
 
 interface Props {
   /**
@@ -132,16 +133,13 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         onValueChange={handleValueChange}
         onInput={debouncedHandleInput}
         onKeyUp={handleKeyUp}
-        startContent={
-          <span className="material-symbols-rounded select-none">search</span>
-        }
+        startContent={<Icon name="search" className="select-none" />}
         endContent={
-          <span
-            className="material-symbols-rounded cursor-pointer select-none"
+          <Icon
+            name="send"
+            className="select-none cursor-pointer"
             onClick={() => onKeyUpEnter()}
-          >
-            send
-          </span>
+          />
         }
       />
       <div

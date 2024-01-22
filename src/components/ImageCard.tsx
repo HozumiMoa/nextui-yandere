@@ -11,6 +11,7 @@ import {
   Link,
 } from '@nextui-org/react'
 import type { YandeImage } from '../interfaces/image'
+import Icon from './Icon'
 
 interface Props {
   image: YandeImage
@@ -33,19 +34,6 @@ export default function ImageCard(props: Props): React.ReactElement {
   // 计算文件大小，单位为 MB
   const fileSize = (size: number): string => {
     return (size / 1024 / 1024).toFixed(2) + ' MB'
-  }
-
-  const handleAction = (key: React.Key) => {
-    switch (key) {
-      case 'jpeg': {
-        window.open(jpeg_url, 'jpeg')
-        break
-      }
-      case 'png': {
-        window.open(file_url, 'png')
-        break
-      }
-    }
   }
 
   return (
@@ -74,38 +62,34 @@ export default function ImageCard(props: Props): React.ReactElement {
         <Dropdown placement="top-start">
           <DropdownTrigger>
             <Button isIconOnly variant="light">
-              <span className="material-symbols-rounded">manage_search</span>
+              <Icon name="manage_search" />
             </Button>
           </DropdownTrigger>
-          <DropdownMenu
-            variant="flat"
-            aria-label="Dropdown menu with icons"
-            onAction={handleAction}
-          >
+          <DropdownMenu variant="flat" aria-label="Dropdown menu with icons">
             <DropdownItem
               key="jpeg"
               description={`${jpeg_width}x${jpeg_height}`}
-              startContent={
-                <span className="material-symbols-rounded">download</span>
-              }
+              startContent={<Icon name="download" />}
               endContent={
                 <span className="text-small whitespace-nowrap">
                   {fileSize(jpeg_file_size)}
                 </span>
               }
+              href={jpeg_url}
+              target="jpeg"
             >
               JPEG
             </DropdownItem>
             <DropdownItem
               key="png"
-              startContent={
-                <span className="material-symbols-rounded">download</span>
-              }
+              startContent={<Icon name="download" />}
               endContent={
                 <span className="text-small whitespace-nowrap">
                   {fileSize(file_size)}
                 </span>
               }
+              href={file_url}
+              target="png"
             >
               PNG
             </DropdownItem>

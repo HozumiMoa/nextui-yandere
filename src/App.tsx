@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import './App.css'
+import Icon from './components/Icon'
 import ImageCard from './components/ImageCard'
 import ImageCardListWrapper from './components/ImageCardListWrapper'
 import ModalImage from './components/ModalImage'
@@ -126,7 +127,7 @@ function App() {
             onPress={pageUp}
             isDisabled={params.page === 1}
           >
-            <span className="material-symbols-rounded">chevron_left</span>
+            <Icon name="chevron_left" />
             Prev
           </Button>
           <Input
@@ -157,7 +158,7 @@ function App() {
             isDisabled={imageList.length < params.limit}
           >
             Next
-            <span className="material-symbols-rounded">chevron_right</span>
+            <Icon name="chevron_right" />
           </Button>
         </ButtonGroup>
       </nav>
