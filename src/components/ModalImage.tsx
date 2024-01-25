@@ -6,12 +6,8 @@ import { YandeImage } from '../interfaces/image'
 interface Props {
   isOpen: boolean
   onOpenChange: () => void
-  image: YandeImage | undefined
-  /**
-   * @description 模态框翻页
-   * @param isUp 是否向上翻页
-   */
-  onModalPageChange: (isUp: boolean) => void
+  image: YandeImage
+  onModalPageChange: (action: 'prev' | 'next') => void
 }
 
 export default function ModalImage(props: Props): React.ReactElement {
@@ -36,43 +32,43 @@ export default function ModalImage(props: Props): React.ReactElement {
     }
   }
 
-  resizeModal(image?.sample_width, image?.sample_height)
+  resizeModal(image.sample_width, image.sample_height)
 
   const handleKeyUp = (e: React.KeyboardEvent) => {
     e.stopPropagation()
     if (e.key === 'ArrowLeft') {
-      onModalPageChange(true)
+      onModalPageChange('prev')
     } else if (e.key === 'ArrowRight') {
-      onModalPageChange(false)
+      onModalPageChange('next')
     }
   }
 
   return (
     <>
-      {image && (
-        <Modal
-          backdrop="blur"
-          hideCloseButton={true}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          onKeyUp={handleKeyUp}
-          style={{ maxWidth: modalSize.width, height: modalSize.height }}
-        >
-          <ModalContent>
-            <Image src={image.sample_url} />
-            <div
-              className="absolute w-1/3 h-full z-10 left-0"
-              onClick={() => onModalPageChange(true)}
-              style={{ cursor: `url(${ArrowBack}), pointer` }}
-            ></div>
-            <div
-              className="absolute w-1/3 h-full z-10 right-0"
-              onClick={() => onModalPageChange(false)}
-              style={{ cursor: `url(${ArrowForward}), pointer` }}
-            ></div>
-          </ModalContent>
-        </Modal>
-      )}
+      <Modal
+        backdrop="blur"
+        hideCloseButton={true}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onKeyUp={handleKeyUp}
+        style={{ maxWidth: modalSize.width, height: modalSize.height }}
+      >
+        <ModalContent>
+          <Image src={image.sample_url} />
+          <div
+            className="absolute w-1/3 h-full z-10 left-0"
+            onClick={() => onModalPageChange('prev')}
+            style={{ cursor: `url(${ArrowBack}), pointer` }}
+          ></div>
+          <div
+            className="absolute w-1/3 h-full z-10 right-0"
+            onClick={() => onModalPageChange('next')}
+            style={{
+              cursor: `url(${ArrowForward}), pointer`,
+            }}
+          ></div>
+        </ModalContent>
+      </Modal>
     </>
   )
 }

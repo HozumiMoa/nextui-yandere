@@ -71,41 +71,43 @@ function App() {
 
   // 模态框内点击上一张或下一张图片
   const handleModalPageChange = useCallback(
-    (isUp: boolean) => {
-      // 上一张图片
-      if (isUp) {
-        // 首先获取当前图片的索引
-        const index = imageList.findIndex(image => image.id === activeImageId)
-        // 如果当前图片已经是第一张图片，检查是否还有上一页
-        if (index === 0) {
-          if (params.page === 1) return
-          const newParams = { ...params, page: params.page - 1 }
-          setParams(newParams)
-          fetchImageList(newParams).then(data => {
-            const newActiveImageId = data[data.length - 1].id
+    (action: 'prev' | 'next') => {
+      switch (action) {
+        case 'prev': {
+          // 首先获取当前图片的索引
+          const index = imageList.findIndex(image => image.id === activeImageId)
+          // 如果当前图片已经是第一张图片，检查是否还有上一页
+          if (index === 0) {
+            if (params.page === 1) return
+            const newParams = { ...params, page: params.page - 1 }
+            setParams(newParams)
+            fetchImageList(newParams).then(data => {
+              const newActiveImageId = data[data.length - 1].id
+              setActiveImageId(newActiveImageId)
+            })
+          }
+          // 如果当前图片不是第一张图片，直接切换到上一张图片
+          else {
+            const newActiveImageId = imageList[index - 1].id
             setActiveImageId(newActiveImageId)
-          })
+          }
+          break
         }
-        // 如果当前图片不是第一张图片，直接切换到上一张图片
-        else {
-          const newActiveImageId = imageList[index - 1].id
-          setActiveImageId(newActiveImageId)
-        }
-      }
-      // 下一张图片
-      else {
-        const index = imageList.findIndex(image => image.id === activeImageId)
-        if (index === imageList.length - 1) {
-          const newParams = { ...params, page: params.page + 1 }
-          setParams(newParams)
-          fetchImageList(newParams).then(data => {
-            if (data.length === 0) return onClose()
-            const newActiveImageId = data[0].id
+        case 'next': {
+          const index = imageList.findIndex(image => image.id === activeImageId)
+          if (index === imageList.length - 1) {
+            const newParams = { ...params, page: params.page + 1 }
+            setParams(newParams)
+            fetchImageList(newParams).then(data => {
+              if (data.length === 0) return onClose()
+              const newActiveImageId = data[0].id
+              setActiveImageId(newActiveImageId)
+            })
+          } else {
+            const newActiveImageId = imageList[index + 1].id
             setActiveImageId(newActiveImageId)
-          })
-        } else {
-          const newActiveImageId = imageList[index + 1].id
-          setActiveImageId(newActiveImageId)
+          }
+          break
         }
       }
     },
@@ -181,12 +183,14 @@ function App() {
         ))}
       </ImageCardListWrapper>
 
-      <ModalImage
-        isOpen={isOpen}
-        image={activeImage}
-        onOpenChange={onOpenChange}
-        onModalPageChange={handleModalPageChange}
-      />
+      {activeImage && (
+        <ModalImage
+          isOpen={isOpen}
+          image={activeImage}
+          onOpenChange={onOpenChange}
+          onModalPageChange={handleModalPageChange}
+        />
+      )}
     </>
   )
 }
