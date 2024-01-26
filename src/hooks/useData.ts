@@ -15,5 +15,5 @@ export default function useData<T>(url: string) {
       ignore = true
     }
   }, [url])
-  return { data }
+  return data
 }

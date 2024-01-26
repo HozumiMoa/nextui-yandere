@@ -33,7 +33,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   // 获取自动补全的列表
   const fetchTagList = async (tag: string) => {
     const res = await fetch(`https://yande.re/tag.json?limit=10&name=${tag}`)
-    const data = await res.json()
+    const data: Tag[] = await res.json()
     return data
   }
 

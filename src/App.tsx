@@ -31,7 +31,7 @@ function App() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       `https://yande.re/post.json?` + new URLSearchParams(obj as any)
     )
-    const data = await res.json()
+    const data: YandeImage[] = await res.json()
     setImageList(data)
     return data
   }

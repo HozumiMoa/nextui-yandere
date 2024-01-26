@@ -5,7 +5,7 @@ export default function useDebounce<T>(
   func: (...args: T[]) => void,
   delay: number
 ) {
-  const timerRef = useRef<number>()
+  const timerRef = useRef<NodeJS.Timeout>()
 
   return function (this: unknown, ...args: T[]) {
     if (timerRef.current) {
