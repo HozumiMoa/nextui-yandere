@@ -6,6 +6,7 @@ import ImageCard from './components/ImageCard'
 import ImageCardListWrapper from './components/ImageCardListWrapper'
 import ModalImage from './components/ModalImage'
 import MyAutoComplete from './components/MyAutoComplete'
+import MyNavbar from './components/MyNavbar'
 import type { SearchParams, YandeImage } from './interfaces/image'
 
 const initialParams: SearchParams = {
@@ -124,11 +125,7 @@ function App() {
 
   return (
     <>
-      <nav
-        className="flex z-40 items-center justify-center gap-4
-        fixed bottom-0 left-[50%] -translate-x-1/2 p-4 my-4 rounded-xl
-        backdrop-saturate-150 backdrop-blur-md bg-background/70"
-      >
+      <MyNavbar>
         <MyAutoComplete
           value={params.tags}
           onValueChange={setTags}
@@ -175,7 +172,7 @@ function App() {
             <Icon name="chevron_right" />
           </Button>
         </ButtonGroup>
-      </nav>
+      </MyNavbar>
 
       <ImageCardListWrapper>
         {imageList.map(image => (
