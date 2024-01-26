@@ -56,12 +56,12 @@ export default function ModalImage(props: Props): React.ReactElement {
         <ModalContent>
           <Image src={image.sample_url} />
           <div
-            className="absolute w-1/3 h-full z-10 left-0"
+            className="absolute left-0 z-10 h-full w-1/3"
             onClick={() => onModalPageChange('prev')}
             style={{ cursor: `url(${ArrowBack}), pointer` }}
           ></div>
           <div
-            className="absolute w-1/3 h-full z-10 right-0"
+            className="absolute right-0 z-10 h-full w-1/3"
             onClick={() => onModalPageChange('next')}
             style={{
               cursor: `url(${ArrowForward}), pointer`,

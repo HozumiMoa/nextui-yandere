@@ -1,7 +1,6 @@
 import {
   Button,
   Card,
-  CardBody,
   CardFooter,
   Dropdown,
   DropdownItem,
@@ -37,19 +36,21 @@ export default function ImageCard(props: Props): React.ReactElement {
   }
 
   return (
-    <Card shadow="sm" key={id} isPressable onPress={() => onPress(id)}>
-      <CardBody className="overflow-visible p-0">
-        <Image
-          isZoomed
-          shadow="sm"
-          radius="none"
-          width="100%"
-          loading="lazy"
-          className="w-full object-cover h-[400px]"
-          src={sample_url}
-        />
-      </CardBody>
-      <CardFooter className="text-small justify-between">
+    <Card
+      shadow="sm"
+      isPressable
+      isFooterBlurred
+      onPress={() => onPress(id)}
+      className="h-[440px]"
+    >
+      <Image
+        isZoomed
+        removeWrapper
+        loading="lazy"
+        className="z-0 h-full w-full object-cover"
+        src={sample_url}
+      />
+      <CardFooter className="absolute bottom-0 z-10 justify-between bg-white/40 text-small">
         <Link
           href={`https://yande.re/post/show/${id}`}
           isExternal
@@ -71,7 +72,7 @@ export default function ImageCard(props: Props): React.ReactElement {
               description={`${jpeg_width}x${jpeg_height}`}
               startContent={<Icon name="download" />}
               endContent={
-                <span className="text-small whitespace-nowrap">
+                <span className="whitespace-nowrap text-small">
                   {fileSize(jpeg_file_size)}
                 </span>
               }
@@ -84,7 +85,7 @@ export default function ImageCard(props: Props): React.ReactElement {
               key="png"
               startContent={<Icon name="download" />}
               endContent={
-                <span className="text-small whitespace-nowrap">
+                <span className="whitespace-nowrap text-small">
                   {fileSize(file_size)}
                 </span>
               }

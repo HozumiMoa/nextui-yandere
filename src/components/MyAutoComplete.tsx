@@ -106,7 +106,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         key={tag.name}
         textValue={tag.name}
         endContent={
-          <span className="text-primary text-small">{tag.count}</span>
+          <span className="text-small text-primary">{tag.count}</span>
         }
       >
         {lastInputValue ? (
@@ -123,7 +123,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="min-w-80 relative" onKeyUp={handleKeyUpEscape}>
+    <div className="relative min-w-80" onKeyUp={handleKeyUpEscape}>
       <Input
         placeholder="Type to search..."
         size="sm"
@@ -137,15 +137,15 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         endContent={
           <Icon
             name="send"
-            className="select-none cursor-pointer"
+            className="cursor-pointer select-none"
             onClick={() => onKeyUpEnter()}
           />
         }
       />
       <div
-        className="absolute px-1 py-2 w-full
-                  border-small rounded-small border-default-200  
-                  backdrop-saturate-150 backdrop-blur-md bg-background/90"
+        className="absolute w-full rounded-small border-small
+                  border-default-200 bg-background/90 px-1  
+                  py-2 backdrop-blur-md backdrop-saturate-150"
         ref={listboxWrapperRef}
         style={{
           transform: `translateY(calc(-100% - ${listboxWrapperRef.current?.previousElementSibling?.clientHeight}px))`,

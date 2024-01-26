@@ -7,9 +7,9 @@ interface Props {
 export default function MyNavbar({ children }: Props) {
   return (
     <nav
-      className="flex items-center gap-4 shadow-md
-      fixed z-20 bottom-4 left-[50%] -translate-x-1/2 p-4 rounded-xl
-      backdrop-saturate-150 backdrop-blur-md bg-background/70"
+      className="fixed bottom-4 left-[50%] z-20
+      flex -translate-x-1/2 items-center gap-4 rounded-xl bg-background/70 p-4
+      shadow-md backdrop-blur-md backdrop-saturate-150"
     >
       <Avatar
         isBordered
