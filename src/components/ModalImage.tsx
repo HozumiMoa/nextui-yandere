@@ -51,6 +51,9 @@ export default function ModalImage(props: Props): React.ReactElement {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onKeyUp={handleKeyUp}
+        classNames={{
+          wrapper: 'items-center',
+        }}
         style={{ maxWidth: modalSize.width, height: modalSize.height }}
       >
         <ModalContent>

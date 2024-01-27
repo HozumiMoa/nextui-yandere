@@ -123,7 +123,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="relative min-w-80" onKeyUp={handleKeyUpEscape}>
+    <div className="relative min-w-60" onKeyUp={handleKeyUpEscape}>
       <Input
         placeholder="Type to search..."
         size="sm"
@@ -134,13 +134,6 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         onInput={debouncedHandleInput}
         onKeyUp={handleKeyUp}
         startContent={<Icon name="search" className="select-none" />}
-        endContent={
-          <Icon
-            name="send"
-            className="cursor-pointer select-none"
-            onClick={() => onKeyUpEnter()}
-          />
-        }
       />
       <div
         className="absolute w-full rounded-small border-small
