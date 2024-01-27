@@ -21,7 +21,7 @@ function App() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
   const [activeImageId, setActiveImageId] = useState(0) // 当前选中的图片id
   const activeImage = useMemo(
-    () => imageList.find(image => image.id === activeImageId),
+    () => imageList.find((image) => image.id === activeImageId),
     [imageList, activeImageId]
   ) // 当前选中的图片
 
@@ -76,13 +76,15 @@ function App() {
       switch (action) {
         case 'prev': {
           // 首先获取当前图片的索引
-          const index = imageList.findIndex(image => image.id === activeImageId)
+          const index = imageList.findIndex(
+            (image) => image.id === activeImageId
+          )
           // 如果当前图片已经是第一张图片，检查是否还有上一页
           if (index === 0) {
             if (params.page === 1) return
             const newParams = { ...params, page: params.page - 1 }
             setParams(newParams)
-            fetchImageList(newParams).then(data => {
+            fetchImageList(newParams).then((data) => {
               const newActiveImageId = data[data.length - 1].id
               setActiveImageId(newActiveImageId)
             })
@@ -95,11 +97,13 @@ function App() {
           break
         }
         case 'next': {
-          const index = imageList.findIndex(image => image.id === activeImageId)
+          const index = imageList.findIndex(
+            (image) => image.id === activeImageId
+          )
           if (index === imageList.length - 1) {
             const newParams = { ...params, page: params.page + 1 }
             setParams(newParams)
-            fetchImageList(newParams).then(data => {
+            fetchImageList(newParams).then((data) => {
               if (data.length === 0) return onClose()
               const newActiveImageId = data[0].id
               setActiveImageId(newActiveImageId)
@@ -146,11 +150,11 @@ function App() {
             size="sm"
             radius="none"
             value={String(params.page)}
-            onValueChange={value => {
+            onValueChange={(value) => {
               if (isNaN(Number(value))) return
               setParams({ ...params, page: Number(value) })
             }}
-            onKeyUp={e => {
+            onKeyUp={(e) => {
               if (e.key === 'Enter') {
                 handleSubmit()
               }
@@ -175,7 +179,7 @@ function App() {
       </MyNavbar>
 
       <ImageCardListWrapper>
-        {imageList.map(image => (
+        {imageList.map((image) => (
           <ImageCard key={image.id} image={image} onPress={handleModalOpen} />
         ))}
       </ImageCardListWrapper>
