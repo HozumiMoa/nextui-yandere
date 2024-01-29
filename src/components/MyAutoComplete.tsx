@@ -83,6 +83,9 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         ?.lastElementChild as HTMLElement
       option.focus()
     }
+    if (e.key === 'Escape') {
+      setIsListboxOpen(false)
+    }
   }
 
   const handleKeyUpEscape = (e: React.KeyboardEvent<HTMLInputElement>) => {
