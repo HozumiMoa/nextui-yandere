@@ -1,6 +1,4 @@
 import { Image, Modal, ModalContent } from '@nextui-org/react'
-import ArrowBack from '../assets/arrow_back_ios.svg'
-import ArrowForward from '../assets/arrow_forward_ios.svg'
 import { YandeImage } from '../interfaces/image'
 
 interface Props {
@@ -59,16 +57,12 @@ export default function ModalImage(props: Props): React.ReactElement {
         <ModalContent>
           <Image src={image.sample_url} />
           <div
-            className="absolute left-0 z-10 h-full w-1/3"
+            className="absolute left-0 z-10 h-full w-1/3 cursor-[url(@/assets/arrow_back_ios.svg),_pointer]"
             onClick={() => onModalPageChange('prev')}
-            style={{ cursor: `url(${ArrowBack}), pointer` }}
           ></div>
           <div
-            className="absolute right-0 z-10 h-full w-1/3"
+            className="absolute right-0 z-10 h-full w-1/3 cursor-[url(@/assets/arrow_forward_ios.svg),_pointer]"
             onClick={() => onModalPageChange('next')}
-            style={{
-              cursor: `url(${ArrowForward}), pointer`,
-            }}
           ></div>
         </ModalContent>
       </Modal>

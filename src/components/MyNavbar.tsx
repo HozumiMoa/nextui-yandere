@@ -1,10 +1,11 @@
 import { Avatar } from '@nextui-org/react'
+import React from 'react'
 
-interface Props {
-  children?: React.ReactNode
-}
-
-export default function MyNavbar({ children }: Props) {
+export default function MyNavbar({
+  children,
+}: {
+  children: React.ReactNode
+}): React.ReactElement {
   return (
     <nav
       className="fixed bottom-0 left-[50%] z-20 flex max-h-20 max-w-full -translate-x-1/2
