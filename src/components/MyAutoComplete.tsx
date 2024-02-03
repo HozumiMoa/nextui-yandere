@@ -1,6 +1,6 @@
+import useDebounce from '@/hooks/useDebounce'
 import { Input, Listbox, ListboxItem } from '@nextui-org/react'
 import { useRef, useState } from 'react'
-import useDebounce from '../hooks/useDebounce'
 import type { Tag } from '../interfaces/image'
 import Icon from './Icon'
 
@@ -26,7 +26,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   const { value, onValueChange, onKeyUpEnter } = props
   const inputValue = value.join(' ') // 搜索框的显示值
   const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
-  const listboxWrapperRef = useRef<HTMLDivElement>(null) // 自动补全的引用
+  const listboxRef = useRef<HTMLElement>(null) // 自动补全的引用
   const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
   const [isListboxOpen, setIsListboxOpen] = useState<boolean>(false) // 自动补全的开关
 
@@ -38,10 +38,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   // 搜索框输入时，自动补全的逻辑
-  const handleInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const lastTag = e.target.value.split(' ').pop()
+  const handleTagListChange = async (value: string[]) => {
+    const lastTag = value.at(-1)
     if (!lastTag) return setIsListboxOpen(false)
-    const newTagList = await fetchTagList(lastTag) // 此处不能用 tagList，因为 tagList 是异步更新的，会导致下面的判断失效
+    const newTagList = await fetchTagList(lastTag)
     setTagList(newTagList)
     if (newTagList.length === 0) return setIsListboxOpen(false)
     if (newTagList.length === 1 && newTagList[0].name === lastTag)
@@ -49,10 +49,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     setIsListboxOpen(true)
   }
 
-  const debouncedHandleInput = useDebounce<React.ChangeEvent<HTMLInputElement>>(
-    handleInput,
-    200
-  )
+  const debouncedTagListChange = useDebounce(handleTagListChange, 300)
 
   // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
@@ -63,7 +60,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
 
   // 搜索框的值改变时的逻辑
   const handleValueChange = (value: string) => {
-    onValueChange(value.split(' '))
+    const newValue = value.replace(/\s+/g, ' ').split(' ')
+    onValueChange(newValue)
+
+    debouncedTagListChange(newValue)
   }
 
   // 搜索框按下键盘时的逻辑
@@ -74,12 +74,12 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
       setIsListboxOpen(false)
     }
     if (e.key === 'ArrowDown') {
-      const option = listboxWrapperRef.current?.querySelector('ul')
+      const option = listboxRef.current?.firstElementChild
         ?.firstElementChild as HTMLElement
       option.focus()
     }
     if (e.key === 'ArrowUp') {
-      const option = listboxWrapperRef.current?.querySelector('ul')
+      const option = listboxRef.current?.firstElementChild
         ?.lastElementChild as HTMLElement
       option.focus()
     }
@@ -103,7 +103,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
       [5, 'text-primary'], // Circle
     ])
     const color = map.get(tag.type) || ''
-    const lastInputValue = value[value.length - 1]
+    const lastInputValue = value.at(-1)
     return (
       <ListboxItem
         key={tag.name}
@@ -126,29 +126,29 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="relative min-w-60" onKeyUp={handleKeyUpEscape}>
+    <div className="relative min-w-80" onKeyUp={handleKeyUpEscape}>
       <Input
         placeholder="Type to search..."
+        isClearable
         size="sm"
         variant="bordered"
         ref={inputRef}
         value={inputValue}
         onValueChange={handleValueChange}
-        onInput={debouncedHandleInput}
         onKeyUp={handleKeyUp}
-        startContent={<Icon name="search" className="select-none" />}
+        startContent={
+          <Icon name="search" className="pointer-events-none select-none" />
+        }
       />
       <div
-        className="absolute w-full rounded-small border-small
-                  border-default-200 bg-background/90 px-1  
-                  py-2 backdrop-blur-md backdrop-saturate-150"
-        ref={listboxWrapperRef}
+        className="absolute w-full -translate-y-[calc(100%+3.25em)] rounded-small border-small
+                  border-default-200 bg-background/90 px-1 py-2 backdrop-blur-md backdrop-saturate-150"
         style={{
-          transform: `translateY(calc(-100% - ${listboxWrapperRef.current?.previousElementSibling?.clientHeight}px))`,
           display: isListboxOpen ? 'block' : 'none',
         }}
       >
         <Listbox
+          ref={listboxRef}
           items={tagList}
           variant="flat"
           color="primary"
