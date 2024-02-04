@@ -9,6 +9,7 @@ import {
   Image,
   Link,
 } from '@nextui-org/react'
+import { useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import Icon from './Icon'
 
@@ -35,6 +36,8 @@ export default function ImageCard(props: Props): React.ReactElement {
     return (size / 1024 / 1024).toFixed(2) + ' MB'
   }
 
+  const [errorMsg, setErrorMsg] = useState('')
+
   return (
     <Card
       shadow="sm"
@@ -49,6 +52,7 @@ export default function ImageCard(props: Props): React.ReactElement {
         loading="lazy"
         className="z-0 h-full w-full object-cover"
         src={sample_url}
+        onError={() => setErrorMsg('图片加载失败')}
       />
       <CardFooter className="absolute bottom-0 z-10 justify-between bg-white/40 text-small">
         <Link
@@ -60,6 +64,7 @@ export default function ImageCard(props: Props): React.ReactElement {
         >
           <strong>{id}</strong>
         </Link>
+        <span className="text-danger">{errorMsg}</span>
         <Dropdown placement="top-start">
           <DropdownTrigger>
             <Button isIconOnly variant="light">

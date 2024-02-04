@@ -34,6 +34,7 @@ function App() {
     )
     const data: YandeImage[] = await res.json()
     setImageList(data)
+    scrollTo({ top: 0, behavior: 'smooth' })
     return data
   }
 

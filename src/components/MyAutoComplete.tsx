@@ -126,7 +126,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="relative min-w-80" onKeyUp={handleKeyUpEscape}>
+    <div className="relative min-w-60 sm:min-w-80" onKeyUp={handleKeyUpEscape}>
       <Input
         placeholder="Type to search..."
         isClearable

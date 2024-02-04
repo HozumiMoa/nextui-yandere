@@ -62,7 +62,7 @@ export default function MyAutoComplete2(): React.ReactElement {
       startContent={<Icon name="search" className="select-none" />}
       popoverProps={{
         placement: 'top',
-        portalContainer: document.querySelector('nav')!,
+        portalContainer: document.querySelector('#my-navbar')!,
       }}
       listboxProps={
         {
