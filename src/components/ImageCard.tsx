@@ -17,10 +17,11 @@ import Icon from './Icon'
 interface Props {
   image: YandeImage
   onPress: (id: number) => void
+  style?: React.CSSProperties
 }
 
 export default function ImageCard(props: Props): React.ReactElement {
-  const { image, onPress } = props
+  const { image, onPress, style } = props
   const {
     id,
     sample_url,
@@ -40,7 +41,14 @@ export default function ImageCard(props: Props): React.ReactElement {
   const [errorMsg, setErrorMsg] = useState('')
 
   return (
-    <Card shadow="sm" isPressable isFooterBlurred onPress={() => onPress(id)}>
+    <Card
+      shadow="sm"
+      isPressable
+      isFooterBlurred
+      onPress={() => onPress(id)}
+      className="animate-fade-in"
+      style={style}
+    >
       <CardBody className="overflow-visible p-0">
         <Image
           isZoomed

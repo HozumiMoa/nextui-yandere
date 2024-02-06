@@ -8,7 +8,17 @@ export default {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: 0, transform: 'translateY(3rem)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn calc(0.5s + var(--delay) * 0.1s) forwards',
+      },
+    },
   },
   darkMode: 'class',
   plugins: [nextui()],

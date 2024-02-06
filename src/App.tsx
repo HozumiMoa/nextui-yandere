@@ -180,8 +180,13 @@ function App() {
       </MyNavbar>
 
       <ImageCardListWrapper>
-        {imageList.map((image) => (
-          <ImageCard key={image.id} image={image} onPress={handleModalOpen} />
+        {imageList.map((image, index) => (
+          <ImageCard
+            key={image.id}
+            image={image}
+            onPress={handleModalOpen}
+            style={{ '--delay': index } as React.CSSProperties}
+          />
         ))}
       </ImageCardListWrapper>
 
