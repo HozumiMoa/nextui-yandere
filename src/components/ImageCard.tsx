@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  CardBody,
   CardFooter,
   Dropdown,
   DropdownItem,
@@ -39,21 +40,17 @@ export default function ImageCard(props: Props): React.ReactElement {
   const [errorMsg, setErrorMsg] = useState('')
 
   return (
-    <Card
-      shadow="sm"
-      isPressable
-      isFooterBlurred
-      onPress={() => onPress(id)}
-      className="h-[440px]"
-    >
-      <Image
-        isZoomed
-        removeWrapper
-        loading="lazy"
-        className="z-0 h-full w-full object-cover"
-        src={sample_url}
-        onError={() => setErrorMsg('图片加载失败')}
-      />
+    <Card shadow="sm" isPressable isFooterBlurred onPress={() => onPress(id)}>
+      <CardBody className="overflow-visible p-0">
+        <Image
+          isZoomed
+          width="100%"
+          loading="lazy"
+          className="z-0 h-[400px] w-full object-cover"
+          src={sample_url}
+          onError={() => setErrorMsg('图片加载失败')}
+        />
+      </CardBody>
       <CardFooter className="absolute bottom-0 z-10 justify-between bg-white/40 text-small">
         <Link
           href={`https://yande.re/post/show/${id}`}
@@ -78,7 +75,9 @@ export default function ImageCard(props: Props): React.ReactElement {
               startContent={<Icon name="download" />}
               endContent={
                 <span className="whitespace-nowrap text-small">
-                  {fileSize(jpeg_file_size)}
+                  {jpeg_file_size
+                    ? fileSize(jpeg_file_size)
+                    : fileSize(file_size)}
                 </span>
               }
               href={jpeg_url}
