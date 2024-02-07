@@ -3,12 +3,11 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Image,
   Link,
+  Listbox,
+  ListboxItem,
+  Tooltip,
 } from '@nextui-org/react'
 import { useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
@@ -40,6 +39,38 @@ export default function ImageCard(props: Props): React.ReactElement {
 
   const [errorMsg, setErrorMsg] = useState('')
 
+  const listbox = (
+    <Listbox variant="flat" aria-label="Actions">
+      <ListboxItem
+        key="jpeg"
+        description={`${jpeg_width}x${jpeg_height}`}
+        startContent={<Icon name="download" />}
+        endContent={
+          <span className="whitespace-nowrap text-small">
+            {jpeg_file_size ? fileSize(jpeg_file_size) : fileSize(file_size)}
+          </span>
+        }
+        href={jpeg_url}
+        target="jpeg"
+      >
+        JPEG
+      </ListboxItem>
+      <ListboxItem
+        key="png"
+        startContent={<Icon name="download" />}
+        endContent={
+          <span className="whitespace-nowrap text-small">
+            {fileSize(file_size)}
+          </span>
+        }
+        href={file_url}
+        target="png"
+      >
+        PNG
+      </ListboxItem>
+    </Listbox>
+  )
+
   return (
     <Card
       shadow="sm"
@@ -70,44 +101,11 @@ export default function ImageCard(props: Props): React.ReactElement {
           <strong>{id}</strong>
         </Link>
         <span className="text-danger">{errorMsg}</span>
-        <Dropdown placement="top-start">
-          <DropdownTrigger>
-            <Button isIconOnly variant="light">
-              <Icon name="manage_search" />
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu variant="flat" aria-label="Dropdown menu with icons">
-            <DropdownItem
-              key="jpeg"
-              description={`${jpeg_width}x${jpeg_height}`}
-              startContent={<Icon name="download" />}
-              endContent={
-                <span className="whitespace-nowrap text-small">
-                  {jpeg_file_size
-                    ? fileSize(jpeg_file_size)
-                    : fileSize(file_size)}
-                </span>
-              }
-              href={jpeg_url}
-              target="jpeg"
-            >
-              JPEG
-            </DropdownItem>
-            <DropdownItem
-              key="png"
-              startContent={<Icon name="download" />}
-              endContent={
-                <span className="whitespace-nowrap text-small">
-                  {fileSize(file_size)}
-                </span>
-              }
-              href={file_url}
-              target="png"
-            >
-              PNG
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <Tooltip placement="top-start" content={listbox} className="p-1">
+          <Button isIconOnly variant="light">
+            <Icon name="manage_search" />
+          </Button>
+        </Tooltip>
       </CardFooter>
     </Card>
   )
