@@ -2,8 +2,7 @@ import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import Icon from './components/Icon'
-import ImageCard from './components/ImageCard'
-import ImageCardListWrapper from './components/ImageCardListWrapper'
+import ImageCardList from './components/ImageCardList'
 import ModalImage from './components/ModalImage'
 import MyAutoComplete from './components/MyAutoComplete'
 import MyNavbar from './components/MyNavbar'
@@ -179,16 +178,7 @@ function App() {
         </ButtonGroup>
       </MyNavbar>
 
-      <ImageCardListWrapper>
-        {imageList.map((image, index) => (
-          <ImageCard
-            key={image.id}
-            image={image}
-            onPress={handleModalOpen}
-            style={{ '--delay': index } as React.CSSProperties}
-          />
-        ))}
-      </ImageCardListWrapper>
+      <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
 
       {activeImage && (
         <ModalImage
