@@ -78,7 +78,7 @@ export default function ImageCard(props: Props): React.ReactElement {
       isPressable
       isFooterBlurred
       onPress={() => onPress(id)}
-      className={isShow ? 'mb-4 animate-fade-in' : 'mb-4 opacity-0'}
+      className={isShow ? 'animate-fade-in' : 'opacity-0'}
       style={style}
     >
       <CardBody className="p-0">

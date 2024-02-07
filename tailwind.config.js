@@ -16,7 +16,7 @@ export default {
         },
       },
       animation: {
-        'fade-in': 'fadeIn calc(0.5s + var(--delay) * 0.1s)',
+        'fade-in': 'fadeIn calc(0.5s + var(--delay) * 0.2s)',
       },
     },
   },
