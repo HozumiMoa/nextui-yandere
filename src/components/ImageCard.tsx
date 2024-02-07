@@ -32,12 +32,13 @@ export default function ImageCard(props: Props): React.ReactElement {
     file_size,
   } = image
 
+  const [isShow, setIsShow] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+
   // 计算文件大小，单位为 MB
   const fileSize = (size: number): string => {
     return (size / 1024 / 1024).toFixed(2) + ' MB'
   }
-
-  const [errorMsg, setErrorMsg] = useState('')
 
   const listbox = (
     <Listbox variant="flat" aria-label="Actions">
@@ -77,20 +78,22 @@ export default function ImageCard(props: Props): React.ReactElement {
       isPressable
       isFooterBlurred
       onPress={() => onPress(id)}
-      className="animate-fade-in"
+      className={isShow ? 'mb-4 animate-fade-in' : 'mb-4 opacity-0'}
       style={style}
     >
-      <CardBody className="overflow-visible p-0">
+      <CardBody className="p-0">
         <Image
           isZoomed
-          width="100%"
           loading="lazy"
-          className="z-0 h-[400px] w-full object-cover"
           src={sample_url}
-          onError={() => setErrorMsg('图片加载失败')}
+          onLoad={() => setIsShow(true)}
+          onError={() => {
+            setErrorMsg('图片加载失败')
+            setIsShow(true)
+          }}
         />
       </CardBody>
-      <CardFooter className="absolute bottom-0 z-10 justify-between bg-white/40 text-small">
+      <CardFooter className="absolute bottom-0 z-10 justify-between bg-white/30 py-2 text-small">
         <Link
           href={`https://yande.re/post/show/${id}`}
           isExternal
@@ -103,7 +106,7 @@ export default function ImageCard(props: Props): React.ReactElement {
         <span className="text-danger">{errorMsg}</span>
         <Tooltip placement="top-start" content={listbox} className="p-1">
           <Button isIconOnly variant="light">
-            <Icon name="manage_search" />
+            <Icon name="more_vert" />
           </Button>
         </Tooltip>
       </CardFooter>

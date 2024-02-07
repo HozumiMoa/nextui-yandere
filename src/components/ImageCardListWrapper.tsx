@@ -4,10 +4,7 @@ export default function ImageCardListWrapper({
   children: React.ReactNode
 }): React.ReactElement {
   return (
-    <div
-      className="grid gap-4 px-0 py-4
-      pb-28 sm:grid-cols-2 lg:px-16 xl:grid-cols-3 2xl:grid-cols-4"
-    >
+    <div className="px-0 py-4 pb-28 sm:columns-2 sm:px-16 lg:columns-3 xl:columns-4">
       {children}
     </div>
   )

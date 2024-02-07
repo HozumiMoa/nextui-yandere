@@ -1,6 +1,7 @@
 export interface YandeImage {
   id: number
   tags: string
+  source: string
   sample_url: string
   sample_width: number
   sample_height: number
