@@ -14,7 +14,7 @@ export default function MyNavbar({
   return (
     <nav
       id="my-navbar"
-      className="fixed bottom-0 left-[50%] z-20 flex max-h-20 max-w-full -translate-x-1/2
+      className="fixed bottom-0 left-[50%] z-50 flex max-h-20 max-w-full -translate-x-1/2
       items-center justify-start gap-4 rounded-xl bg-background/70 p-4 shadow-md
       backdrop-blur-md backdrop-saturate-150 sm:bottom-4 sm:min-w-max"
     >
