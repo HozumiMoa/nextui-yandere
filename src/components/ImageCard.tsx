@@ -76,7 +76,6 @@ export default function ImageCard(props: Props): React.ReactElement {
     <Card
       shadow="sm"
       isPressable
-      isFooterBlurred
       onPress={() => onPress(id)}
       className={isShow ? 'animate-fade-in' : 'opacity-0'}
       style={style}
@@ -86,6 +85,7 @@ export default function ImageCard(props: Props): React.ReactElement {
           isZoomed
           loading="lazy"
           src={sample_url}
+          className="h-full w-full"
           onLoad={() => setIsShow(true)}
           onError={() => {
             setErrorMsg('图片加载失败')
@@ -93,20 +93,23 @@ export default function ImageCard(props: Props): React.ReactElement {
           }}
         />
       </CardBody>
-      <CardFooter className="absolute bottom-0 z-10 justify-between bg-white/30 py-2 text-small">
+      {/* 渐变遮罩 */}
+      <div className="pointer-events-none absolute bottom-0 z-10 h-1/2 w-full bg-gradient-to-t from-black/50"></div>
+      <CardFooter className="absolute bottom-0 z-20 justify-between py-2 text-small">
         <Link
           href={`https://yande.re/post/show/${id}`}
           isExternal
           color="foreground"
           isBlock
           showAnchorIcon
+          className="text-white"
         >
           <strong>{id}</strong>
         </Link>
         <span className="text-danger">{errorMsg}</span>
         <Tooltip placement="top-start" content={listbox} className="p-1">
           <Button isIconOnly variant="light">
-            <Icon name="more_vert" />
+            <Icon name="more_vert" className="text-white" />
           </Button>
         </Tooltip>
       </CardFooter>

@@ -19,9 +19,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth
-      if (width < 640) {
-        setColumnCount(1)
-      } else if (width < 1024) {
+      if (width < 768) {
         setColumnCount(2)
       } else if (width < 1280) {
         setColumnCount(3)
@@ -44,7 +42,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   })
 
   return (
-    <div className="flex flex-nowrap gap-4 px-16 py-4 pb-28">
+    <div className="flex flex-nowrap gap-4 px-4 py-4 pb-28 sm:px-16">
       {columnList.map((list, index1) => (
         <div key={index1} className="flex flex-1 flex-col gap-4">
           {list.map((image, index2) => {

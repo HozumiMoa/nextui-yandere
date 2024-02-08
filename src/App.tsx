@@ -156,7 +156,7 @@ function App() {
             }}
             onKeyUp={(e) => {
               if (e.key === 'Enter') {
-                handleSubmit()
+                fetchImageList(params)
               }
             }}
             classNames={{
