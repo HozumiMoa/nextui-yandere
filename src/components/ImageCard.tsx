@@ -23,6 +23,7 @@ export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress, style } = props
   const {
     id,
+    preview_url,
     sample_url,
     jpeg_url,
     jpeg_file_size,
@@ -85,6 +86,7 @@ export default function ImageCard(props: Props): React.ReactElement {
           isZoomed
           loading="lazy"
           src={sample_url}
+          fallbackSrc={preview_url}
           className="h-full w-full"
           onLoad={() => setIsShow(true)}
           onError={() => {
