@@ -8,23 +8,18 @@ interface Props {
   /**
    * @description 搜索框的值
    */
-  value: string[]
-  /**
-   * @description 搜索框的值改变时的回调
-   * @param {string[]} value - 搜索框的值
-   * @returns {void}
-   */
-  onValueChange: (value: string[]) => void
+  defaultValue: string[]
   /**
    * @description 按下回车键时的回调
    * @returns {void}
    */
-  onKeyUpEnter: () => void
+  onKeyUpEnter: (value: string[]) => void
 }
 
 export default function MyAutoComplete(props: Props): React.ReactElement {
-  const { value, onValueChange, onKeyUpEnter } = props
-  const inputValue = value.join(' ') // 搜索框的显示值
+  const { defaultValue, onKeyUpEnter } = props
+  const [value, setValue] = useState<string[]>(defaultValue) // 搜索框的值
+  const inputValue = value.join(' ')
   const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
   const listboxRef = useRef<HTMLElement>(null) // 自动补全的引用
   const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
@@ -53,7 +48,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
 
   // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
-    onValueChange([...value.slice(0, -1), key as string])
+    setValue([...value.slice(0, -1), key as string])
     setIsListboxOpen(false)
     inputRef.current?.focus()
   }
@@ -61,7 +56,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   // 搜索框的值改变时的逻辑
   const handleValueChange = (value: string) => {
     const newValue = value.replace(/\s+/g, ' ').split(' ')
-    onValueChange(newValue)
+    setValue(newValue)
 
     debouncedTagListChange(newValue)
   }
@@ -70,7 +65,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (e.key === 'Enter') {
-      onKeyUpEnter()
+      onKeyUpEnter(value)
       setIsListboxOpen(false)
     }
     if (e.key === 'ArrowDown') {

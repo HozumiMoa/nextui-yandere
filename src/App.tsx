@@ -1,10 +1,8 @@
-import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDisclosure } from '@nextui-org/react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
-import Icon from './components/Icon'
 import ImageCardList from './components/ImageCardList'
 import ModalImage from './components/ModalImage'
-import MyAutoComplete from './components/MyAutoComplete'
 import MyNavbar from './components/MyNavbar'
 import type { SearchParams, YandeImage } from './interfaces/image'
 
@@ -17,49 +15,41 @@ const initialParams: SearchParams = {
 function App() {
   const [params, setParams] = useState(initialParams) // 搜索参数
   const [imageList, setImageList] = useState<YandeImage[]>([]) // 图片列表
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
+  const { isOpen, onOpen, onOpenChange } = useDisclosure() // 模态框状态 与 打开/关闭 模态框的方法
   const [activeImageId, setActiveImageId] = useState(0) // 当前选中的图片id
   const activeImage = useMemo(
     () => imageList.find((image) => image.id === activeImageId),
     [imageList, activeImageId]
   ) // 当前选中的图片
+  const direction = useRef<'prev' | 'next'>('prev') // 模态框内点击上一张或下一张图片的方向
 
-  // 获取图片列表
-  const fetchImageList = async (params: SearchParams = initialParams) => {
-    const obj = { ...params, tags: params.tags.join(' ') }
-    const res = await fetch(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      `https://yande.re/post.json?` + new URLSearchParams(obj as any)
-    )
-    const data: YandeImage[] = await res.json()
-    setImageList(data)
-    scrollTo({ top: 0, behavior: 'smooth' })
-    return data
-  }
-
-  // 组件挂载时获取图片列表
   useEffect(() => {
+    const fetchImageList = async () => {
+      const res = await fetch(
+        `https://yande.re/post.json?` +
+          new URLSearchParams(params as unknown as Record<string, string>)
+      )
+      const data: YandeImage[] = await res.json()
+      setImageList(data)
+    }
+
     fetchImageList()
-  }, [])
-
-  const handleSubmit = useCallback(() => {
-    const newParams = { ...params, page: 1 }
-    setParams(newParams)
-    fetchImageList(newParams)
   }, [params])
 
-  const pageUp = useCallback(() => {
-    if (params.page === 1) return
-    const newParams = { ...params, page: params.page - 1 }
-    setParams(newParams)
-    fetchImageList(newParams)
-  }, [params])
-
-  const pageDown = useCallback(() => {
-    const newParams = { ...params, page: params.page + 1 }
-    setParams(newParams)
-    fetchImageList(newParams)
-  }, [params])
+  // 获取图片列表后，根据模态框内点击上一张或下一张图片的方向，更新当前选中的图片
+  useEffect(() => {
+    if (!imageList.length) return
+    switch (direction.current) {
+      case 'prev': {
+        setActiveImageId(imageList[imageList.length - 1].id)
+        break
+      }
+      case 'next': {
+        setActiveImageId(imageList[0].id)
+        break
+      }
+    }
+  }, [imageList])
 
   // 点击图片时打开模态框
   const handleModalOpen = useCallback(
@@ -82,17 +72,12 @@ function App() {
           // 如果当前图片已经是第一张图片，检查是否还有上一页
           if (index === 0) {
             if (params.page === 1) return
-            const newParams = { ...params, page: params.page - 1 }
-            setParams(newParams)
-            fetchImageList(newParams).then((data) => {
-              const newActiveImageId = data[data.length - 1].id
-              setActiveImageId(newActiveImageId)
-            })
+            setParams({ ...params, page: params.page - 1 })
+            direction.current = 'prev'
           }
           // 如果当前图片不是第一张图片，直接切换到上一张图片
           else {
-            const newActiveImageId = imageList[index - 1].id
-            setActiveImageId(newActiveImageId)
+            setActiveImageId(imageList[index - 1].id)
           }
           break
         }
@@ -101,85 +86,22 @@ function App() {
             (image) => image.id === activeImageId
           )
           if (index === imageList.length - 1) {
-            const newParams = { ...params, page: params.page + 1 }
-            setParams(newParams)
-            fetchImageList(newParams).then((data) => {
-              if (data.length === 0) return onClose()
-              const newActiveImageId = data[0].id
-              setActiveImageId(newActiveImageId)
-            })
+            setParams({ ...params, page: params.page + 1 })
+            direction.current = 'next'
           } else {
-            const newActiveImageId = imageList[index + 1].id
-            setActiveImageId(newActiveImageId)
+            setActiveImageId(imageList[index + 1].id)
           }
           break
         }
       }
     },
-    [activeImageId, imageList, onClose, params]
-  )
-
-  const setTags = useCallback(
-    (tags: string[]) => {
-      const newParams = { ...params, tags }
-      setParams(newParams)
-    },
-    [params]
+    [activeImageId, imageList, params]
   )
 
   return (
     <>
-      <MyNavbar>
-        <MyAutoComplete
-          value={params.tags}
-          onValueChange={setTags}
-          onKeyUpEnter={handleSubmit}
-        />
-        <ButtonGroup>
-          <Button
-            size="lg"
-            variant="flat"
-            onPress={pageUp}
-            isDisabled={params.page === 1}
-          >
-            <Icon name="chevron_left" />
-            Prev
-          </Button>
-          <Input
-            variant="bordered"
-            size="sm"
-            radius="none"
-            value={String(params.page)}
-            onValueChange={(value) => {
-              if (isNaN(Number(value))) return
-              setParams({ ...params, page: Number(value) })
-            }}
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') {
-                fetchImageList(params)
-              }
-            }}
-            classNames={{
-              base: 'max-w-16',
-              input: 'text-center text-medium',
-              inputWrapper:
-                'shadow-none border-none bg-default/40 hover:opacity-hover',
-            }}
-          ></Input>
-          <Button
-            size="lg"
-            variant="flat"
-            onPress={pageDown}
-            isDisabled={imageList.length < params.limit}
-          >
-            Next
-            <Icon name="chevron_right" />
-          </Button>
-        </ButtonGroup>
-      </MyNavbar>
-
+      <MyNavbar params={params} setParams={setParams} list={imageList} />
       <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
-
       {activeImage && (
         <ModalImage
           isOpen={isOpen}
