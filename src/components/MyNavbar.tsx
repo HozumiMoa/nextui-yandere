@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/theme'
 import { SearchParams, YandeImage } from '@/interfaces/image'
 import {
   Avatar,
@@ -8,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Slider,
+  Switch,
 } from '@nextui-org/react'
 import React from 'react'
 import Icon from './Icon'
@@ -21,6 +23,7 @@ interface Props {
 
 export default function MyNavbar(props: Props): React.ReactElement {
   const { params, setParams, list } = props
+  const { theme, setTheme } = useTheme()
   return (
     <nav
       id="my-navbar"
@@ -42,8 +45,8 @@ export default function MyNavbar(props: Props): React.ReactElement {
             className="flex-shrink-0"
           />
         </PopoverTrigger>
-        <PopoverContent className="flex w-40 flex-col gap-2">
-          <div className="py-2 text-small font-bold text-pink-400">
+        <PopoverContent className="flex w-40 flex-col gap-4">
+          <div className="pt-2 text-small font-bold text-pink-400">
             施工中...
           </div>
           <Slider
@@ -57,6 +60,18 @@ export default function MyNavbar(props: Props): React.ReactElement {
               setParams({ ...params, limit: value as number })
             }
           />
+          <Switch
+            isSelected={theme === 'dark'}
+            onValueChange={(value) => {
+              value ? setTheme('dark') : setTheme('light')
+            }}
+            size="sm"
+            className="min-w-full justify-between"
+            startContent={<Icon name="light_mode" />}
+            endContent={<Icon name="dark_mode" />}
+          >
+            Dark mode
+          </Switch>
         </PopoverContent>
       </Popover>
       <MyAutoComplete
