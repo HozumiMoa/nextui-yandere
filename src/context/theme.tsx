@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
 type Theme = 'light' | 'dark'
 type ThemeContextType = {
@@ -11,11 +17,13 @@ const ThemeContext = createContext({} as ThemeContextType)
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark')
 
+  useEffect(() => {
+    document.documentElement.className = theme
+  }, [theme])
+
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <main className={`bg-background text-foreground ${theme}`}>
-        {children}
-      </main>
+      {children}
     </ThemeContext.Provider>
   )
 }
