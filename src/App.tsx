@@ -34,6 +34,7 @@ function App() {
     }
 
     fetchImageList()
+    scrollTo({ top: 0, behavior: 'smooth' })
   }, [params])
 
   // 获取图片列表后，根据模态框内点击上一张或下一张图片的方向，更新当前选中的图片
