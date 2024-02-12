@@ -24,6 +24,8 @@ export default function ImageCard(props: Props): React.ReactElement {
   const {
     id,
     sample_url,
+    sample_width,
+    sample_height,
     jpeg_url,
     jpeg_file_size,
     jpeg_width,
@@ -32,12 +34,30 @@ export default function ImageCard(props: Props): React.ReactElement {
     file_size,
   } = image
 
-  const [isShow, setIsShow] = useState(false)
+  const [sampleUrl, setSampleUrl] = useState(sample_url)
+  const [errorCount, setErrorCount] = useState(0) // 图片加载失败次数，超过 3 次则不再尝试加载
   const [errorMsg, setErrorMsg] = useState('')
 
   // 计算文件大小，单位为 MB
   const fileSize = (size: number): string => {
     return (size / 1024 / 1024).toFixed(2) + ' MB'
+  }
+
+  // 图片加载完成时的处理
+  const handleLoad = () => {
+    setErrorCount(0)
+    setErrorMsg('')
+  }
+
+  // 图片加载失败时的处理
+  const handleError = () => {
+    if (errorCount < 3) {
+      setErrorCount(errorCount + 1)
+      setErrorMsg(`加载失败，正在重试第 ${errorCount + 1} 次...`)
+      setSampleUrl(sampleUrl + '?t=' + Date.now())
+    } else {
+      setErrorMsg('图片加载失败')
+    }
   }
 
   const listbox = (
@@ -77,20 +97,18 @@ export default function ImageCard(props: Props): React.ReactElement {
       shadow="sm"
       isPressable
       onPress={() => onPress(id)}
-      className={isShow ? 'animate-fade-in' : 'opacity-0'}
+      className="animate-fade-in"
       style={style}
     >
       <CardBody className="p-0">
         <Image
           isZoomed
           loading="lazy"
-          src={sample_url}
-          className="h-full w-full"
-          onLoad={() => setIsShow(true)}
-          onError={() => {
-            setErrorMsg('图片加载失败')
-            setIsShow(true)
-          }}
+          width={sample_width}
+          height={sample_height}
+          src={sampleUrl}
+          onLoad={handleLoad}
+          onError={handleError}
         />
       </CardBody>
       {/* 渐变遮罩 */}
