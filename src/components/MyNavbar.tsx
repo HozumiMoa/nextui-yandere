@@ -27,13 +27,13 @@ export default function MyNavbar(props: Props): React.ReactElement {
   return (
     <nav
       id="my-navbar"
-      className="fixed bottom-0 left-[50%] z-50 flex max-h-20 max-w-full -translate-x-1/2
-      items-center justify-start gap-4 rounded-xl bg-background/70 p-4 shadow-md
+      className="fixed bottom-0 left-[50%] z-50 flex max-h-20 min-w-full -translate-x-1/2
+      items-center gap-4 rounded-xl bg-background/70 p-4 shadow-md
       backdrop-blur-md backdrop-saturate-150 sm:bottom-4 sm:min-w-max"
     >
       <Popover
-        placement="top-start"
-        offset={16}
+        placement="top"
+        offset={24}
         portalContainer={document.getElementById('my-navbar')!}
       >
         <PopoverTrigger>
@@ -53,7 +53,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
             label="每页数量"
             size="sm"
             step={12}
-            maxValue={48}
+            maxValue={36}
             minValue={12}
             defaultValue={params.limit}
             onChangeEnd={(value) =>
@@ -86,7 +86,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
           isDisabled={params.page === 1}
         >
           <Icon name="chevron_left" />
-          Prev
+          <span className="hidden sm:inline">Prev</span>
         </Button>
         <Input
           variant="bordered"
@@ -114,7 +114,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
           onPress={() => setParams({ ...params, page: params.page + 1 })}
           isDisabled={list.length < params.limit}
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
           <Icon name="chevron_right" />
         </Button>
       </ButtonGroup>
