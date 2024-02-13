@@ -27,7 +27,10 @@ function App() {
     const fetchImageList = async () => {
       const res = await fetch(
         `https://yande.re/post.json?` +
-          new URLSearchParams(params as unknown as Record<string, string>)
+          new URLSearchParams({
+            ...params,
+            tags: params.tags.join(' '),
+          } as unknown as Record<string, string>)
       )
       const data: YandeImage[] = await res.json()
       setImageList(data)
