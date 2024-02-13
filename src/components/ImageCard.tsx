@@ -5,13 +5,12 @@ import {
   CardFooter,
   Image,
   Link,
-  Listbox,
-  ListboxItem,
   Tooltip,
 } from '@nextui-org/react'
 import { useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import Icon from './Icon'
+import ImageCardPopover from './ImageCardPopover'
 
 interface Props {
   image: YandeImage
@@ -21,27 +20,11 @@ interface Props {
 
 export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress, style } = props
-  const {
-    id,
-    sample_url,
-    sample_width,
-    sample_height,
-    jpeg_url,
-    jpeg_file_size,
-    jpeg_width,
-    jpeg_height,
-    file_url,
-    file_size,
-  } = image
+  const { id, sample_url, sample_width, sample_height } = image
 
   const [sampleUrl, setSampleUrl] = useState(sample_url)
   const [errorCount, setErrorCount] = useState(0) // 图片加载失败次数，超过 3 次则不再尝试加载
   const [errorMsg, setErrorMsg] = useState('')
-
-  // 计算文件大小，单位为 MB
-  const fileSize = (size: number): string => {
-    return (size / 1024 / 1024).toFixed(2) + ' MB'
-  }
 
   // 图片加载完成时的处理
   const handleLoad = () => {
@@ -59,38 +42,6 @@ export default function ImageCard(props: Props): React.ReactElement {
       setErrorMsg('图片加载失败')
     }
   }
-
-  const listbox = (
-    <Listbox variant="flat" aria-label="Actions">
-      <ListboxItem
-        key="jpeg"
-        description={`${jpeg_width}x${jpeg_height}`}
-        startContent={<Icon name="download" />}
-        endContent={
-          <span className="whitespace-nowrap text-small">
-            {jpeg_file_size ? fileSize(jpeg_file_size) : fileSize(file_size)}
-          </span>
-        }
-        href={jpeg_url}
-        target="jpeg"
-      >
-        JPEG
-      </ListboxItem>
-      <ListboxItem
-        key="png"
-        startContent={<Icon name="download" />}
-        endContent={
-          <span className="whitespace-nowrap text-small">
-            {fileSize(file_size)}
-          </span>
-        }
-        href={file_url}
-        target="png"
-      >
-        PNG
-      </ListboxItem>
-    </Listbox>
-  )
 
   return (
     <Card
@@ -125,7 +76,10 @@ export default function ImageCard(props: Props): React.ReactElement {
           <strong>{id}</strong>
         </Link>
         <span className="text-danger">{errorMsg}</span>
-        <Tooltip placement="top-start" content={listbox} className="p-1">
+        <Tooltip
+          placement="top-start"
+          content={<ImageCardPopover image={image} />}
+        >
           <Button isIconOnly variant="light">
             <Icon name="more_vert" className="text-white" />
           </Button>

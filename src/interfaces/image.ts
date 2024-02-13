@@ -6,13 +6,12 @@ export interface YandeImage {
   sample_width: number
   sample_height: number
   jpeg_url: string
-  jpeg_width: number
-  jpeg_height: number
   jpeg_file_size: number
   file_url: string
   width: number
   height: number
   file_size: number
+  file_ext: string
 }
 
 export interface Tag {
