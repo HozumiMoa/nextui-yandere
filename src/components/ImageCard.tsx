@@ -7,7 +7,7 @@ import {
   Link,
   Tooltip,
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import Icon from './Icon'
 import ImageCardPopover from './ImageCardPopover'
@@ -23,21 +23,20 @@ export default function ImageCard(props: Props): React.ReactElement {
   const { id, sample_url, sample_width, sample_height } = image
 
   const [sampleUrl, setSampleUrl] = useState(sample_url)
-  const [errorCount, setErrorCount] = useState(0) // 图片加载失败次数，超过 3 次则不再尝试加载
+  const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
   const [errorMsg, setErrorMsg] = useState('')
 
   // 图片加载完成时的处理
   const handleLoad = () => {
-    setErrorCount(0)
     setErrorMsg('')
   }
 
   // 图片加载失败时的处理
   const handleError = () => {
-    if (errorCount < 3) {
-      setErrorCount(errorCount + 1)
-      setErrorMsg(`加载失败，正在重试第 ${errorCount + 1} 次...`)
-      setSampleUrl(sampleUrl + '?t=' + Date.now())
+    if (errorCount.current < 3) {
+      errorCount.current++
+      setErrorMsg(`加载失败，正在重试...`)
+      setSampleUrl(sample_url + '?t=' + Date.now())
     } else {
       setErrorMsg('图片加载失败')
     }
@@ -75,7 +74,7 @@ export default function ImageCard(props: Props): React.ReactElement {
         >
           <strong>{id}</strong>
         </Link>
-        <span className="text-danger">{errorMsg}</span>
+        <span className="whitespace-nowrap text-danger">{errorMsg}</span>
         <Tooltip
           placement="top-start"
           content={<ImageCardPopover image={image} />}
