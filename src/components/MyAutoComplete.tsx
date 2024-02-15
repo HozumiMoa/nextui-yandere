@@ -1,3 +1,4 @@
+import { getYandereTagList } from '@/api/imageApi'
 import useDebounce from '@/hooks/useDebounce'
 import { Input, Listbox, ListboxItem } from '@nextui-org/react'
 import { useRef, useState } from 'react'
@@ -27,8 +28,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
 
   // 获取自动补全的列表
   const fetchTagList = async (tag: string) => {
-    const res = await fetch(`https://yande.re/tag.json?limit=10&name=${tag}`)
-    const data: Tag[] = await res.json()
+    const data: Tag[] = await getYandereTagList(tag)
     return data
   }
 

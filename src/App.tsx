@@ -1,6 +1,7 @@
 import { useDisclosure } from '@nextui-org/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
+import { getYandereImageList } from './api/imageApi'
 import ImageCardList from './components/ImageCardList'
 import ModalImage from './components/ModalImage'
 import MyNavbar from './components/MyNavbar'
@@ -25,14 +26,7 @@ function App() {
 
   useEffect(() => {
     const fetchImageList = async () => {
-      const res = await fetch(
-        `https://yande.re/post.json?` +
-          new URLSearchParams({
-            ...params,
-            tags: params.tags.join(' '),
-          } as unknown as Record<string, string>)
-      )
-      const data: YandeImage[] = await res.json()
+      const data: YandeImage[] = await getYandereImageList(params)
       setImageList(data)
     }
 
