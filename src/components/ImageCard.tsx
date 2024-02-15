@@ -1,3 +1,4 @@
+import { useDevice } from '@/context/device'
 import {
   Button,
   Card,
@@ -20,9 +21,10 @@ interface Props {
 
 export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress, style } = props
-  const { id, sample_url, sample_width, sample_height } = image
+  const { id, preview_url, sample_url, sample_width, sample_height } = image
+  const { isMobile } = useDevice()
 
-  const [sampleUrl, setSampleUrl] = useState(sample_url)
+  const [url, setUrl] = useState(isMobile ? preview_url : sample_url)
   const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -36,7 +38,7 @@ export default function ImageCard(props: Props): React.ReactElement {
     if (errorCount.current < 3) {
       errorCount.current++
       setErrorMsg(`加载失败，正在重试...`)
-      setSampleUrl(sample_url + '?t=' + Date.now())
+      setUrl(sample_url + '?t=' + Date.now())
     } else {
       setErrorMsg('图片加载失败')
     }
@@ -54,9 +56,9 @@ export default function ImageCard(props: Props): React.ReactElement {
         <Image
           isZoomed
           loading="lazy"
+          src={url}
           width={sample_width}
           height={sample_height}
-          src={sampleUrl}
           onLoad={handleLoad}
           onError={handleError}
         />
