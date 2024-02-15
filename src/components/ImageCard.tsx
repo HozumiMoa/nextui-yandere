@@ -6,9 +6,12 @@ import {
   CardFooter,
   Image,
   Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Tooltip,
 } from '@nextui-org/react'
-import { useRef, useState } from 'react'
+import { ReactNode, useRef, useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import Icon from './Icon'
 import ImageCardPopover from './ImageCardPopover'
@@ -77,15 +80,36 @@ export default function ImageCard(props: Props): React.ReactElement {
           <strong>{id}</strong>
         </Link>
         <span className="whitespace-nowrap text-danger">{errorMsg}</span>
-        <Tooltip
-          placement="top-start"
+        <More
+          trigger={
+            <Button isIconOnly variant="light">
+              <Icon name="more_vert" className="text-white" />
+            </Button>
+          }
           content={<ImageCardPopover image={image} />}
-        >
-          <Button isIconOnly variant="light">
-            <Icon name="more_vert" className="text-white" />
-          </Button>
-        </Tooltip>
+        />
       </CardFooter>
     </Card>
+  )
+}
+
+const More = ({
+  trigger,
+  content,
+}: {
+  trigger: ReactNode
+  content: ReactNode
+}) => {
+  const { isMobile } = useDevice()
+
+  return isMobile ? (
+    <Popover placement="top-start">
+      <PopoverTrigger>{trigger}</PopoverTrigger>
+      <PopoverContent>{content}</PopoverContent>
+    </Popover>
+  ) : (
+    <Tooltip placement="top-start" content={content}>
+      {trigger}
+    </Tooltip>
   )
 }

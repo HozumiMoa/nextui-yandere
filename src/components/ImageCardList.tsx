@@ -11,10 +11,11 @@ export default function ImageCardList(props: Props): React.ReactElement {
   const { list, handleModalOpen } = props
 
   const [columnCount, setColumnCount] = useState(3)
-  const columnHeight = Array(columnCount).fill(0)
-  const columnList = Array(columnCount)
-    .fill(0)
-    .map(() => [] as YandeImage[])
+  const columnHeight = Array.from({ length: columnCount }, () => 0)
+  const columnList = Array.from(
+    { length: columnCount },
+    () => [] as YandeImage[]
+  )
 
   useEffect(() => {
     const handleResize = () => {
