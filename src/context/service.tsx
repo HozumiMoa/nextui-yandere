@@ -1,6 +1,9 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
-type Service = 'yandere' | 'danbooru'
+type Service = {
+  source: 'yandere' | 'danbooru'
+  limit: number
+}
 type ServiceContextType = {
   service: Service
   setService: React.Dispatch<React.SetStateAction<Service>>
@@ -11,7 +14,10 @@ const ServiceContextType = createContext<ServiceContextType>(
 )
 
 export function ServiceProvider({ children }: { children: ReactNode }) {
-  const [service, setService] = useState<Service>('yandere')
+  const [service, setService] = useState<Service>({
+    source: 'yandere',
+    limit: 12,
+  })
 
   return (
     <ServiceContextType.Provider value={{ service, setService }}>
