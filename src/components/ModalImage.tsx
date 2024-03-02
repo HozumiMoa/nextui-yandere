@@ -34,8 +34,8 @@ export default function ModalImage(props: Props): React.ReactElement {
         }}
         style={{
           // 模态框宽度不超过屏幕宽度的 90%，高度不超过屏幕高度的 90%，保持图片比例
-          maxWidth: `min(90dvw, calc(90dvh * ${sample_width} / ${sample_height}))`,
-          height: `min(90dvh, calc(90dvw * ${sample_height} / ${sample_width}))`,
+          maxWidth: `min(90dvw, calc(90dvh * ${sample_width} / ${sample_height}), ${sample_width}px)`,
+          height: `min(90dvh, calc(90dvw * ${sample_height} / ${sample_width}), ${sample_height}px)`,
         }}
       >
         <ModalContent>
