@@ -1,4 +1,4 @@
-import { Image, Modal, ModalContent } from '@nextui-org/react'
+import { Modal, ModalContent } from '@nextui-org/react'
 import { YandeImage } from '../interfaces/image'
 
 interface Props {
@@ -10,27 +10,6 @@ interface Props {
 
 export default function ModalImage(props: Props): React.ReactElement {
   const { isOpen, onOpenChange, image, onModalPageChange } = props
-  const modalSize = {
-    width: 0,
-    height: 0,
-  }
-
-  // 调整模态框大小不超过屏幕
-  const resizeModal = (width: number = 0, height: number = 0) => {
-    const { innerHeight, innerWidth } = window
-    const ratio = width / height
-    const resizeWidth = Math.min(innerWidth * 0.9, width)
-    const resizeHeight = Math.min(innerHeight * 0.9, height)
-    if (resizeHeight * ratio > resizeWidth) {
-      modalSize.width = resizeWidth
-      modalSize.height = resizeWidth / ratio
-    } else {
-      modalSize.width = resizeHeight * ratio
-      modalSize.height = resizeHeight
-    }
-  }
-
-  resizeModal(image.sample_width, image.sample_height)
 
   const handleKeyUp = (e: React.KeyboardEvent) => {
     e.stopPropagation()
@@ -45,17 +24,21 @@ export default function ModalImage(props: Props): React.ReactElement {
     <>
       <Modal
         backdrop="blur"
-        hideCloseButton={true}
+        hideCloseButton
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onKeyUp={handleKeyUp}
         classNames={{
           wrapper: 'items-center',
         }}
-        style={{ maxWidth: modalSize.width, height: modalSize.height }}
+        style={{
+          // 模态框宽度不超过屏幕宽度的 90%，高度不超过屏幕高度的 90%，保持图片比例
+          maxWidth: `min(90dvw, calc(90dvh * ${image.sample_width} / ${image.sample_height}))`,
+          height: `min(90dvh, calc(90dvw * ${image.sample_height} / ${image.sample_width}))`,
+          background: `url(${image.sample_url}) center/cover no-repeat`,
+        }}
       >
         <ModalContent>
-          <Image src={image.sample_url} />
           <div
             className="absolute left-0 z-10 h-full w-1/3 cursor-[url(@/assets/arrow_back_ios.svg),_pointer]"
             onClick={() => onModalPageChange('prev')}
