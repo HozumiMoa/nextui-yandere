@@ -6,19 +6,15 @@ import type { Tag } from '../interfaces/image'
 import Icon from './Icon'
 
 interface Props {
+  name?: string
   /**
    * @description 搜索框的值
    */
   defaultValue: string[]
-  /**
-   * @description 按下回车键时的回调
-   * @returns {void}
-   */
-  onKeyUpEnter: (value: string[]) => void
 }
 
 export default function MyAutoComplete(props: Props): React.ReactElement {
-  const { defaultValue, onKeyUpEnter } = props
+  const { defaultValue, name } = props
   const [value, setValue] = useState<string[]>(defaultValue) // 搜索框的值
   const inputValue = value.join(' ')
   const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
@@ -65,7 +61,6 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (e.key === 'Enter') {
-      onKeyUpEnter(value)
       setIsListboxOpen(false)
     }
     if (e.key === 'ArrowDown') {
@@ -128,6 +123,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         size="sm"
         variant="bordered"
         ref={inputRef}
+        name={name}
         value={inputValue}
         onValueChange={handleValueChange}
         onKeyUp={handleKeyUp}

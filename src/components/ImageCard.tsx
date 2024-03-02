@@ -64,6 +64,7 @@ export default function ImageCard(props: Props): React.ReactElement {
           height={sample_height}
           onLoad={handleLoad}
           onError={handleError}
+          className="h-auto max-w-full"
         />
       </CardBody>
       {/* 渐变遮罩 */}

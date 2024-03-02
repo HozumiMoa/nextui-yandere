@@ -24,6 +24,18 @@ interface Props {
 export default function MyNavbar(props: Props): React.ReactElement {
   const { params, setParams, list } = props
   const { theme, setTheme } = useTheme()
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const newParams: SearchParams = {
+      tags: (formData.get('tags') as string).split(' '),
+      limit: params.limit,
+      page: 1,
+    }
+    setParams(newParams)
+  }
+
   return (
     <nav
       id="my-navbar"
@@ -74,10 +86,14 @@ export default function MyNavbar(props: Props): React.ReactElement {
           </Switch>
         </PopoverContent>
       </Popover>
-      <MyAutoComplete
-        defaultValue={params.tags}
-        onKeyUpEnter={(tags) => setParams({ ...params, tags, page: 1 })}
-      />
+      <form
+        action=""
+        onSubmit={handleSubmit}
+        className="flex flex-nowrap gap-4"
+      >
+        <MyAutoComplete name="tags" defaultValue={params.tags} />
+        <button type="submit" className="hidden"></button>
+      </form>
       <ButtonGroup>
         <Button
           size="lg"
@@ -92,15 +108,8 @@ export default function MyNavbar(props: Props): React.ReactElement {
           variant="bordered"
           size="sm"
           radius="none"
+          name="page"
           value={params.page as unknown as string}
-          // onValueChange={(value) => {
-          //   if (isNaN(Number(value))) return
-          // }}
-          // onKeyUp={(e) => {
-          //   if (e.key === 'Enter') {
-          //     setParams({ ...params, page: Number(e.currentTarget.value) })
-          //   }
-          // }}
           classNames={{
             base: 'max-w-16',
             input: 'text-center text-medium',
