@@ -1,4 +1,5 @@
 import { useTheme } from '@/context/theme'
+import { useRouter } from '@/hooks/useRouter'
 import { SearchParams, YandeImage } from '@/interfaces/image'
 import {
   Avatar,
@@ -12,18 +13,20 @@ import {
   Switch,
 } from '@nextui-org/react'
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 import Icon from './Icon'
 import MyAutoComplete from './MyAutoComplete'
 
 interface Props {
   params: SearchParams
-  setParams: React.Dispatch<React.SetStateAction<SearchParams>>
   list: YandeImage[]
 }
 
 export default function MyNavbar(props: Props): React.ReactElement {
-  const { params, setParams, list } = props
+  const { params, list } = props
   const { theme, setTheme } = useTheme()
+  const { pathname } = useLocation()
+  const { push } = useRouter()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -33,7 +36,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
       limit: params.limit,
       page: 1,
     }
-    setParams(newParams)
+    push(pathname, newParams)
   }
 
   return (
@@ -69,7 +72,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
             minValue={12}
             defaultValue={params.limit}
             onChangeEnd={(value) =>
-              setParams({ ...params, limit: value as number })
+              push(pathname, { ...params, limit: value as number })
             }
           />
           <Switch
@@ -86,11 +89,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
           </Switch>
         </PopoverContent>
       </Popover>
-      <form
-        action=""
-        onSubmit={handleSubmit}
-        className="flex flex-nowrap gap-4"
-      >
+      <form action="" onSubmit={handleSubmit}>
         <MyAutoComplete name="tags" defaultValue={params.tags} />
         <button type="submit" className="hidden"></button>
       </form>
@@ -98,7 +97,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
         <Button
           size="lg"
           variant="flat"
-          onPress={() => setParams({ ...params, page: params.page - 1 })}
+          onPress={() => push(pathname, { ...params, page: params.page - 1 })}
           isDisabled={params.page === 1}
         >
           <Icon name="chevron_left" />
@@ -120,7 +119,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
         <Button
           size="lg"
           variant="flat"
-          onPress={() => setParams({ ...params, page: params.page + 1 })}
+          onPress={() => push(pathname, { ...params, page: params.page + 1 })}
           isDisabled={list.length < params.limit}
         >
           <span className="hidden sm:inline">Next</span>
