@@ -10,13 +10,12 @@ interface Props {
   /**
    * @description 搜索框的值
    */
-  defaultValue: string[]
+  defaultValue: string
 }
 
 export default function MyAutoComplete(props: Props): React.ReactElement {
   const { defaultValue, name } = props
-  const [value, setValue] = useState<string[]>(defaultValue) // 搜索框的值
-  const inputValue = value.join(' ')
+  const [inputValue, setInputValue] = useState<string>(defaultValue) // 搜索框的值
   const inputRef = useRef<HTMLInputElement>(null) // 搜索框的引用
   const listboxRef = useRef<HTMLElement>(null) // 自动补全的引用
   const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
@@ -29,8 +28,8 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   // 搜索框输入时，自动补全的逻辑
-  const handleTagListChange = useDebouncedCallback(async (value: string[]) => {
-    const lastTag = value.at(-1)
+  const handleTagListChange = useDebouncedCallback(async (value: string) => {
+    const lastTag = value.split(' ').at(-1)
     if (!lastTag) return setIsListboxOpen(false)
     const newTagList = await fetchTagList(lastTag)
     setTagList(newTagList)
@@ -42,15 +41,17 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
 
   // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
-    setValue([...value.slice(0, -1), key as string])
+    const newValue = (inputValue.split(' ').slice(0, -1).join(' ') +
+      key) as string
+    setInputValue(newValue)
     setIsListboxOpen(false)
     inputRef.current?.focus()
   }
 
   // 搜索框的值改变时的逻辑
   const handleValueChange = (value: string) => {
-    const newValue = value.replace(/\s+/g, ' ').split(' ')
-    setValue(newValue)
+    const newValue = value.replace(/\s+/g, ' ')
+    setInputValue(newValue)
 
     handleTagListChange(newValue)
   }
@@ -91,7 +92,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
       [5, 'text-primary'], // Circle
     ])
     const color = map.get(tag.type) || ''
-    const lastInputValue = value.at(-1)
+    const lastInputValue = inputValue.split(' ').at(-1)
     return (
       <ListboxItem
         key={tag.name}

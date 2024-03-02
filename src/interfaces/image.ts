@@ -23,7 +23,7 @@ export interface Tag {
 }
 
 export interface SearchParams {
-  tags: string[]
+  tags: string
   page: number
   limit: number
 }

@@ -29,7 +29,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     const newParams: SearchParams = {
-      tags: (formData.get('tags') as string).split(' '),
+      tags: formData.get('tags') as string,
       limit: params.limit,
       page: 1,
     }

@@ -8,7 +8,7 @@ import MyNavbar from './components/MyNavbar'
 import type { SearchParams, YandeImage } from './interfaces/image'
 
 const initialParams: SearchParams = {
-  tags: ['ksk_(semicha_keisuke)'],
+  tags: 'ksk_(semicha_keisuke)',
   limit: 12,
   page: 1,
 }

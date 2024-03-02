@@ -3,10 +3,7 @@ import { SearchParams } from '@/interfaces/image'
 export const getYandereImageList = async (params: SearchParams) => {
   const res = await fetch(
     `https://yande.re/post.json?` +
-      new URLSearchParams({
-        ...params,
-        tags: params.tags.join(' '),
-      } as unknown as Record<string, string>)
+      new URLSearchParams(params as unknown as URLSearchParams)
   )
   return await res.json()
 }
