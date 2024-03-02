@@ -1,5 +1,5 @@
 import { getYandereTagList } from '@/api/imageApi'
-import useDebounce from '@/hooks/useDebounce'
+import { useDebouncedCallback } from 'use-debounce'
 import { Input, Listbox, ListboxItem } from '@nextui-org/react'
 import { useRef, useState } from 'react'
 import type { Tag } from '../interfaces/image'
@@ -29,7 +29,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   // 搜索框输入时，自动补全的逻辑
-  const handleTagListChange = async (value: string[]) => {
+  const handleTagListChange = useDebouncedCallback(async (value: string[]) => {
     const lastTag = value.at(-1)
     if (!lastTag) return setIsListboxOpen(false)
     const newTagList = await fetchTagList(lastTag)
@@ -38,9 +38,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     if (newTagList.length === 1 && newTagList[0].name === lastTag)
       return setIsListboxOpen(false)
     setIsListboxOpen(true)
-  }
-
-  const debouncedTagListChange = useDebounce(handleTagListChange, 300)
+  }, 300)
 
   // 选择自动补全的项时，更新搜索框的值
   const handleSelect = (key: React.Key) => {
@@ -54,7 +52,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     const newValue = value.replace(/\s+/g, ' ').split(' ')
     setValue(newValue)
 
-    debouncedTagListChange(newValue)
+    handleTagListChange(newValue)
   }
 
   // 搜索框按下键盘时的逻辑
