@@ -30,6 +30,7 @@ export default function ModalImage(props: Props): React.ReactElement {
         onOpenChange={onOpenChange}
         onKeyUp={handleKeyUp}
         classNames={{
+          base: 'm-auto',
           wrapper: 'items-center',
         }}
         style={{
