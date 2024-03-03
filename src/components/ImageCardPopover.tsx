@@ -17,31 +17,32 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
   }
 
   const sourceButton = () => {
-    if (source.includes('twitter')) {
-      return (
-        <Link
-          isBlock
-          href={source}
-          isExternal
-          color="foreground"
-          className="p-0 text-xs after:rounded-full"
-        >
-          <div className="size-6 bg-[url('@/assets/twitter-logo.png')] bg-cover bg-center bg-no-repeat"></div>
-        </Link>
-      )
-    } else if (source.includes('pixiv')) {
-      return (
-        <Link
-          isBlock
-          href={source}
-          isExternal
-          color="foreground"
-          className="p-0 text-xs after:rounded-full"
-        >
-          <div className="size-6 bg-[url('@/assets/pixiv-logo.png')] bg-cover bg-center bg-no-repeat"></div>
-        </Link>
-      )
+    if (!source.includes('twitter') && !source.includes('pximg')) {
+      return null
     }
+
+    let href = source
+    let logo = '@/assets/twitter-logo.png'
+
+    if (source.includes('pximg')) {
+      const pixivId = source.split('/').pop()!.split('_').shift()
+      href = `https://www.pixiv.net/artworks/${pixivId}`
+      logo = '@/assets/pixiv-logo.png'
+    }
+
+    return (
+      <Link
+        isBlock
+        href={href}
+        isExternal
+        color="foreground"
+        className="overflow-hidden rounded-full p-0 text-xs"
+      >
+        <div
+          className={`size-6 bg-[url('${logo}')] bg-cover bg-center bg-no-repeat`}
+        ></div>
+      </Link>
+    )
   }
 
   return (

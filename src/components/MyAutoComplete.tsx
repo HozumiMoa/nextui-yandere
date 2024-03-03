@@ -1,7 +1,7 @@
 import { getYandereTagList } from '@/api/imageApi'
-import { useDebouncedCallback } from 'use-debounce'
 import { Input, Listbox, ListboxItem } from '@nextui-org/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 import type { Tag } from '../interfaces/image'
 import Icon from './Icon'
 
@@ -20,6 +20,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   const listboxRef = useRef<HTMLElement>(null) // 自动补全的引用
   const [tagList, setTagList] = useState<Tag[]>([]) // 自动补全的列表
   const [isListboxOpen, setIsListboxOpen] = useState<boolean>(false) // 自动补全的开关
+
+  useEffect(() => {
+    setInputValue(defaultValue)
+  }, [defaultValue])
 
   // 获取自动补全的列表
   const fetchTagList = async (tag: string) => {

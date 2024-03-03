@@ -45,7 +45,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   return (
     <div className="flex flex-nowrap gap-4 px-4 py-4 pb-28 sm:px-16">
       {columnList.map((list, index1) => (
-        <div key={index1} className="flex flex-1 flex-col gap-4">
+        <div key={index1} className="flex w-0 flex-1 flex-col gap-4">
           {list.map((image, index2) => {
             return (
               <ImageCard

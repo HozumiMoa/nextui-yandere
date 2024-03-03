@@ -29,22 +29,27 @@ export default function ImageCard(props: Props): React.ReactElement {
 
   const [url, setUrl] = useState(isMobile ? preview_url : sample_url)
   const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
+  const timer = useRef<NodeJS.Timeout | null>(null) // 重试定时器
   const [errorMsg, setErrorMsg] = useState('')
 
   // 图片加载完成时的处理
   const handleLoad = () => {
     setErrorMsg('')
+    timer.current && clearTimeout(timer.current)
   }
 
   // 图片加载失败时的处理
   const handleError = () => {
-    if (errorCount.current < 3) {
-      errorCount.current++
-      setErrorMsg(`加载失败，正在重试...`)
-      setUrl(sample_url + '?t=' + Date.now())
-    } else {
+    if (errorCount.current >= 3) {
       setErrorMsg('图片加载失败')
+      timer.current && clearTimeout(timer.current)
+      return
     }
+
+    errorCount.current++
+    setErrorMsg('加载失败，正在重试...')
+    setUrl('')
+    timer.current = setTimeout(() => setUrl(sample_url), 0)
   }
 
   return (
@@ -64,7 +69,6 @@ export default function ImageCard(props: Props): React.ReactElement {
           height={sample_height}
           onLoad={handleLoad}
           onError={handleError}
-          className="h-auto max-w-full"
         />
       </CardBody>
       {/* 渐变遮罩 */}
