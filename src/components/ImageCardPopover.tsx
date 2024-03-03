@@ -8,12 +8,40 @@ interface Props {
 
 export default function ImageCardPopover(props: Props): React.ReactElement {
   const { image } = props
-  const { tags, jpeg_url, width, height, file_url, file_ext } = image
+  const { tags, jpeg_url, width, height, file_url, file_ext, source } = image
 
   const isFilePng = file_ext === 'png'
 
   const handleTagPress = (tag: string) => {
     navigator.clipboard.writeText(tag)
+  }
+
+  const sourceButton = () => {
+    if (source.includes('twitter')) {
+      return (
+        <Link
+          isBlock
+          href={source}
+          isExternal
+          color="foreground"
+          className="p-0 text-xs after:rounded-full"
+        >
+          <div className="size-6 bg-[url('@/assets/twitter-logo.png')] bg-cover bg-center bg-no-repeat"></div>
+        </Link>
+      )
+    } else if (source.includes('pixiv')) {
+      return (
+        <Link
+          isBlock
+          href={source}
+          isExternal
+          color="foreground"
+          className="p-0 text-xs after:rounded-full"
+        >
+          <div className="size-6 bg-[url('@/assets/pixiv-logo.png')] bg-cover bg-center bg-no-repeat"></div>
+        </Link>
+      )
+    }
   }
 
   return (
@@ -54,6 +82,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
             PNG
           </Link>
         )}
+        {sourceButton()}
         <span className="ml-auto">
           {width}x{height}
         </span>
