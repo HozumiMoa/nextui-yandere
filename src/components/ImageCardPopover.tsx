@@ -18,12 +18,12 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
 
   return (
     <div className="flex max-w-60 flex-col gap-1 text-xs">
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-x-2 gap-y-1">
         {tags.split(' ').map((tag) => (
           <Link
             key={tag}
             color="foreground"
-            className="pr-1 text-xs"
+            className="text-xs"
             onPress={() => handleTagPress(tag)}
           >
             {tag}
@@ -31,32 +31,30 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
         ))}
       </div>
       <Divider />
-      <div className="flex items-center justify-between gap-1">
-        <div className="flex">
+      <div className="flex items-center justify-start gap-1">
+        <Link
+          isBlock
+          href={jpeg_url}
+          isExternal
+          color="foreground"
+          className="text-xs after:rounded-full"
+        >
+          <Icon name="download" />
+          JPEG
+        </Link>
+        {isFilePng && (
           <Link
             isBlock
-            href={jpeg_url}
+            href={file_url}
             isExternal
             color="foreground"
-            className="text-xs"
+            className="text-xs after:rounded-full"
           >
             <Icon name="download" />
-            JPEG
+            PNG
           </Link>
-          {isFilePng && (
-            <Link
-              isBlock
-              href={file_url}
-              isExternal
-              color="foreground"
-              className="text-xs"
-            >
-              <Icon name="download" />
-              PNG
-            </Link>
-          )}
-        </div>
-        <span>
+        )}
+        <span className="ml-auto">
           {width}x{height}
         </span>
       </div>

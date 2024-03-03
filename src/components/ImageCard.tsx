@@ -83,7 +83,7 @@ export default function ImageCard(props: Props): React.ReactElement {
         <span className="whitespace-nowrap text-danger">{errorMsg}</span>
         <More
           trigger={
-            <Button isIconOnly variant="light">
+            <Button isIconOnly variant="light" className="rounded-full">
               <Icon name="more_vert" className="text-white" />
             </Button>
           }
