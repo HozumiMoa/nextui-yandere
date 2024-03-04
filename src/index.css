@@ -11,6 +11,12 @@ body {
   width: 100%;
 }
 
+@layer utilities {
+  .animation-composition-add {
+    animation-composition: add;
+  }
+}
+
 /* 修改默认滚动条样式 */
 ::-webkit-scrollbar {
   width: 0.5rem;

@@ -2,7 +2,6 @@ import { useDevice } from '@/context/device'
 import {
   Button,
   Card,
-  CardBody,
   CardFooter,
   Image,
   Link,
@@ -19,11 +18,12 @@ import ImageCardPopover from './ImageCardPopover'
 interface Props {
   image: YandeImage
   onPress: (id: number) => void
+  className?: string
   style?: React.CSSProperties
 }
 
 export default function ImageCard(props: Props): React.ReactElement {
-  const { image, onPress, style } = props
+  const { image, onPress, className, style } = props
   const { id, preview_url, sample_url, sample_width, sample_height } = image
   const { isMobile } = useDevice()
 
@@ -57,20 +57,18 @@ export default function ImageCard(props: Props): React.ReactElement {
       shadow="sm"
       isPressable
       onPress={() => onPress(id)}
-      className="animate-fade-in"
+      className={className}
       style={style}
     >
-      <CardBody className="p-0">
-        <Image
-          isZoomed
-          loading="lazy"
-          src={url}
-          width={sample_width}
-          height={sample_height}
-          onLoad={handleLoad}
-          onError={handleError}
-        />
-      </CardBody>
+      <Image
+        isZoomed
+        loading="lazy"
+        src={url}
+        width={sample_width}
+        height={sample_height}
+        onLoad={handleLoad}
+        onError={handleError}
+      />
       {/* 渐变遮罩 */}
       <div className="pointer-events-none absolute bottom-0 z-10 h-1/2 w-full bg-gradient-to-t from-black/50"></div>
       <CardFooter className="absolute bottom-0 z-10 justify-between py-2 text-small">
