@@ -70,7 +70,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
             key={image.id}
             image={image}
             onPress={handleModalOpen}
-            className="animation-composition-add absolute left-0 top-0 animate-fade-in"
+            className="animation-composition-add absolute left-0 top-0 animate-fade-in opacity-0"
             style={styles.items[index]}
           />
         ))}
