@@ -13,7 +13,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   // 实现瀑布流布局
   const columnWidth = 300
   const gap = 16
-  const [containerWidth, setContainerWidth] = useState(616)
+  const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const columnCount = Math.max(
     2,
     Math.floor((containerWidth + gap) / (columnWidth + gap))
@@ -21,10 +21,9 @@ export default function ImageCardList(props: Props): React.ReactElement {
 
   // 根据图片的宽高比计算图片的高度和位置
   const styles = useMemo(() => {
-    console.log('calculating styles...')
     const columnHeights = Array.from({ length: columnCount }, () => 0)
     return {
-      items: list.map((item, index) => {
+      items: list.map((item) => {
         const columnIndex = columnHeights.indexOf(Math.min(...columnHeights))
         const x = columnIndex * (columnWidth + gap)
         const y = columnHeights[columnIndex]
@@ -35,7 +34,6 @@ export default function ImageCardList(props: Props): React.ReactElement {
           width: `${width}px`,
           height: `${height}px`,
           transform: `translate3d(${x}px, ${y}px, 0)`,
-          '--delay': index,
         }
       }),
       masonry: {
@@ -63,13 +61,18 @@ export default function ImageCardList(props: Props): React.ReactElement {
     <div ref={containerRef} className="flex w-full justify-center">
       <div className="relative" style={styles.masonry}>
         {list.map((image, index) => (
-          <ImageCard
-            key={image.id}
-            image={image}
-            onPress={handleModalOpen}
-            className="animation-composition-add absolute left-0 top-0 animate-fade-in opacity-0"
+          <div
+            className="absolute left-0 top-0 transition-transform"
             style={styles.items[index]}
-          />
+          >
+            <ImageCard
+              key={image.id}
+              image={image}
+              onPress={handleModalOpen}
+              className="animate-fade-in opacity-0"
+              style={{ '--delay': index } as React.CSSProperties}
+            />
+          </div>
         ))}
       </div>
     </div>

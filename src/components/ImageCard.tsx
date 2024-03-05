@@ -55,7 +55,7 @@ export default function ImageCard(props: Props): React.ReactElement {
           src={url}
           width={sample_width}
           height={sample_height}
-          className="transition-transform hover:scale-110"
+          className="transform-gpu transition-transform hover:scale-110"
           onError={handleError}
         />
       </div>
