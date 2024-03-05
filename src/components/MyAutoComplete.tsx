@@ -119,7 +119,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="relative min-w-60 sm:min-w-80" onKeyUp={handleKeyUpEscape}>
+    <div
+      className="relative w-60 transition-width focus-within:w-80"
+      onKeyUp={handleKeyUpEscape}
+    >
       <Input
         placeholder="Type to search..."
         isClearable
@@ -130,6 +133,9 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         value={inputValue}
         onValueChange={handleValueChange}
         onKeyUp={handleKeyUp}
+        classNames={{
+          inputWrapper: 'rounded-full',
+        }}
         startContent={
           <Icon name="search" className="pointer-events-none select-none" />
         }
