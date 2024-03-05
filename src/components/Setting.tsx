@@ -26,7 +26,7 @@ export default function Setting(props: Props): React.ReactElement {
     <Popover
       placement="top"
       offset={24}
-      portalContainer={document.getElementById('my-navbar')!}
+      portalContainer={document.getElementById('navbar-container')!}
     >
       <PopoverTrigger>
         <Avatar

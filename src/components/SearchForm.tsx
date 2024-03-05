@@ -1,6 +1,7 @@
 import { useRouter } from '@/hooks/useRouter'
 import { SearchParams, YandeImage } from '@/interfaces/image'
 import { Button, Input } from '@nextui-org/react'
+import { useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
 import Icon from './Icon'
 import MyAutoComplete from './MyAutoComplete'
@@ -15,18 +16,21 @@ export default function SearchForm(props: Props): React.ReactElement {
   const { pathname } = useLocation()
   const { push } = useRouter()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const newTags = formData.get('tags') as string
-    const newPage = Number(formData.get('page'))
-    const newParams: SearchParams = {
-      tags: params.page === newPage ? newTags : params.tags,
-      limit: params.limit,
-      page: params.page === newPage ? 1 : newPage,
-    }
-    push(pathname, newParams)
-  }
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      const formData = new FormData(e.currentTarget)
+      const newTags = formData.get('tags') as string
+      const newPage = Number(formData.get('page'))
+      const newParams: SearchParams = {
+        tags: params.page === newPage ? newTags : params.tags,
+        limit: params.limit,
+        page: params.page === newPage ? 1 : newPage,
+      }
+      push(pathname, newParams)
+    },
+    [params, push, pathname]
+  )
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-4">

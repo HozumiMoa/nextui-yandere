@@ -11,13 +11,16 @@ interface Props {
 export default function MyNavbar(props: Props): React.ReactElement {
   return (
     <nav
-      id="my-navbar"
-      className="fixed bottom-0 left-[50%] z-50 flex max-h-20 -translate-x-1/2
-      items-center gap-4 rounded-xl bg-background/70 p-4 shadow-md
-      backdrop-blur-md backdrop-saturate-150 sm:m-4"
+      id="navbar-container"
+      className="fixed bottom-0 left-[50%] z-50 max-h-20 -translate-x-1/2 sm:m-4"
     >
-      <Setting {...props} />
-      <SearchForm {...props} />
+      <div
+        className="flex size-full items-center gap-4 rounded-xl bg-background/70 
+        p-4 shadow-md backdrop-blur-md backdrop-saturate-150"
+      >
+        <Setting {...props} />
+        <SearchForm {...props} />
+      </div>
     </nav>
   )
 }
