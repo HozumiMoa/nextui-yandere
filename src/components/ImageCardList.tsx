@@ -13,19 +13,16 @@ export default function ImageCardList(props: Props): React.ReactElement {
   // 实现瀑布流布局
   const columnWidth = 300
   const gap = 16
-  const [containerWidth, setContainerWidth] = useState(1200)
+  const [containerWidth, setContainerWidth] = useState(616)
   const columnCount = Math.max(
     2,
     Math.floor((containerWidth + gap) / (columnWidth + gap))
   )
-  const columnHeights = useMemo(() => {
-    list // 为了触发重新计算
-    return Array.from({ length: columnCount }, () => 0)
-  }, [columnCount, list])
 
   // 根据图片的宽高比计算图片的高度和位置
   const styles = useMemo(() => {
     console.log('calculating styles...')
+    const columnHeights = Array.from({ length: columnCount }, () => 0)
     return {
       items: list.map((item, index) => {
         const columnIndex = columnHeights.indexOf(Math.min(...columnHeights))
@@ -46,7 +43,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
         height: `${Math.max(...columnHeights) - gap}px`,
       },
     }
-  }, [list, columnCount, columnHeights])
+  }, [list, columnCount])
 
   // 监视 containerRef 的宽度变化
   const containerRef = useRef<HTMLDivElement>(null)

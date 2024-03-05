@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardFooter,
-  Image,
   Link,
   Popover,
   PopoverContent,
@@ -25,27 +24,14 @@ interface Props {
 export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress, className, style } = props
   const { id, preview_url, sample_url, sample_width, sample_height } = image
-  const { isMobile } = useDevice()
 
-  const [url, setUrl] = useState(isMobile ? preview_url : sample_url)
-
+  const [url, setUrl] = useState(sample_url)
   const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
-  const [errorMsg, setErrorMsg] = useState('')
-
-  // 图片加载完成时的处理
-  const handleLoad = () => {
-    setErrorMsg('')
-  }
 
   // 图片加载失败时的处理
   const handleError = () => {
-    if (errorCount.current >= 3) {
-      setErrorMsg('图片加载失败')
-      return
-    }
-
+    if (errorCount.current >= 3) return
     errorCount.current++
-    setErrorMsg('加载失败，正在重试...')
     setUrl('')
     requestAnimationFrame(() => setUrl(sample_url))
   }
@@ -58,15 +44,21 @@ export default function ImageCard(props: Props): React.ReactElement {
       className={className}
       style={style}
     >
-      <Image
-        isZoomed
-        loading="lazy"
-        src={url}
-        width={sample_width}
-        height={sample_height}
-        onLoad={handleLoad}
-        onError={handleError}
-      />
+      <div
+        className="overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${preview_url})`,
+        }}
+      >
+        <img
+          loading="lazy"
+          src={url}
+          width={sample_width}
+          height={sample_height}
+          className="transition-transform hover:scale-110"
+          onError={handleError}
+        />
+      </div>
       {/* 渐变遮罩 */}
       <div className="pointer-events-none absolute bottom-0 z-10 h-1/2 w-full bg-gradient-to-t from-black/50"></div>
       <CardFooter className="absolute bottom-0 z-10 justify-between py-2 text-small">
@@ -80,7 +72,6 @@ export default function ImageCard(props: Props): React.ReactElement {
         >
           <strong>{id}</strong>
         </Link>
-        <span className="whitespace-nowrap text-danger">{errorMsg}</span>
         <More
           trigger={
             <Button isIconOnly variant="light" className="rounded-full">
