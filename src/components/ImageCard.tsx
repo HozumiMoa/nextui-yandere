@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
   Tooltip,
 } from '@nextui-org/react'
-import { ReactNode, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import Icon from './Icon'
 import ImageCardPopover from './ImageCardPopover'
@@ -27,14 +27,24 @@ export default function ImageCard(props: Props): React.ReactElement {
 
   const [url, setUrl] = useState(sample_url)
   const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
+  const timeout = useRef<NodeJS.Timeout | null>(null)
 
   // 图片加载失败时的处理
   const handleError = () => {
+    setUrl(preview_url)
     if (errorCount.current >= 3) return
     errorCount.current++
-    setUrl('')
-    requestAnimationFrame(() => setUrl(sample_url))
+    timeout.current && clearTimeout(timeout.current)
+    timeout.current = setTimeout(() => {
+      setUrl(sample_url)
+    }, 0)
   }
+
+  useEffect(() => {
+    return () => {
+      timeout.current && clearTimeout(timeout.current)
+    }
+  }, [])
 
   return (
     <Card
@@ -45,7 +55,7 @@ export default function ImageCard(props: Props): React.ReactElement {
       style={style}
     >
       <div
-        className="overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="size-full overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${preview_url})`,
         }}

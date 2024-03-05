@@ -69,7 +69,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
             <ImageCard
               image={image}
               onPress={handleModalOpen}
-              className="animate-fade-in opacity-0"
+              className="size-full animate-fade-in opacity-0"
               style={{ '--delay': index } as React.CSSProperties}
             />
           </div>
