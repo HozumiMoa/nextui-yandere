@@ -53,7 +53,7 @@ export default function SearchForm(props: Props): React.ReactElement {
         name="page"
         defaultValue={params.page as unknown as string}
         classNames={{
-          base: 'w-12',
+          base: 'w-12 shrink-0',
           input: 'text-center text-small',
           inputWrapper: 'rounded-full',
         }}

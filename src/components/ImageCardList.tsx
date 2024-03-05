@@ -10,8 +10,9 @@ interface Props {
 export default function ImageCardList(props: Props): React.ReactElement {
   const { list, handleModalOpen } = props
 
-  // 实现瀑布流布局
-  const columnWidth = 300
+  // TODO: 优化瀑布流布局
+  const columnWidth =
+    window.innerWidth > 640 ? 300 : (window.innerWidth - 40) / 2
   const gap = 16
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const columnCount = Math.max(
@@ -41,7 +42,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
         height: `${Math.max(...columnHeights) - gap}px`,
       },
     }
-  }, [list, columnCount])
+  }, [columnCount, list, columnWidth])
 
   // 监视 containerRef 的宽度变化
   const containerRef = useRef<HTMLDivElement>(null)

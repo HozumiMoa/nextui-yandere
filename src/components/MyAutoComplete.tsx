@@ -120,7 +120,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
 
   return (
     <div
-      className="relative w-60 transition-width focus-within:w-80"
+      className="relative transition-width sm:w-60 sm:focus-within:w-80"
       onKeyUp={handleKeyUpEscape}
     >
       <Input
