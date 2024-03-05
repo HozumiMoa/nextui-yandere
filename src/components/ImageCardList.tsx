@@ -62,11 +62,11 @@ export default function ImageCardList(props: Props): React.ReactElement {
       <div className="relative" style={styles.masonry}>
         {list.map((image, index) => (
           <div
+            key={image.id}
             className="absolute left-0 top-0 transition-transform"
             style={styles.items[index]}
           >
             <ImageCard
-              key={image.id}
               image={image}
               onPress={handleModalOpen}
               className="animate-fade-in opacity-0"
