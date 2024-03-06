@@ -1,20 +1,16 @@
-import { getDeviceType } from '@/tools'
 import { ReactNode, createContext, useContext } from 'react'
 
-type Device = 'mobile' | 'desktop' | 'tablet'
 type DeviceContextType = {
-  device: Device
   isMobile: boolean
 }
 
 const DeviceContext = createContext({} as DeviceContextType)
 
 export function DeviceProvider({ children }: { children: ReactNode }) {
-  const device = getDeviceType()
-  const isMobile = device === 'mobile'
+  const isMobile = window.matchMedia('(max-width: 640px)').matches
 
   return (
-    <DeviceContext.Provider value={{ device, isMobile }}>
+    <DeviceContext.Provider value={{ isMobile }}>
       {children}
     </DeviceContext.Provider>
   )

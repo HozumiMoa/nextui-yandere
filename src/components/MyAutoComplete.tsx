@@ -137,7 +137,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
           inputWrapper: 'rounded-full',
         }}
         startContent={
-          <Icon name="search" className="pointer-events-none select-none" />
+          <Icon
+            name="search"
+            className="pointer-events-none select-none text-lg"
+          />
         }
       />
       <div

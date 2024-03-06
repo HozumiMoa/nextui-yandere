@@ -4,7 +4,6 @@
 
 html {
   font-family: 'LXGW WenKai Screen', sans-serif;
-  font-size: 12px;
 }
 
 body {
@@ -12,9 +11,9 @@ body {
   width: 100%;
 }
 
-@media screen and (min-width: 640px) {
+@media (max-width: 640px) {
   html {
-    font-size: 16px;
+    font-size: 0.75rem;
   }
 }
 
