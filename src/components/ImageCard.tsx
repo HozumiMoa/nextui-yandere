@@ -17,12 +17,10 @@ import ImageCardPopover from './ImageCardPopover'
 interface Props {
   image: YandeImage
   onPress: (id: number) => void
-  className?: string
-  style?: React.CSSProperties
 }
 
 export default function ImageCard(props: Props): React.ReactElement {
-  const { image, onPress, className, style } = props
+  const { image, onPress } = props
   const { id, preview_url, sample_url, sample_width, sample_height } = image
 
   const [url, setUrl] = useState(sample_url)
@@ -50,9 +48,8 @@ export default function ImageCard(props: Props): React.ReactElement {
     <Card
       shadow="sm"
       isPressable
-      onPress={() => onPress(id)}
-      className={className}
-      style={style}
+      onClick={() => onPress(id)}
+      className="size-full"
     >
       <div
         className="size-full overflow-hidden bg-cover bg-center bg-no-repeat"

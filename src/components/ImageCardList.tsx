@@ -79,12 +79,12 @@ export default function ImageCardList(props: Props): React.ReactElement {
             className="absolute left-0 top-0 transition-transform"
             style={styles.items[index]}
           >
-            <ImageCard
-              image={image}
-              onPress={handleModalOpen}
+            <div
               className="size-full animate-fade-in opacity-0"
               style={{ '--delay': index } as React.CSSProperties}
-            />
+            >
+              <ImageCard image={image} onPress={handleModalOpen} />
+            </div>
           </div>
         ))}
       </div>
