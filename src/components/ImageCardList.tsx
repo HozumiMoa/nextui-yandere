@@ -1,6 +1,8 @@
 import { useDevice } from '@/context/device'
 import { YandeImage } from '@/interfaces/image'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { remToPx } from '@/utils'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 import ImageCard from './ImageCard'
 
 interface Props {
@@ -12,9 +14,8 @@ export default function ImageCardList(props: Props): React.ReactElement {
   const { list, handleModalOpen } = props
   const { isMobile } = useDevice()
 
-  // TODO: 优化瀑布流布局
-  const gap = isMobile ? 12 : 16
-  const columnWidth = isMobile ? (window.innerWidth - 36) / 2 : 300
+  const gap = remToPx(1)
+  const columnWidth = isMobile ? (window.innerWidth - 3 * gap) / 2 : 300
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const columnCount = Math.max(
     2,
@@ -47,17 +48,27 @@ export default function ImageCardList(props: Props): React.ReactElement {
 
   // 监视 containerRef 的宽度变化
   const containerRef = useRef<HTMLDivElement>(null)
-  const observer = useRef<ResizeObserver | null>(null)
-  useEffect(() => {
-    observer.current = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width)
+  const observerRef = useRef<ResizeObserver | null>(null)
+  const handleResize = useDebouncedCallback((width: number) => {
+    setContainerWidth(width)
+  }, 500)
+  const getObserver = useCallback(() => {
+    if (observerRef.current) return observerRef.current
+    const observer = new ResizeObserver((entries) => {
+      handleResize(entries[0].contentRect.width)
     })
-    observer.current.observe(containerRef.current!)
+    observerRef.current = observer
+    return observer
+  }, [handleResize])
+
+  useEffect(() => {
+    const observer = getObserver()
+    observer.observe(containerRef.current!)
 
     return () => {
-      observer.current?.disconnect()
+      observer.disconnect()
     }
-  }, [])
+  }, [getObserver])
 
   return (
     <div ref={containerRef} className="flex w-full justify-center">
