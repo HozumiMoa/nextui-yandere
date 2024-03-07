@@ -48,11 +48,11 @@ export default function ImageCard(props: Props): React.ReactElement {
     <Card
       shadow="sm"
       isPressable
-      onClick={() => onPress(id)}
       className="size-full"
+      onClick={() => onPress(id)}
     >
       <div
-        className="size-full overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${preview_url})`,
         }}

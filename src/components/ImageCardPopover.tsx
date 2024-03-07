@@ -1,3 +1,5 @@
+import pixivLogo from '@/assets/pixiv-logo.png'
+import twitterLogo from '@/assets/twitter-logo.png'
 import { YandeImage } from '@/interfaces/image'
 import { Divider, Link } from '@nextui-org/react'
 import Icon from './Icon'
@@ -22,12 +24,12 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
     }
 
     let href = source
-    let logo = '@/assets/twitter-logo.png'
+    let logo = twitterLogo
 
     if (source.includes('pximg')) {
       const pixivId = source.split('/').pop()!.split('_').shift()
       href = `https://www.pixiv.net/artworks/${pixivId}`
-      logo = '@/assets/pixiv-logo.png'
+      logo = pixivLogo
     }
 
     return (
@@ -36,11 +38,9 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
         href={href}
         isExternal
         color="foreground"
-        className="overflow-hidden rounded-full p-0 text-xs"
+        className="size-6 rounded-full p-0"
       >
-        <div
-          className={`size-6 bg-[url('${logo}')] bg-cover bg-center bg-no-repeat`}
-        ></div>
+        <img src={logo} alt="source" />
       </Link>
     )
   }
@@ -66,7 +66,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
           href={jpeg_url}
           isExternal
           color="foreground"
-          className="text-xs after:rounded-full"
+          className="h-8 text-xs after:rounded-full"
         >
           <Icon name="download" />
           JPEG
@@ -77,7 +77,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
             href={file_url}
             isExternal
             color="foreground"
-            className="text-xs after:rounded-full"
+            className="h-8 text-xs after:rounded-full"
           >
             <Icon name="download" />
             PNG

@@ -6,7 +6,7 @@ interface Props {
 
 export default function Icon(props: Props): React.ReactElement {
   const { name, className, ...res } = props
-  const classes = ['material-symbols-rounded', className].join(' ')
+  const classes = ['material-symbols-rounded text-2xl', className].join(' ')
   return (
     <span className={classes} {...res}>
       {name}
