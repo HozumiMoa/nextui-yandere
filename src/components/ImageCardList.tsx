@@ -1,7 +1,7 @@
 import { useDevice } from '@/context/device'
 import { YandeImage } from '@/interfaces/image'
 import { remToPx } from '@/utils'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import ImageCard from './ImageCard'
 
@@ -52,23 +52,24 @@ export default function ImageCardList(props: Props): React.ReactElement {
   const handleResize = useDebouncedCallback((width: number) => {
     setContainerWidth(width)
   }, 500)
-  const getObserver = useCallback(() => {
-    if (observerRef.current) return observerRef.current
-    const observer = new ResizeObserver((entries) => {
-      handleResize(entries[0].contentRect.width)
-    })
-    observerRef.current = observer
-    return observer
-  }, [handleResize])
 
   useEffect(() => {
+    const getObserver = () => {
+      if (observerRef.current) return observerRef.current
+      const observer = new ResizeObserver((entries) => {
+        handleResize(entries[0].contentRect.width)
+      })
+      observerRef.current = observer
+      return observer
+    }
+
     const observer = getObserver()
     observer.observe(containerRef.current!)
 
     return () => {
       observer.disconnect()
     }
-  }, [getObserver])
+  }, [handleResize])
 
   return (
     <div ref={containerRef} className="flex w-full justify-center">
