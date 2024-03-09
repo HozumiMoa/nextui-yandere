@@ -38,7 +38,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
         href={href}
         isExternal
         color="foreground"
-        className="size-6 rounded-full p-0"
+        className="size-6 overflow-hidden rounded-full p-0"
       >
         <img src={logo} alt="source" />
       </Link>
