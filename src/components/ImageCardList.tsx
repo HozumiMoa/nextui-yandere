@@ -1,4 +1,3 @@
-import { useDevice } from '@/context/device'
 import { YandeImage } from '@/interfaces/image'
 import { remToPx } from '@/utils'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -12,10 +11,9 @@ interface Props {
 
 export default function ImageCardList(props: Props): React.ReactElement {
   const { list, handleModalOpen } = props
-  const { isMobile } = useDevice()
 
   const gap = remToPx(0.75)
-  const columnWidth = isMobile ? (window.innerWidth - 3 * gap) / 2 : 300
+  const columnWidth = 236
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const columnCount = Math.max(
     2,
@@ -25,14 +23,16 @@ export default function ImageCardList(props: Props): React.ReactElement {
   // 根据图片的宽高比计算图片的高度和位置
   const styles = useMemo(() => {
     const columnHeights = Array.from({ length: columnCount }, () => 0)
+
     return {
       items: list.map((item) => {
         const columnIndex = columnHeights.indexOf(Math.min(...columnHeights))
-        const x = columnIndex * (columnWidth + gap)
+        const width = (containerWidth - gap * (columnCount - 1)) / columnCount
+        const height = (width / item.width) * item.height
+        const x = columnIndex * (width + gap)
         const y = columnHeights[columnIndex]
-        const width = columnWidth
-        const height = item.height * (columnWidth / item.width)
         columnHeights[columnIndex] += height + gap
+
         return {
           width: `${width}px`,
           height: `${height}px`,
@@ -40,11 +40,10 @@ export default function ImageCardList(props: Props): React.ReactElement {
         }
       }),
       masonry: {
-        width: `${columnCount * (columnWidth + gap) - gap}px`,
         height: `${Math.max(...columnHeights) - gap}px`,
       },
     }
-  }, [columnCount, columnWidth, gap, list])
+  }, [columnCount, containerWidth, gap, list])
 
   // 监视 containerRef 的宽度变化
   const containerRef = useRef<HTMLDivElement>(null)
@@ -72,24 +71,22 @@ export default function ImageCardList(props: Props): React.ReactElement {
   }, [handleResize])
 
   return (
-    <div className="px-3 py-3 pb-28 sm:px-8">
-      <div ref={containerRef} className="flex justify-center">
-        <div className="relative" style={styles.masonry}>
-          {list.map((image, index) => (
+    <div ref={containerRef} className="container relative mx-auto pb-28">
+      <div style={styles.masonry}>
+        {list.map((image, index) => (
+          <div
+            key={image.id}
+            className="absolute left-0 top-0 transition-transform duration-500"
+            style={styles.items[index]}
+          >
             <div
-              key={image.id}
-              className="absolute left-0 top-0 transition-transform"
-              style={styles.items[index]}
+              className="animate-fade-in opacity-0"
+              style={{ '--delay': index } as React.CSSProperties}
             >
-              <div
-                className="animate-fade-in opacity-0"
-                style={{ '--delay': index } as React.CSSProperties}
-              >
-                <ImageCard image={image} onPress={handleModalOpen} />
-              </div>
+              <ImageCard image={image} onPress={handleModalOpen} />
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )
