@@ -1,10 +1,11 @@
 import { useRouter } from '@/hooks/useRouter'
 import { SearchParams, YandeImage } from '@/interfaces/image'
-import { Button, Input } from '@nextui-org/react'
-import { useCallback, useEffect, useState } from 'react'
+import { Button } from '@nextui-org/react'
+import { useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
 import Icon from './Icon'
 import MyAutoComplete from './MyAutoComplete'
+import Page from './Page'
 
 interface Props {
   params: SearchParams
@@ -46,11 +47,6 @@ export default function SearchForm(props: Props): React.ReactElement {
     [params.limit, params.tags, pathname, push]
   )
 
-  const [page, setPage] = useState(params.page)
-  useEffect(() => {
-    setPage(params.page)
-  }, [params.page])
-
   return (
     <>
       <form onSubmit={handleTagSubmit}>
@@ -68,21 +64,9 @@ export default function SearchForm(props: Props): React.ReactElement {
         <Icon name="chevron_left" />
       </Button>
       <form onSubmit={handlePageSubmit}>
-        <Input
-          variant="bordered"
-          size="sm"
-          radius="none"
-          name="page"
-          value={page as unknown as string}
-          onValueChange={(value) => setPage(Number(value))}
-          classNames={{
-            base: 'w-12 shrink-0',
-            input: 'text-center text-small',
-            inputWrapper: 'rounded-full',
-          }}
-        />
+        <Page defaultValue={params.page} />
+        <button type="submit" className="hidden"></button>
       </form>
-      <button type="submit" className="hidden"></button>
       <Button
         size="lg"
         variant="flat"

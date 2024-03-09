@@ -47,12 +47,13 @@ export default function ImageCard(props: Props): React.ReactElement {
   return (
     <Card
       shadow="sm"
+      radius="sm"
       isPressable
       className="size-full"
       onClick={() => onPress(id)}
     >
       <div
-        className="overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="w-full overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${preview_url})`,
         }}
@@ -68,7 +69,7 @@ export default function ImageCard(props: Props): React.ReactElement {
       </div>
       {/* 渐变遮罩 */}
       <div className="pointer-events-none absolute bottom-0 z-10 h-1/2 w-full bg-gradient-to-t from-black/50"></div>
-      <CardFooter className="absolute bottom-0 z-10 justify-between py-2 text-small">
+      <CardFooter className="absolute bottom-0 z-10 justify-between p-2 text-small">
         <Link
           href={`https://yande.re/post/show/${id}`}
           isExternal

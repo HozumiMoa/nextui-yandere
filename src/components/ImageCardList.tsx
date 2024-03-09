@@ -14,7 +14,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   const { list, handleModalOpen } = props
   const { isMobile } = useDevice()
 
-  const gap = remToPx(1)
+  const gap = remToPx(0.75)
   const columnWidth = isMobile ? (window.innerWidth - 3 * gap) / 2 : 300
   const [containerWidth, setContainerWidth] = useState(window.innerWidth)
   const columnCount = Math.max(
@@ -72,22 +72,24 @@ export default function ImageCardList(props: Props): React.ReactElement {
   }, [handleResize])
 
   return (
-    <div ref={containerRef} className="flex w-full justify-center">
-      <div className="relative" style={styles.masonry}>
-        {list.map((image, index) => (
-          <div
-            key={image.id}
-            className="absolute left-0 top-0 transition-transform"
-            style={styles.items[index]}
-          >
+    <div className="px-3 py-3 pb-28 sm:px-8">
+      <div ref={containerRef} className="flex justify-center">
+        <div className="relative" style={styles.masonry}>
+          {list.map((image, index) => (
             <div
-              className="animate-fade-in opacity-0"
-              style={{ '--delay': index } as React.CSSProperties}
+              key={image.id}
+              className="absolute left-0 top-0 transition-transform"
+              style={styles.items[index]}
             >
-              <ImageCard image={image} onPress={handleModalOpen} />
+              <div
+                className="animate-fade-in opacity-0"
+                style={{ '--delay': index } as React.CSSProperties}
+              >
+                <ImageCard image={image} onPress={handleModalOpen} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   )

@@ -91,10 +91,8 @@ function App() {
 
   return (
     <>
-      <MyNavbar params={params} list={imageList} />
-      <div className="px-4 py-4 pb-28 sm:px-8">
+      <MyNavbar params={params} list={imageList} />      
         <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
-      </div>
       {activeImage && (
         <ModalImage
           isOpen={isOpen}
