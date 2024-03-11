@@ -1,5 +1,6 @@
 import { YandeImage } from '@/interfaces/image'
 import { remToPx } from '@/utils'
+import { motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import ImageCard from './ImageCard'
@@ -56,7 +57,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
     const getObserver = () => {
       if (observerRef.current) return observerRef.current
       const observer = new ResizeObserver((entries) => {
-        handleResize(entries[0].contentRect.width)
+        handleResize(entries[0].target.firstElementChild!.clientWidth)
       })
       observerRef.current = observer
       return observer
@@ -71,20 +72,21 @@ export default function ImageCardList(props: Props): React.ReactElement {
   }, [handleResize])
 
   return (
-    <div ref={containerRef} className="container relative mx-auto pb-28">
-      <div style={styles.masonry}>
+    <div ref={containerRef} className="container mx-auto mb-28 p-3 pb-0">
+      <div className="relative" style={styles.masonry}>
         {list.map((image, index) => (
           <div
             key={image.id}
-            className="absolute left-0 top-0 transition-transform duration-500"
+            className="absolute left-0 top-0 transition-transform !duration-500"
             style={styles.items[index]}
           >
-            <div
-              className="animate-fade-in opacity-0"
-              style={{ '--delay': index } as React.CSSProperties}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.1, type: 'spring' }}
             >
               <ImageCard image={image} onPress={handleModalOpen} />
-            </div>
+            </motion.div>
           </div>
         ))}
       </div>
