@@ -135,9 +135,9 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         }
       />
       <div
-        className="absolute w-full origin-bottom -translate-y-[calc(100%+3.25em)] scale-y-80 rounded-md
+        className="absolute w-full origin-bottom -translate-y-[calc(100%+3.25em)] scale-0 rounded-md
                   bg-background/90 p-1 opacity-0 backdrop-blur-md backdrop-saturate-150
-                  transition-transform-opacity group-focus-within:scale-y-100 group-focus-within:opacity-100"
+                  transition-transform-opacity group-focus-within:scale-100 group-focus-within:opacity-100"
       >
         <Listbox
           ref={listboxRef}
