@@ -24,7 +24,7 @@ function App() {
   const direction = useRef<'prev' | 'next'>('prev') // 模态框内点击上一张或下一张图片的方向
 
   useEffect(() => {
-    scrollTo({ top: 0, behavior: 'smooth' })
+    scrollTo({ top: 0 })
   }, [params.page, params.tags])
 
   // 获取图片列表后，根据模态框内点击上一张或下一张图片的方向，更新当前选中的图片
@@ -91,8 +91,8 @@ function App() {
 
   return (
     <>
-      <MyNavbar params={params} list={imageList} />      
-        <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
+      <MyNavbar params={params} list={imageList} />
+      <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
       {activeImage && (
         <ModalImage
           isOpen={isOpen}
