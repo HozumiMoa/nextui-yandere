@@ -1,6 +1,6 @@
 import { YandeImage } from '@/interfaces/image'
 import { remToPx } from '@/utils'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import ImageCard from './ImageCard'
@@ -74,24 +74,21 @@ export default function ImageCardList(props: Props): React.ReactElement {
   return (
     <div ref={containerRef} className="container mx-auto mb-28 p-3 pb-0">
       <div className="relative" style={styles.masonry}>
-        <AnimatePresence>
-          {list.map((image, index) => (
-            <div
-              key={image.id}
-              className="absolute left-0 top-0 transition-transform !duration-500"
-              style={styles.items[index]}
+        {list.map((image, index) => (
+          <div
+            key={image.id}
+            className="absolute left-0 top-0 transition-transform !duration-500"
+            style={styles.items[index]}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.1, type: 'spring' }}
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1, type: 'spring' }}
-                exit={{ opacity: 0, scale: 0.95 }}
-              >
-                <ImageCard image={image} onPress={handleModalOpen} />
-              </motion.div>
-            </div>
-          ))}
-        </AnimatePresence>
+              <ImageCard image={image} onPress={handleModalOpen} />
+            </motion.div>
+          </div>
+        ))}
       </div>
     </div>
   )
