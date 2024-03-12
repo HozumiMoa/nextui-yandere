@@ -91,8 +91,12 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   const listBoxItem = (tag: Tag) => {
     const color = map.get(tag.type) || ''
     const lastInputValue = inputValue.split(' ').at(-1) || ''
+    const escapedInputValue = lastInputValue.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&'
+    )
     const highlightedName = tag.name.replace(
-      new RegExp(`(${lastInputValue})`, 'g'),
+      new RegExp(`(${escapedInputValue})`, 'g'),
       '<strong>$1</strong>'
     )
     return (
@@ -135,7 +139,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         }
       />
       <div
-        className="absolute w-full origin-bottom -translate-y-[calc(100%+3.25em)] scale-0 rounded-md
+        className="absolute w-full origin-bottom -translate-y-[calc(100%+3.25rem)] scale-0 rounded-md
                   bg-background/90 p-1 opacity-0 backdrop-blur-md backdrop-saturate-150
                   transition-transform-opacity group-focus-within:scale-100 group-focus-within:opacity-100"
       >
