@@ -19,17 +19,18 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
   }
 
   const sourceButton = () => {
-    if (!source.includes('twitter') && !source.includes('pximg')) {
-      return null
-    }
-
+    if (!source) return null
     let href = source
-    let logo = twitterLogo
+    let logo = null
 
-    if (source.includes('pximg')) {
+    if (source.includes('twitter')) {
+      logo = <img src={twitterLogo} alt="source" />
+    } else if (source.includes('pximg')) {
       const pixivId = source.split('/').pop()!.split('_').shift()
       href = `https://www.pixiv.net/artworks/${pixivId}`
-      logo = pixivLogo
+      logo = <img src={pixivLogo} alt="source" />
+    } else {
+      logo = <Icon name="public" />
     }
 
     return (
@@ -40,7 +41,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
         color="foreground"
         className="size-6 overflow-hidden rounded-full p-0"
       >
-        <img src={logo} alt="source" />
+        {logo}
       </Link>
     )
   }

@@ -45,27 +45,28 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     setTagList(newTagList)
   }, 300)
 
-  // 选择自动补全的项时，更新搜索框的值
-  const handleSelect = useCallback(
-    (key: React.Key) => {
-      const newValue = (inputValue.split(' ').slice(0, -1).join(' ') +
-        key) as string
-      setInputValue(newValue)
-      handleTagListChange(newValue)
-      inputRef.current?.focus()
-    },
-    [handleTagListChange, inputValue]
-  )
-
   // 搜索框的值改变时的逻辑
   const handleValueChange = useCallback(
     (value: string) => {
       const newValue = value.replace(/\s+/g, ' ')
       setInputValue(newValue)
-
       handleTagListChange(newValue)
     },
     [handleTagListChange]
+  )
+
+  // 选择自动补全的项时，更新搜索框的值
+  const handleSelect = useCallback(
+    (key: React.Key) => {
+      const newValue = inputValue
+        .split(' ')
+        .slice(0, -1)
+        .concat(key as string)
+        .join(' ')
+      handleValueChange(newValue)
+      inputRef.current?.focus()
+    },
+    [handleValueChange, inputValue]
   )
 
   // 搜索框按下键盘时的逻辑
