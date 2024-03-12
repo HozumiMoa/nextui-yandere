@@ -51,9 +51,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
       const newValue = (inputValue.split(' ').slice(0, -1).join(' ') +
         key) as string
       setInputValue(newValue)
+      handleTagListChange(newValue)
       inputRef.current?.focus()
     },
-    [inputValue]
+    [handleTagListChange, inputValue]
   )
 
   // 搜索框的值改变时的逻辑
