@@ -13,13 +13,6 @@ interface Props {
   defaultValue: string
 }
 
-const map = new Map([
-  [1, 'text-warning'], // Artist
-  [3, 'text-secondary'], // Copyright
-  [4, 'text-success'], // Character
-  [5, 'text-primary'], // Circle
-])
-
 export default function MyAutoComplete(props: Props): React.ReactElement {
   const { defaultValue, name } = props
   const [inputValue, setInputValue] = useState<string>(defaultValue) // 搜索框的值
@@ -122,7 +115,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="group relative transition-width sm:w-60 sm:focus-within:w-80">
+    <div className="group relative w-60">
       <Input
         placeholder="Type to search..."
         isClearable
@@ -140,11 +133,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
           <Icon name="search" className="pointer-events-none select-none" />
         }
       />
-      <div
-        className="absolute w-full origin-bottom -translate-y-[calc(100%+3.25rem)] scale-0 rounded-md
-                  bg-background/90 p-1 opacity-0 backdrop-blur-md backdrop-saturate-150
-                  transition-transform-opacity group-focus-within:scale-100 group-focus-within:opacity-100"
-      >
+      <div className="absolute grid w-full -translate-y-[calc(100%+3.25rem)] rounded-md bg-background/90 p-1 opacity-0 backdrop-blur-md backdrop-saturate-150 transition-opacity group-focus-within:opacity-100">
         <Listbox
           ref={listboxRef}
           items={tagList}
@@ -159,3 +148,10 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     </div>
   )
 }
+
+const map = new Map([
+  [1, 'text-warning'], // Artist
+  [3, 'text-secondary'], // Copyright
+  [4, 'text-success'], // Character
+  [5, 'text-primary'], // Circle
+])
