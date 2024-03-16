@@ -6,9 +6,9 @@ interface Props {
 }
 
 export default function Page({ defaultValue }: Props) {
-  const [page, setPage] = useState(defaultValue)
+  const [page, setPage] = useState(defaultValue.toString())
   useEffect(() => {
-    setPage(defaultValue)
+    setPage(defaultValue.toString())
   }, [defaultValue])
 
   return (
@@ -17,8 +17,8 @@ export default function Page({ defaultValue }: Props) {
       size="sm"
       radius="none"
       name="page"
-      value={page as unknown as string}
-      onValueChange={(value) => setPage(Number(value))}
+      value={page}
+      onValueChange={(value) => setPage(value)}
       classNames={{
         base: 'w-12 shrink-0',
         input: 'text-center text-small',

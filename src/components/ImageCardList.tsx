@@ -15,7 +15,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
 
   const gap = remToPx(0.75)
   const columnWidth = 300
-  const [containerWidth, setContainerWidth] = useState(window.innerWidth)
+  const [containerWidth, setContainerWidth] = useState(2 * columnWidth + gap)
   const columnCount = Math.max(
     2,
     Math.floor((containerWidth + gap) / (columnWidth + gap))
@@ -73,11 +73,11 @@ export default function ImageCardList(props: Props): React.ReactElement {
 
   return (
     <div ref={containerRef} className="container mx-auto mb-28 p-3 pb-0">
-      <div className="relative" style={styles.masonry}>
+      <ul className="relative" style={styles.masonry}>
         {list.map((image, index) => (
-          <div
+          <li
             key={image.id}
-            className="absolute left-0 top-0 transition-transform !duration-500"
+            className="absolute left-0 top-0 transition-[transform,width,height] !duration-500"
             style={styles.items[index]}
           >
             <motion.div
@@ -87,9 +87,9 @@ export default function ImageCardList(props: Props): React.ReactElement {
             >
               <ImageCard image={image} onPress={handleModalOpen} />
             </motion.div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   )
 }
