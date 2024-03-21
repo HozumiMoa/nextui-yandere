@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 interface Props {
   name: string
   className?: string
@@ -6,9 +8,11 @@ interface Props {
 
 export default function Icon(props: Props): React.ReactElement {
   const { name, className, ...res } = props
-  const classes = ['material-symbols-rounded text-2xl', className].join(' ')
   return (
-    <span className={classes} {...res}>
+    <span
+      className={clsx('material-symbols-rounded text-2xl', className)}
+      {...res}
+    >
       {name}
     </span>
   )

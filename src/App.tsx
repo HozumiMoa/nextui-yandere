@@ -1,7 +1,6 @@
 import { useDisclosure } from '@nextui-org/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLoaderData, useLocation } from 'react-router-dom'
-import './App.css'
 import ImageCardList from './components/ImageCardList'
 import ModalImage from './components/ModalImage'
 import MyNavbar from './components/MyNavbar'
