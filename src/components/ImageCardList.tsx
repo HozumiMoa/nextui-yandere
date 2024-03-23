@@ -77,7 +77,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
         {list.map((image, index) => (
           <li
             key={image.id}
-            className="absolute left-0 top-0 transition-[transform,width,height] !duration-500"
+            className="absolute left-0 top-0 transition-transform !duration-500"
             style={styles.items[index]}
           >
             <motion.div
