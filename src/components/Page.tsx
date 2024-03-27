@@ -13,6 +13,7 @@ export default function Page({ defaultValue }: Props) {
 
   return (
     <Input
+      type="text"
       variant="bordered"
       size="sm"
       radius="none"

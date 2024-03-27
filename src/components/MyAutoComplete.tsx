@@ -118,6 +118,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
     <div className="group relative w-60">
       <Input
         placeholder="Type to search..."
+        type="text"
         isClearable
         size="sm"
         variant="bordered"
