@@ -11,12 +11,12 @@ export default {
     extend: {
       keyframes: {
         fadeIn: {
-          from: { transform: 'scale(0.8)' },
-          to: { opacity: 1 },
+          from: { transform: 'scale(0.9)', opacity: 0 },
+          to: { transform: 'scale(1)', opacity: 1 },
         },
       },
       animation: {
-        'fade-in': 'fadeIn 1s ease-out calc(0.1s * var(--delay)) forwards',
+        'fade-in': 'fadeIn 1s ease-out calc(0.1s * var(--delay)) both',
       },
     },
   },

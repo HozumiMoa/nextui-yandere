@@ -81,7 +81,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
             style={styles.items[index]}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1, type: 'spring' }}
             >

@@ -18,34 +18,6 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
     navigator.clipboard.writeText(tag)
   }
 
-  const sourceButton = () => {
-    if (!source) return null
-    let href = source
-    let logo = null
-
-    if (source.includes('twitter')) {
-      logo = <img src={twitterLogo} alt="source" />
-    } else if (source.includes('pximg')) {
-      const pixivId = source.split('/').pop()!.split('_').shift()
-      href = `https://www.pixiv.net/artworks/${pixivId}`
-      logo = <img src={pixivLogo} alt="source" />
-    } else {
-      logo = <Icon name="public" />
-    }
-
-    return (
-      <Link
-        isBlock
-        href={href}
-        isExternal
-        color="foreground"
-        className="size-6 overflow-hidden rounded-full p-0"
-      >
-        {logo}
-      </Link>
-    )
-  }
-
   return (
     <div className="flex max-w-60 flex-col gap-1 text-xs">
       <div className="flex flex-wrap gap-x-2 gap-y-1">
@@ -84,11 +56,38 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
             PNG
           </Link>
         )}
-        {sourceButton()}
+        <SourceBtn source={source} />
         <span className="ml-auto">
           {width}x{height}
         </span>
       </div>
     </div>
+  )
+}
+
+function SourceBtn({ source }: { source: string }) {
+  let href = source
+  let logo = null
+
+  if (source.includes('twitter')) {
+    logo = <img src={twitterLogo} alt="source" />
+  } else if (source.includes('pximg')) {
+    const pixivId = source.split('/').pop()!.split('_').shift()
+    href = `https://www.pixiv.net/artworks/${pixivId}`
+    logo = <img src={pixivLogo} alt="source" />
+  } else {
+    logo = <Icon name="public" />
+  }
+
+  return (
+    <Link
+      isBlock
+      href={href}
+      isExternal
+      color="foreground"
+      className="size-6 overflow-hidden rounded-full p-0"
+    >
+      {logo}
+    </Link>
   )
 }
