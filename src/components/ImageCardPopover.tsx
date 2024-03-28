@@ -65,7 +65,8 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
   )
 }
 
-function SourceBtn({ source }: { source: string }) {
+function SourceBtn({ source }: { source?: string }) {
+  if (!source) return null
   let href = source
   let logo = null
 
