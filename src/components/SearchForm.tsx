@@ -47,6 +47,18 @@ export default function SearchForm(props: Props): React.ReactElement {
     [params.limit, params.tags, pathname, push]
   )
 
+  const handleNextPage = () => {
+    const isLastPage = list.length < params.limit
+    if (isLastPage && /^date:\d{4}-\d{2}-\d{2}$/.test(params.tags)) {
+      const date = new Date(params.tags.split(':')[1])
+      date.setDate(date.getDate() + 1)
+      const newDate = date.toISOString().split('T')[0]
+      push(pathname, { ...params, tags: `date:${newDate}`, page: 1 })
+    } else {
+      push(pathname, { ...params, page: params.page + 1 })
+    }
+  }
+
   return (
     <>
       <form onSubmit={handleTagSubmit}>
@@ -72,8 +84,7 @@ export default function SearchForm(props: Props): React.ReactElement {
         variant="flat"
         isIconOnly
         className="rounded-full transition-transform hover:-translate-y-1"
-        onPress={() => push(pathname, { ...params, page: params.page + 1 })}
-        isDisabled={list.length < params.limit}
+        onPress={handleNextPage}
       >
         <Icon name="chevron_right" />
       </Button>
