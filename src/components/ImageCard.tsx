@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
   Tooltip,
 } from '@nextui-org/react'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { ReactNode, useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import Icon from './Icon'
 import ImageCardPopover from './ImageCardPopover'
@@ -24,25 +24,25 @@ export default function ImageCard(props: Props): React.ReactElement {
   const { id, preview_url, sample_url, sample_width, sample_height } = image
 
   const [url, setUrl] = useState(sample_url)
-  const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
-  const timeout = useRef<NodeJS.Timeout | null>(null)
+  // const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
+  // const timeout = useRef<NodeJS.Timeout | null>(null)
 
-  // 图片加载失败时的处理
+  // FIXME: 图片加载失败时的处理
   const handleError = () => {
     setUrl(preview_url)
-    if (errorCount.current >= 3) return
-    errorCount.current++
-    timeout.current && clearTimeout(timeout.current)
-    timeout.current = setTimeout(() => {
-      setUrl(sample_url)
-    }, 0)
+    // if (errorCount.current >= 3) return
+    // errorCount.current++
+    // timeout.current && clearTimeout(timeout.current)
+    // timeout.current = setTimeout(() => {
+    //   setUrl(sample_url)
+    // }, 0)
   }
 
-  useEffect(() => {
-    return () => {
-      timeout.current && clearTimeout(timeout.current)
-    }
-  }, [])
+  // useEffect(() => {
+  //   return () => {
+  //     timeout.current && clearTimeout(timeout.current)
+  //   }
+  // }, [])
 
   return (
     <Card
