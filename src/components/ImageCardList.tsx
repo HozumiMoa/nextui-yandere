@@ -14,7 +14,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   const { list, handleModalOpen } = props
 
   const gap = remToPx(0.75)
-  const columnWidth = 300
+  const columnWidth = 250
   const [containerWidth, setContainerWidth] = useState(2 * columnWidth + gap)
   const columnCount = Math.max(
     2,
