@@ -38,7 +38,9 @@ export default function Setting(props: Props): React.ReactElement {
         />
       </PopoverTrigger>
       <PopoverContent className="flex w-40 flex-col gap-4">
-        <div className="pt-2 text-small font-bold text-pink-400">施工中...</div>
+        <div className="pt-2 text-small font-bold text-red-500">
+          预览图暂时加载不出来
+        </div>
         <Slider
           label="每页数量"
           size="sm"
