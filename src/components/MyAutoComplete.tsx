@@ -120,7 +120,6 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         placeholder="Type to search..."
         type="text"
         isClearable
-        size="sm"
         variant="bordered"
         ref={inputRef}
         name={name}
@@ -128,7 +127,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         onValueChange={handleValueChange}
         onKeyUp={handleKeyUp}
         classNames={{
-          inputWrapper: 'rounded-full',
+          inputWrapper: 'rounded-full h-12',
         }}
         startContent={
           <Icon name="search" className="pointer-events-none select-none" />

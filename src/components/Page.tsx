@@ -15,7 +15,6 @@ export default function Page({ defaultValue }: Props) {
     <Input
       type="text"
       variant="bordered"
-      size="sm"
       radius="none"
       name="page"
       value={page}
@@ -23,7 +22,7 @@ export default function Page({ defaultValue }: Props) {
       classNames={{
         base: 'w-12 shrink-0',
         input: 'text-center text-small',
-        inputWrapper: 'rounded-full',
+        inputWrapper: 'rounded-full h-12',
       }}
     />
   )
