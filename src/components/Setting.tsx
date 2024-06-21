@@ -33,7 +33,7 @@ export default function Setting(props: Props): React.ReactElement {
           as="button"
           isBordered
           color="danger"
-          src="https://yande.re/data/avatars/241578.jpg"
+          src={new URL('/shiina.png', import.meta.url).toString()}
           className="flex-shrink-0"
         />
       </PopoverTrigger>
