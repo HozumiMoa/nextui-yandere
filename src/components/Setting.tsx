@@ -9,8 +9,8 @@ import {
   Slider,
   Switch,
 } from '@nextui-org/react'
+import { Moon, Sun } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
-import Icon from './Icon'
 
 interface Props {
   params: SearchParams
@@ -59,8 +59,8 @@ export default function Setting(props: Props): React.ReactElement {
           }}
           size="sm"
           className="min-w-full justify-between"
-          startContent={<Icon name="light_mode" />}
-          endContent={<Icon name="dark_mode" />}
+          startContent={<Sun />}
+          endContent={<Moon />}
         >
           Dark mode
         </Switch>

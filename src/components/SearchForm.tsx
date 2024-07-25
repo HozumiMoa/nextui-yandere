@@ -3,9 +3,9 @@ import { SearchParams, YandeImage } from '@/interfaces/image'
 import { Button } from '@nextui-org/react'
 import { useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
-import Icon from './Icon'
 import MyAutoComplete from './MyAutoComplete'
 import Page from './Page'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface Props {
   params: SearchParams
@@ -73,7 +73,7 @@ export default function SearchForm(props: Props): React.ReactElement {
         onPress={() => push(pathname, { ...params, page: params.page - 1 })}
         isDisabled={params.page === 1}
       >
-        <Icon name="chevron_left" />
+        <ChevronLeft />
       </Button>
       <form onSubmit={handlePageSubmit}>
         <Page defaultValue={params.page} />
@@ -86,7 +86,7 @@ export default function SearchForm(props: Props): React.ReactElement {
         className="rounded-full transition-transform hover:-translate-y-1"
         onPress={handleNextPage}
       >
-        <Icon name="chevron_right" />
+        <ChevronRight />
       </Button>
     </>
   )

@@ -11,8 +11,8 @@ import {
 } from '@nextui-org/react'
 import { ReactNode, useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
-import Icon from './Icon'
 import ImageCardPopover from './ImageCardPopover'
+import { EllipsisVertical } from 'lucide-react'
 
 interface Props {
   image: YandeImage
@@ -83,7 +83,7 @@ export default function ImageCard(props: Props): React.ReactElement {
         <More
           trigger={
             <Button isIconOnly variant="light" className="rounded-full">
-              <Icon name="more_vert" className="text-white" />
+              <EllipsisVertical />
             </Button>
           }
           content={<ImageCardPopover image={image} />}

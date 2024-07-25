@@ -2,7 +2,7 @@ import pixivLogo from '@/assets/pixiv-logo.png'
 import twitterLogo from '@/assets/twitter-logo.png'
 import { YandeImage } from '@/interfaces/image'
 import { Divider, Link } from '@nextui-org/react'
-import Icon from './Icon'
+import { Download, Globe } from 'lucide-react'
 
 interface Props {
   image: YandeImage
@@ -41,7 +41,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
           color="foreground"
           className="h-8 text-xs after:rounded-full"
         >
-          <Icon name="download" />
+          <Download />
           JPEG
         </Link>
         {isFilePng && (
@@ -52,7 +52,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
             color="foreground"
             className="h-8 text-xs after:rounded-full"
           >
-            <Icon name="download" />
+            <Download />
             PNG
           </Link>
         )}
@@ -77,7 +77,7 @@ function SourceBtn({ source }: { source?: string }) {
     href = `https://www.pixiv.net/artworks/${pixivId}`
     logo = <img src={pixivLogo} alt="source" />
   } else {
-    logo = <Icon name="public" />
+    logo = <Globe />
   }
 
   return (
