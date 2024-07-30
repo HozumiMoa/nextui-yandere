@@ -92,14 +92,14 @@ function App() {
     <>
       <MyNavbar params={params} list={imageList} />
       <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
-      {activeImage && (
+      {/* {activeImage && (
         <ModalImage
           isOpen={isOpen}
           image={activeImage}
           onOpenChange={onOpenChange}
           onModalPageChange={handleModalPageChange}
         />
-      )}
+      )} */}
     </>
   )
 }
