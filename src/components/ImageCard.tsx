@@ -82,7 +82,11 @@ export default function ImageCard(props: Props): React.ReactElement {
         </Link>
         <More
           trigger={
-            <Button isIconOnly variant="light" className="rounded-full">
+            <Button
+              isIconOnly
+              variant="light"
+              className="rounded-full text-white"
+            >
               <EllipsisVertical />
             </Button>
           }

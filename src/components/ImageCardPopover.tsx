@@ -25,7 +25,8 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
           <Link
             key={tag}
             color="foreground"
-            className="text-xs"
+            underline="active"
+            className="cursor-pointer text-xs"
             onPress={() => handleTagPress(tag)}
           >
             {tag}
