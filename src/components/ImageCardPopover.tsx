@@ -19,7 +19,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="flex max-w-60 flex-col gap-1 text-xs">
+    <div className="flex max-w-min flex-col gap-2 p-2">
       <div className="flex flex-wrap gap-x-2 gap-y-1">
         {tags.split(' ').map((tag) => (
           <Link
@@ -33,7 +33,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
         ))}
       </div>
       <Divider />
-      <div className="flex items-center justify-start gap-1">
+      <div className="flex items-center justify-start gap-1 text-xs">
         <Link
           isBlock
           href={jpeg_url}
@@ -41,7 +41,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
           color="foreground"
           className="h-8 text-xs after:rounded-full"
         >
-          <Download />
+          <Download className="size-6" />
           JPEG
         </Link>
         {isFilePng && (
@@ -52,7 +52,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
             color="foreground"
             className="h-8 text-xs after:rounded-full"
           >
-            <Download />
+            <Download className="size-6" />
             PNG
           </Link>
         )}
@@ -67,6 +67,8 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
 
 function SourceBtn({ source }: { source?: string }) {
   if (!source) return null
+  if (!source.startsWith('http') && !source.startsWith('https')) return null
+
   let href = source
   let logo = null
 

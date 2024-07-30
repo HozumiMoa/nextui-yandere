@@ -59,8 +59,8 @@ export default function Setting(props: Props): React.ReactElement {
           }}
           size="sm"
           className="min-w-full justify-between"
-          startContent={<Sun />}
-          endContent={<Moon />}
+          startContent={<Moon />}
+          endContent={<Sun />}
         >
           Dark mode
         </Switch>
