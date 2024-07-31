@@ -73,7 +73,7 @@ export default function SearchForm(props: Props): React.ReactElement {
         onPress={() => push(pathname, { ...params, page: params.page - 1 })}
         isDisabled={params.page === 1}
       >
-        <ChevronLeft />
+        <ChevronLeft className="size-6" />
       </Button>
       <form onSubmit={handlePageSubmit}>
         <Page defaultValue={params.page} />
@@ -86,7 +86,7 @@ export default function SearchForm(props: Props): React.ReactElement {
         className="rounded-full transition-transform hover:-translate-y-1"
         onPress={handleNextPage}
       >
-        <ChevronRight />
+        <ChevronRight className="size-6" />
       </Button>
     </>
   )

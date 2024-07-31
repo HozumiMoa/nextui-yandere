@@ -87,7 +87,7 @@ export default function ImageCard(props: Props): React.ReactElement {
               variant="light"
               className="rounded-full text-white"
             >
-              <EllipsisVertical />
+              <EllipsisVertical className="size-6" />
             </Button>
           }
           content={<ImageCardPopover image={image} />}
