@@ -75,7 +75,7 @@ function SourceBtn({ source }: { source?: string }) {
 
   if (source.includes('twitter')) {
     logo = <img src={twitterLogo} alt="source" />
-  } else if (source.includes('pximg')) {
+  } else if (source.includes('pximg') || source.includes('pixiv')) {
     const pixivId = source.split('/').pop()!.split('_').shift()
     href = `https://www.pixiv.net/artworks/${pixivId}`
     logo = <img src={pixivLogo} alt="source" />
