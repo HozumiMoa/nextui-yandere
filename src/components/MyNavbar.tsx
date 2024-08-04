@@ -13,7 +13,7 @@ export default function MyNavbar(props: Props): React.ReactElement {
   return (
     <nav
       id="navbar-container"
-      className="fixed bottom-0 z-50 max-h-20 w-full sm:left-[50%] sm:m-4 sm:w-auto sm:-translate-x-1/2"
+      className="sticky bottom-0 z-50 max-h-20 w-full sm:bottom-4 sm:mx-auto sm:my-4 sm:w-max"
     >
       <motion.div
         className="flex size-full items-center justify-center gap-4 bg-background/70 p-4 

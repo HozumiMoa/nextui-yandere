@@ -72,7 +72,7 @@ export default function ImageCardList(props: Props): React.ReactElement {
   }, [handleResize])
 
   return (
-    <div ref={containerRef} className="container mx-auto mb-28 p-3 pb-0">
+    <div ref={containerRef} className="container mx-auto p-3 pb-0">
       <ul className="relative" style={styles.masonry}>
         {list.map((image, index) => (
           <li

@@ -90,8 +90,8 @@ function App() {
 
   return (
     <>
-      <MyNavbar params={params} list={imageList} />
       <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
+      <MyNavbar params={params} list={imageList} />
       {false && (
         <ModalImage
           isOpen={isOpen}
