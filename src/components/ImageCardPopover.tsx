@@ -1,8 +1,7 @@
-import pixivLogo from '@/assets/pixiv-logo.png'
-import twitterLogo from '@/assets/twitter-logo.png'
+import pixivLogo from '@/assets/pixiv.svg'
 import { YandeImage } from '@/interfaces/image'
 import { Divider, Link } from '@nextui-org/react'
-import { Download, Globe } from 'lucide-react'
+import { Download, Globe, Twitter } from 'lucide-react'
 
 interface Props {
   image: YandeImage
@@ -73,8 +72,8 @@ function SourceBtn({ source }: { source?: string }) {
   let href = source
   let logo = null
 
-  if (source.includes('twitter')) {
-    logo = <img src={twitterLogo} alt="source" />
+  if (source.includes('twitter') || source.includes('twimg')) {
+    logo = <Twitter color="#00bbff" />
   } else if (source.includes('pximg') || source.includes('pixiv')) {
     const pixivId = source.split('/').pop()!.split('_').shift()
     href = `https://www.pixiv.net/artworks/${pixivId}`
@@ -89,7 +88,7 @@ function SourceBtn({ source }: { source?: string }) {
       href={href}
       isExternal
       color="foreground"
-      className="size-6 overflow-hidden rounded-full p-0"
+      className="flex size-6 items-center justify-center overflow-hidden rounded-full p-0"
     >
       {logo}
     </Link>
