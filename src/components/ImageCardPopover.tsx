@@ -72,7 +72,7 @@ function SourceBtn({ source }: { source?: string }) {
   let href = source
   let logo = null
 
-  if (source.includes('twitter') || source.includes('twimg')) {
+  if (source.includes('twitter') || source.includes('x.com')) {
     logo = <Twitter color="#00bbff" />
   } else if (source.includes('pximg') || source.includes('pixiv')) {
     const pixivId = source.split('/').pop()!.split('_').shift()
