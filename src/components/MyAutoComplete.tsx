@@ -131,7 +131,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
         }}
         startContent={<Search className="pointer-events-none size-6" />}
       />
-      <div className="pointer-events-none absolute grid w-full -translate-y-[calc(100%+3.25rem)] rounded-md bg-background/90 p-1 opacity-0 backdrop-blur-md backdrop-saturate-150 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+      <div className="pointer-events-none absolute grid w-full -translate-y-[calc(100%+3.25rem)] rounded-md bg-background/90 opacity-0 backdrop-blur-md backdrop-saturate-150 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100">
         <Listbox
           ref={listboxRef}
           items={tagList}
@@ -139,6 +139,7 @@ export default function MyAutoComplete(props: Props): React.ReactElement {
           color="primary"
           aria-label="tags"
           onAction={handleSelect}
+          className="w-60"
         >
           {listBoxItem}
         </Listbox>
