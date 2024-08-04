@@ -18,7 +18,7 @@ export default function ImageCardPopover(props: Props): React.ReactElement {
   }
 
   return (
-    <div className="flex max-w-min flex-col gap-2 p-2">
+    <div className="flex max-w-min flex-col gap-1 p-1">
       <div className="flex flex-wrap gap-x-2 gap-y-1">
         {tags.split(' ').map((tag) => (
           <Link
