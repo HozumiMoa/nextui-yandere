@@ -92,10 +92,10 @@ function App() {
     <>
       <ImageCardList list={imageList} handleModalOpen={handleModalOpen} />
       <MyNavbar params={params} list={imageList} />
-      {false && (
+      {activeImage && (
         <ModalImage
           isOpen={isOpen}
-          image={activeImage!}
+          image={activeImage}
           onOpenChange={onOpenChange}
           onModalPageChange={handleModalPageChange}
         />

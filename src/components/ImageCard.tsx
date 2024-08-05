@@ -12,6 +12,7 @@ import {
 import { ReactNode, useState } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import ImageCardPopover from './ImageCardPopover'
+import { imageAccelerate } from '@/utils'
 import { EllipsisVertical } from 'lucide-react'
 
 interface Props {
@@ -23,7 +24,7 @@ export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress } = props
   const { id, preview_url, sample_url, sample_width, sample_height } = image
 
-  const [url, setUrl] = useState(sample_url)
+  const [url, setUrl] = useState(imageAccelerate(sample_url))
   // const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
   // const timeout = useRef<NodeJS.Timeout | null>(null)
 

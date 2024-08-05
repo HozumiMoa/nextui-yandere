@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { YandeImage } from '../interfaces/image'
 import { AnimatePresence, motion } from 'framer-motion'
+import { imageAccelerate } from '@/utils'
 
 interface Props {
   isOpen: boolean
@@ -53,7 +54,7 @@ export default function ModalImage(props: Props): React.ReactElement {
           >
             <img
               className="size-full object-cover"
-              src={sample_url}
+              src={imageAccelerate(sample_url)}
               width={sample_width}
               height={sample_height}
             />
