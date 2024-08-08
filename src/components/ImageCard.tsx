@@ -9,11 +9,12 @@ import {
   PopoverTrigger,
   Tooltip,
 } from '@nextui-org/react'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useRef } from 'react'
 import type { YandeImage } from '../interfaces/image'
 import ImageCardPopover from './ImageCardPopover'
 import { imageAccelerate } from '@/utils'
 import { EllipsisVertical } from 'lucide-react'
+import { useInView } from 'framer-motion'
 
 interface Props {
   image: YandeImage
@@ -24,26 +25,8 @@ export default function ImageCard(props: Props): React.ReactElement {
   const { image, onPress } = props
   const { id, preview_url, sample_url, sample_width, sample_height } = image
 
-  const [url, setUrl] = useState(imageAccelerate(sample_url))
-  // const errorCount = useRef(0) // 图片加载失败次数，超过 3 次则不再尝试加载
-  // const timeout = useRef<NodeJS.Timeout | null>(null)
-
-  // FIXME: 图片加载失败时的处理
-  const handleError = () => {
-    setUrl(preview_url)
-    // if (errorCount.current >= 3) return
-    // errorCount.current++
-    // timeout.current && clearTimeout(timeout.current)
-    // timeout.current = setTimeout(() => {
-    //   setUrl(sample_url)
-    // }, 0)
-  }
-
-  // useEffect(() => {
-  //   return () => {
-  //     timeout.current && clearTimeout(timeout.current)
-  //   }
-  // }, [])
+  const cardRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(cardRef, { once: true })
 
   return (
     <Card
@@ -52,6 +35,7 @@ export default function ImageCard(props: Props): React.ReactElement {
       isPressable
       className="size-full"
       onClick={() => onPress(id)}
+      ref={cardRef}
     >
       <div
         className="w-full overflow-hidden bg-cover bg-center bg-no-repeat"
@@ -60,12 +44,10 @@ export default function ImageCard(props: Props): React.ReactElement {
         }}
       >
         <img
-          loading="lazy"
-          src={url}
+          src={isInView ? imageAccelerate(sample_url) : ''}
           width={sample_width}
           height={sample_height}
           className="transform-gpu transition-transform hover:scale-110"
-          onError={handleError}
         />
       </div>
       {/* 渐变遮罩 */}
